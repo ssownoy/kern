@@ -24,6 +24,7 @@ export default function EstimatePage() {
   const [estimate, setEstimate] = useState<Estimate | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [theme, setTheme] = useState('dark')
+  const [withMaterials, setWithMaterials] = useState(false)
 
   useEffect(() => {
     const saved = localStorage.getItem('kern-theme') || 'dark'
@@ -47,6 +48,7 @@ export default function EstimatePage() {
     try {
       const formData = new FormData()
       formData.append('drawing', file)
+      formData.append('withMaterials', withMaterials.toString())
 
       const res = await fetch('/api/estimate', {
         method: 'POST',
@@ -115,6 +117,16 @@ export default function EstimatePage() {
               <div style={{ color: 'var(--muted)', fontSize: '13px' }}>PNG, JPG, PDF — до 10 МБ</div>
             </div>
           )}
+        </div>
+
+        <div style={{display:'flex',alignItems:'center',gap:'12px',marginBottom:'24px',padding:'20px 24px',background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',cursor:'pointer'}} onClick={() => setWithMaterials(!withMaterials)}>
+          <div style={{width:'20px',height:'20px',borderRadius:'4px',border:`2px solid ${withMaterials ? 'var(--accent)' : 'var(--border2)'}`,background:withMaterials ? 'var(--accent)' : 'transparent',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,transition:'all 0.2s'}}>
+            {withMaterials && <span style={{color:'var(--btn-text)',fontSize:'12px',fontWeight:700}}>✓</span>}
+          </div>
+          <div>
+            <div style={{fontFamily:"'Syne',sans-serif",fontWeight:700,fontSize:'15px',marginBottom:'2px'}}>Подбор материалов</div>
+            <div style={{color:'var(--muted)',fontSize:'13px',fontWeight:300}}>AI подберёт конкретные материалы и включит их стоимость в смету</div>
+          </div>
         </div>
 
         <button
