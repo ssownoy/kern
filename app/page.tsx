@@ -87,13 +87,15 @@ export default function Home() {
             <p className="sec-intro">Каждый модуль решает конкретную задачу — от сметы до поиска проверенного специалиста.</p>
           </div>
           <div className="modules-grid reveal">
-            <div className="module-card">
+            <a href="/estimate" style={{textDecoration:'none',color:'inherit'}}>
+            <div className="module-card" style={{cursor:'pointer'}}>
               <div className="module-num">01</div>
               <div className="module-icon">📐</div>
               <h3>AI-сметчик</h3>
               <p>Загрузите чертёж или фото объекта — получите готовую смету в рублях по актуальным рыночным ценам. Поддержка PDF, DWG, PNG.</p>
               <span className="module-badge badge-live">Доступно</span>
             </div>
+            </a>
             <div className="module-card">
               <div className="module-num">02</div>
               <div className="module-icon">🔍</div>
