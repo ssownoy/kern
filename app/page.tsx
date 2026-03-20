@@ -298,6 +298,7 @@ export default function Home() {
           <li><a onClick={() => goTo('pricing')}>Тарифы</a></li>
           <li><a onClick={() => goTo('contact')}>Контакты</a></li>
           <li><a href="/privacy">Конфиденциальность</a></li>
+          <li><a href="/terms">Соглашение</a></li>
         </ul>
         <span className="footer-copy">© 2026 Kern. Все права защищены.</span>
       </footer>
