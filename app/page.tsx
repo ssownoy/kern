@@ -284,7 +284,7 @@ export default function Home() {
             <button className="form-submit" onClick={() => setSubmitted(true)} disabled={submitted}>
               {submitted ? 'Заявка отправлена ✓' : 'Отправить заявку'}
             </button>
-            <p className="form-note">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности</p>
+            <p className="form-note">Нажимая кнопку, вы соглашаетесь с <a href="/privacy" style={{color:'var(--accent)'}}>политикой конфиденциальности</a></p>
           </div>
         </div>
       </section>
