@@ -35,14 +35,7 @@ export default function EstimatePage() {
     setTheme(saved)
     document.documentElement.setAttribute('data-theme', saved)
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (!session) {
-        router.push('/auth')
-      } else {
-        setUser(session.user)
-      }
-      setChecking(false)
-    })
+    setChecking(false)
   }, [])
 
   const toggleTheme = () => {
@@ -87,14 +80,6 @@ export default function EstimatePage() {
   const handleSignOut = async () => {
     await supabase.auth.signOut()
     router.push('/')
-  }
-
-  if (checking) {
-    return (
-      <div style={{minHeight:'100vh',background:'var(--bg)',display:'flex',alignItems:'center',justifyContent:'center'}}>
-        <div style={{color:'var(--muted)',fontFamily:"'DM Sans',sans-serif"}}>Загрузка...</div>
-      </div>
-    )
   }
 
   return (

@@ -51,10 +51,6 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    if (!userId) {
-      return NextResponse.json({ error: 'Необходима авторизация' }, { status: 401 })
-    }
-
     const formData = await req.formData()
     const file = formData.get('drawing') as File | null
     const withMaterials = formData.get('withMaterials') === 'true'
@@ -95,7 +91,7 @@ export async function POST(req: NextRequest) {
     const text = data.choices[0].message.content.replace(/```json|```/g, '').trim()
     const estimate = JSON.parse(text)
 
-    if (!isAdmin && !isPro && userId) {
+    if (userId && !isAdmin && !isPro) {
       await supabase.from('profiles')
         .update({ estimates_used: supabase.rpc('increment', { x: 1 }) })
         .eq('id', userId)
