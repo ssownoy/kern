@@ -38,7 +38,7 @@ export default function AuthPage() {
       else router.push('/estimate')
     } else {
       const { error } = await supabase.auth.signUp({ email, password })
-      if (error) setError('Ошибка регистрации. Попробуйте другой email.')
+      if (error) setError(error.message)
       else setMessage('Проверьте почту — отправили письмо для подтверждения')
     }
     setLoading(false)
