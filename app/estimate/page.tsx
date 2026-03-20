@@ -181,10 +181,6 @@ export default function EstimatePage() {
     printWindow.document.write(html)
     printWindow.document.close()
     printWindow.focus()
-    setTimeout(() => {
-      printWindow.print()
-      printWindow.close()
-    }, 500)
   }
 
   if (!mounted) return null
