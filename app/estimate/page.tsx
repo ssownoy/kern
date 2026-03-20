@@ -318,7 +318,7 @@ export default function EstimatePage() {
               </div>
               <button
                 onClick={downloadPDF}
-                style={{width:'100%',padding:'14px',borderRadius:'4px',background:'transparent',color:'var(--accent)',border:'1px solid var(--accent)',fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:600,cursor:'pointer',transition:'all 0.2s',marginTop:'12px'}}
+                style={{width:'100%',padding:'14px',borderRadius:'4px',background:'transparent',color:'var(--accent)',border:'1px solid var(--accent)',fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:600,cursor:'pointer',transition:'all 0.2s',marginTop:'12px',marginBottom:'24px'}}
                 onMouseOver={e => (e.currentTarget.style.background = 'var(--accent)', e.currentTarget.style.color = 'var(--btn-text)')}
                 onMouseOut={e => (e.currentTarget.style.background = 'transparent', e.currentTarget.style.color = 'var(--accent)')}
               >
