@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import jsPDF from 'jspdf'
-import 'jspdf-autotable'
+import autoTable from 'jspdf-autotable'
 
 interface EstimateItem {
   name: string
@@ -113,7 +113,7 @@ export default function EstimatePage() {
     
     const tableY = 56 + summaryLines.length * 6 + 10
     
-    doc.autoTable({
+    autoTable(doc, {
       startY: tableY,
       head: [['Наименование', 'Ед.', 'Кол-во', 'Цена (₽)', 'Сумма (₽)']],
       body: estimate.items.map(item => [
@@ -128,7 +128,7 @@ export default function EstimatePage() {
       alternateRowStyles: { fillColor: [245, 242, 234] },
     })
     
-    const finalY = (doc as any).lastAutoTable.finalY + 10
+    const finalY = (doc as any).lastAutoTable?.finalY + 10 || 200
     doc.setFont('helvetica', 'bold')
     doc.setFontSize(13)
     doc.text(`Итого: ${estimate.total_rub.toLocaleString('ru-RU')} ₽`, 20, finalY)
