@@ -181,6 +181,12 @@ export default function EstimatePage() {
     printWindow.document.write(html)
     printWindow.document.close()
     printWindow.focus()
+  
+    // Wait for content to load, then trigger download
+    setTimeout(() => {
+      printWindow.print()
+      printWindow.close()
+    }, 1000)
   }
 
   if (!mounted) return null
