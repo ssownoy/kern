@@ -289,6 +289,9 @@ export default function EstimatePage() {
             </div>
           )}
         </div>
+        <button style={{width:'100%',padding:'14px',background:'var(--accent)',color:'var(--btn-text)',border:'none',borderRadius:'4px',fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:600,cursor:'pointer',marginTop:'12px'}} onClick={downloadPDF}>
+          Скачать PDF (тест)
+        </button>
       </div>
     </>
   )
