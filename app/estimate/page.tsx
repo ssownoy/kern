@@ -28,6 +28,7 @@ export default function EstimatePage() {
   const [theme, setTheme] = useState('dark')
   const [user, setUser] = useState<any>(null)
   const [checking, setChecking] = useState(true)
+  const [mounted, setMounted] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -38,6 +39,10 @@ export default function EstimatePage() {
     setChecking(false)
   }, [])
 
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   const toggleTheme = () => {
     const next = theme === 'dark' ? 'light' : 'dark'
     setTheme(next)
@@ -46,7 +51,7 @@ export default function EstimatePage() {
   }
 
   const handleSubmit = async () => {
-    if (!file || !user) return
+    if (!file) return
     setLoading(true)
     setError(null)
     setEstimate(null)
@@ -81,6 +86,8 @@ export default function EstimatePage() {
     await supabase.auth.signOut()
     router.push('/')
   }
+
+  if (!mounted) return null
 
   return (
     <>
