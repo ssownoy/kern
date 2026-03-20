@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
+import jsPDF from 'jspdf'
+import 'jspdf-autotable'
 
 interface EstimateItem {
   name: string
@@ -85,6 +87,61 @@ export default function EstimatePage() {
   const handleSignOut = async () => {
     await supabase.auth.signOut()
     router.push('/')
+  }
+
+  const downloadPDF = () => {
+    if (!estimate) return
+    
+    const doc = new jsPDF()
+    
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(20)
+    doc.text('KERN', 20, 20)
+    
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(10)
+    doc.text('AI-платформа для строительства', 20, 28)
+    doc.text(`Дата: ${new Date().toLocaleDateString('ru-RU')}`, 20, 34)
+    
+    doc.setFontSize(13)
+    doc.setFont('helvetica', 'bold')
+    doc.text('Объект:', 20, 48)
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(11)
+    const summaryLines = doc.splitTextToSize(estimate.summary, 170)
+    doc.text(summaryLines, 20, 56)
+    
+    const tableY = 56 + summaryLines.length * 6 + 10
+    
+    doc.autoTable({
+      startY: tableY,
+      head: [['Наименование', 'Ед.', 'Кол-во', 'Цена (₽)', 'Сумма (₽)']],
+      body: estimate.items.map(item => [
+        item.name,
+        item.unit,
+        item.qty.toString(),
+        item.price.toLocaleString('ru-RU'),
+        item.total.toLocaleString('ru-RU'),
+      ]),
+      styles: { fontSize: 9, cellPadding: 3 },
+      headStyles: { fillColor: [192, 144, 112], textColor: [19, 18, 15] },
+      alternateRowStyles: { fillColor: [245, 242, 234] },
+    })
+    
+    const finalY = (doc as any).lastAutoTable.finalY + 10
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(13)
+    doc.text(`Итого: ${estimate.total_rub.toLocaleString('ru-RU')} ₽`, 20, finalY)
+    
+    if (estimate.notes) {
+      doc.setFont('helvetica', 'normal')
+      doc.setFontSize(9)
+      doc.setTextColor(110, 106, 94)
+      const notesLines = doc.splitTextToSize(`Замечания: ${estimate.notes}`, 170)
+      doc.text(notesLines, 20, finalY + 10)
+    }
+    
+    doc.save(`kern-smeta-${Date.now()}.pdf`)
   }
 
   if (!mounted) return null
@@ -214,6 +271,14 @@ export default function EstimatePage() {
                   {estimate.total_rub.toLocaleString('ru-RU')} ₽
                 </span>
               </div>
+              <button
+                onClick={downloadPDF}
+                style={{width:'100%',padding:'14px',borderRadius:'4px',background:'transparent',color:'var(--accent)',border:'1px solid var(--accent)',fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:600,cursor:'pointer',transition:'all 0.2s',marginTop:'12px'}}
+                onMouseOver={e => (e.currentTarget.style.background = 'var(--accent)', e.currentTarget.style.color = 'var(--btn-text)')}
+                onMouseOut={e => (e.currentTarget.style.background = 'transparent', e.currentTarget.style.color = 'var(--accent)')}
+              >
+                Скачать PDF
+              </button>
 
               {estimate.notes && (
                 <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'24px 32px'}}>
