@@ -4,7 +4,7 @@ export default function PrivacyPage() {
       <div style={{maxWidth:'720px',margin:'0 auto'}}>
         <a href="/" style={{color:'var(--muted)',fontSize:'14px',textDecoration:'none',display:'inline-flex',alignItems:'center',gap:'6px',marginBottom:'48px'}}>← Назад</a>
         <h1 style={{fontFamily:"'Syne',sans-serif",fontSize:'42px',fontWeight:800,letterSpacing:'-0.02em',marginBottom:'12px'}}>Политика конфиденциальности</h1>
-        <p style={{color:'var(--muted)',fontSize:'14px',marginBottom:'48px'}}>Последнее обновление: март 2025</p>
+        <p style={{color:'var(--muted)',fontSize:'14px',marginBottom:'48px'}}>Последнее обновление: март 2026</p>
 
         {[
           ['1. Общие положения','Настоящая Политика конфиденциальности определяет порядок обработки персональных данных пользователей платформы Kern (kern-eight.vercel.app). Используя сервис, вы соглашаетесь с условиями настоящей Политики. Обработка персональных данных осуществляется в соответствии с Федеральным законом №152-ФЗ «О персональных данных».'],

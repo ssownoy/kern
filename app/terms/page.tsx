@@ -4,7 +4,7 @@ export default function TermsPage() {
       <div style={{maxWidth:'720px',margin:'0 auto'}}>
         <a href="/" style={{color:'var(--muted)',fontSize:'14px',textDecoration:'none',display:'inline-flex',alignItems:'center',gap:'6px',marginBottom:'48px'}}>← Назад</a>
         <h1 style={{fontFamily:"'Syne',sans-serif",fontSize:'42px',fontWeight:800,letterSpacing:'-0.02em',marginBottom:'12px'}}>Пользовательское соглашение</h1>
-        <p style={{color:'var(--muted)',fontSize:'14px',marginBottom:'48px'}}>Последнее обновление: март 2025</p>
+        <p style={{color:'var(--muted)',fontSize:'14px',marginBottom:'48px'}}>Последнее обновление: март 2026</p>
 
         {[
           ['1. Предмет соглашения','Настоящее Соглашение регулирует использование платформы Kern (kern-eight.vercel.app) — сервиса для автоматизации строительных процессов с применением искусственного интеллекта. Используя сервис, вы принимаете условия настоящего Соглашения.'],
