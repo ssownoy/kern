@@ -91,57 +91,100 @@ export default function EstimatePage() {
 
   const downloadPDF = () => {
     if (!estimate) return
+
+    const printWindow = window.open('', '_blank')
+    if (!printWindow) return
+
+    const html = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="UTF-8">
+        <title>Смета Kern</title>
+        <style>
+          * { margin: 0; padding: 0; box-sizing: border-box; }
+          body { font-family: Arial, sans-serif; font-size: 12px; color: #1C1A14; padding: 32px; }
+          .header { display: flex; justify-content: space-between; margin-bottom: 24px; border-bottom: 2px solid #C09070; padding-bottom: 16px; }
+          .logo { font-size: 28px; font-weight: 900; letter-spacing: -1px; }
+          .logo span { color: #C09070; }
+          .date { color: #6E6A5E; font-size: 11px; text-align: right; }
+          .summary { background: #F5F2EA; padding: 16px; border-radius: 6px; margin-bottom: 24px; }
+          .summary-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #6E6A5E; margin-bottom: 6px; }
+          .summary-text { font-size: 13px; font-weight: 600; }
+          table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+          th { background: #C09070; color: #13120F; padding: 8px 10px; text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+          td { padding: 8px 10px; border-bottom: 1px solid #E4E0D4; font-size: 11px; }
+          tr:nth-child(even) td { background: #F5F2EA; }
+          td:last-child, th:last-child { text-align: right; }
+          td:nth-child(3), th:nth-child(3), td:nth-child(4), th:nth-child(4) { text-align: right; }
+          .total { display: flex; justify-content: space-between; align-items: center; background: #13120F; color: #EAE6DC; padding: 16px 20px; border-radius: 6px; margin-bottom: 16px; }
+          .total-label { font-size: 14px; font-weight: 600; }
+          .total-amount { font-size: 24px; font-weight: 900; color: #C09070; }
+          .notes { background: #F5F2EA; padding: 14px; border-radius: 6px; font-size: 10px; color: #6E6A5E; line-height: 1.6; }
+          .notes-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+          @media print { body { padding: 20px; } }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <div class="logo">Kern<span>.</span></div>
+          <div class="date">
+            <div>AI-платформа для строительства</div>
+            <div>kern-eight.vercel.app</div>
+            <div style="margin-top:4px">${new Date().toLocaleDateString('ru-RU')}</div>
+          </div>
+        </div>
+        
+        <div class="summary">
+          <div class="summary-label">Объект</div>
+          <div class="summary-text">${estimate.summary}</div>
+        </div>
+        
+        <table>
+          <thead>
+            <tr>
+              <th>Наименование</th>
+              <th>Ед.</th>
+              <th>Кол-во</th>
+              <th>Цена (₽)</th>
+              <th>Сумма (₽)</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${estimate.items.map(item => `
+              <tr>
+                <td>${item.name}</td>
+                <td>${item.unit}</td>
+                <td>${item.qty}</td>
+                <td>${item.price.toLocaleString('ru-RU')}</td>
+                <td>${item.total.toLocaleString('ru-RU')}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+        
+        <div class="total">
+          <div class="total-label">Итого</div>
+          <div class="total-amount">${estimate.total_rub.toLocaleString('ru-RU')} ₽</div>
+        </div>
+        
+        ${estimate.notes ? `
+          <div class="notes">
+            <div class="notes-label">Замечания</div>
+            ${estimate.notes}
+          </div>
+        ` : ''}
+      </body>
+      </html>
+    `
     
-    const doc = new jsPDF()
-    
-    doc.setFont('helvetica', 'bold')
-    doc.setFontSize(20)
-    doc.text('KERN', 20, 20)
-    
-    doc.setFont('helvetica', 'normal')
-    doc.setFontSize(10)
-    doc.text('AI-платформа для строительства', 20, 28)
-    doc.text(`Дата: ${new Date().toLocaleDateString('ru-RU')}`, 20, 34)
-    
-    doc.setFontSize(13)
-    doc.setFont('helvetica', 'bold')
-    doc.text('Объект:', 20, 48)
-    doc.setFont('helvetica', 'normal')
-    doc.setFontSize(11)
-    const summaryLines = doc.splitTextToSize(estimate.summary, 170)
-    doc.text(summaryLines, 20, 56)
-    
-    const tableY = 56 + summaryLines.length * 6 + 10
-    
-    autoTable(doc, {
-      startY: tableY,
-      head: [['Наименование', 'Ед.', 'Кол-во', 'Цена (₽)', 'Сумма (₽)']],
-      body: estimate.items.map(item => [
-        item.name,
-        item.unit,
-        item.qty.toString(),
-        item.price.toLocaleString('ru-RU'),
-        item.total.toLocaleString('ru-RU'),
-      ]),
-      styles: { fontSize: 9, cellPadding: 3 },
-      headStyles: { fillColor: [192, 144, 112], textColor: [19, 18, 15] },
-      alternateRowStyles: { fillColor: [245, 242, 234] },
-    })
-    
-    const finalY = (doc as any).lastAutoTable?.finalY + 10 || 200
-    doc.setFont('helvetica', 'bold')
-    doc.setFontSize(13)
-    doc.text(`Итого: ${estimate.total_rub.toLocaleString('ru-RU')} ₽`, 20, finalY)
-    
-    if (estimate.notes) {
-      doc.setFont('helvetica', 'normal')
-      doc.setFontSize(9)
-      doc.setTextColor(110, 106, 94)
-      const notesLines = doc.splitTextToSize(`Замечания: ${estimate.notes}`, 170)
-      doc.text(notesLines, 20, finalY + 10)
-    }
-    
-    doc.save(`kern-smeta-${Date.now()}.pdf`)
+    printWindow.document.write(html)
+    printWindow.document.close()
+    printWindow.focus()
+    setTimeout(() => {
+      printWindow.print()
+      printWindow.close()
+    }, 500)
   }
 
   if (!mounted) return null
