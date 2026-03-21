@@ -11,6 +11,37 @@ export default function Home() {
     const saved = localStorage.getItem('kern-theme')
     if (saved) setTheme(saved)
 
+    const handleSubmit = async () => {
+      const btn = document.getElementById('submitBtn') as HTMLButtonElement
+      btn.textContent = 'Отправляем...'
+      btn.disabled = true
+
+      const name = (document.querySelector('input[type="text"]') as HTMLInputElement)?.value
+      const phone = (document.querySelector('input[type="tel"]') as HTMLInputElement)?.value
+      const company = (document.querySelectorAll('input[type="text"]')[1] as HTMLInputElement)?.value
+      const module = (document.querySelector('select') as HTMLSelectElement)?.value
+      const comment = (document.querySelector('textarea') as HTMLTextAreaElement)?.value
+
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, phone, company, module, comment }),
+        })
+
+        if (res.ok) {
+          btn.textContent = 'Заявка отправлена ✓'
+          btn.style.opacity = '0.7'
+        } else {
+          btn.textContent = 'Ошибка, попробуйте снова'
+          btn.disabled = false
+        }
+      } catch {
+        btn.textContent = 'Ошибка, попробуйте снова'
+        btn.disabled = false
+      }
+    }
+
     const handleScroll = () => setScrolled(window.scrollY > 40)
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
@@ -281,7 +312,7 @@ export default function Home() {
               </select>
             </div>
             <div className="form-group"><label>Комментарий</label><textarea placeholder="Расскажите о задаче..." /></div>
-            <button className="form-submit" onClick={() => setSubmitted(true)} disabled={submitted}>
+            <button id="submitBtn" className="form-submit" disabled={submitted}>
               {submitted ? 'Заявка отправлена ✓' : 'Отправить заявку'}
             </button>
             <p className="form-note">Нажимая кнопку, вы соглашаетесь с <a href="/privacy" style={{color:'var(--accent)'}}>политикой конфиденциальности</a></p>
