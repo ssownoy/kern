@@ -27,6 +27,7 @@ export default function EstimatePage() {
   const [estimate, setEstimate] = useState<Estimate | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [withMaterials, setWithMaterials] = useState(false)
+  const [region, setRegion] = useState('Москва')
   const [theme, setTheme] = useState('dark')
   const [user, setUser] = useState<any>(null)
   const [checking, setChecking] = useState(true)
@@ -65,6 +66,7 @@ export default function EstimatePage() {
       const formData = new FormData()
       formData.append('drawing', file)
       formData.append('withMaterials', withMaterials.toString())
+      formData.append('region', region)
 
       const res = await fetch('/api/estimate', {
         method: 'POST',
@@ -245,6 +247,28 @@ export default function EstimatePage() {
                 <div style={{color:'var(--muted)',fontSize:'13px'}}>PNG, JPG, PDF — до 10 МБ</div>
               </div>
             )}
+          </div>
+
+          <div style={{display:'flex',flexDirection:'column',gap:'7px',marginBottom:'16px'}}>
+            <label style={{fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase',color:'var(--muted)'}}>Регион</label>
+            <select value={region} onChange={e => setRegion(e.target.value)} style={{background:'var(--bg)',border:'1px solid var(--border)',borderRadius:'4px',padding:'11px 14px',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",fontSize:'15px',outline:'none',width:'100%'}}>
+              <option>Москва и МО</option>
+              <option>Санкт-Петербург и ЛО</option>
+              <option>Новосибирск</option>
+              <option>Екатеринбург</option>
+              <option>Казань</option>
+              <option>Нижний Новгород</option>
+              <option>Челябинск</option>
+              <option>Самара</option>
+              <option>Уфа</option>
+              <option>Ростов-на-Дону</option>
+              <option>Краснодар</option>
+              <option>Красноярск</option>
+              <option>Воронеж</option>
+              <option>Пермь</option>
+              <option>Волгоград</option>
+              <option>Другой регион</option>
+            </select>
           </div>
 
           <div
