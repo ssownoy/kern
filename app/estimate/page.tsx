@@ -39,7 +39,12 @@ export default function EstimatePage() {
     setTheme(saved)
     document.documentElement.setAttribute('data-theme', saved)
 
-    setChecking(false)
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        setUser(session.user)
+      }
+      setChecking(false)
+    })
   }, [])
 
   useEffect(() => {
