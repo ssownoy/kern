@@ -16,11 +16,16 @@ export default function Home() {
       btn.textContent = 'Отправляем...'
       btn.disabled = true
 
-      const name = (document.querySelector('input[type="text"]') as HTMLInputElement)?.value
-      const phone = (document.querySelector('input[type="tel"]') as HTMLInputElement)?.value
-      const company = (document.querySelectorAll('input[type="text"]')[1] as HTMLInputElement)?.value
+      const name = (document.querySelector('input[type="text"]') as HTMLInputElement)?.value?.trim()
+      const phone = (document.querySelector('input[type="tel"]') as HTMLInputElement)?.value?.trim()
+      const company = (document.querySelectorAll('input[type="text"]')[1] as HTMLInputElement)?.value?.trim()
       const module = (document.querySelector('select') as HTMLSelectElement)?.value
-      const comment = (document.querySelector('textarea') as HTMLTextAreaElement)?.value
+      const comment = (document.querySelector('textarea') as HTMLTextAreaElement)?.value?.trim()
+
+      if (!name || !phone || !company || !module) {
+        alert('Пожалуйста, заполните все поля формы')
+        return
+      }
 
       try {
         const res = await fetch('/api/contact', {
@@ -32,6 +37,7 @@ export default function Home() {
         if (res.ok) {
           btn.textContent = 'Заявка отправлена ✓'
           btn.style.opacity = '0.7'
+          alert('Спасибо! Ваша заявка успешно отправлена. Мы свяжемся с вами в течение 24 часов.')
         } else {
           btn.textContent = 'Ошибка, попробуйте снова'
           btn.disabled = false
