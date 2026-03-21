@@ -37,6 +37,7 @@ export default function Home() {
         if (res.ok) {
           btn.textContent = 'Заявка отправлена ✓'
           btn.style.opacity = '0.7'
+          console.log('Form submitted successfully:', { name, phone, company, module, comment })
           alert('Спасибо! Ваша заявка успешно отправлена. Мы свяжемся с вами в течение 24 часов.')
         } else {
           btn.textContent = 'Ошибка, попробуйте снова'
