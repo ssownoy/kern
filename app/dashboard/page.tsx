@@ -101,7 +101,7 @@ export default function DashboardPage() {
           ) : (
             <div style={{display:'flex',flexDirection:'column',gap:'1px',background:'var(--border)',border:'1px solid var(--border)',borderRadius:'8px',overflow:'hidden'}}>
               {estimates.map((est, i) => (
-                <div key={est.id} style={{background:'var(--bg)',padding:'24px 28px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:'24px',transition:'background 0.2s',cursor:'default'}}
+                <div key={est.id} onClick={() => router.push(`/dashboard/${est.id}`)} style={{background:'var(--bg)',padding:'24px 28px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:'24px',transition:'background 0.2s',cursor:'pointer'}}
                   onMouseOver={e => e.currentTarget.style.background = 'var(--card-hover)'}
                   onMouseOut={e => e.currentTarget.style.background = 'var(--bg)'}
                 >
