@@ -84,6 +84,17 @@ export default function EstimatePage() {
       const data = await res.json()
       if (data.error) throw new Error(data.error)
       setEstimate(data)
+      
+      if (user) {
+        await supabase.from('estimates').insert({
+          user_id: user.id,
+          summary: data.summary,
+          total_rub: data.total_rub,
+          items: data.items,
+          notes: data.notes,
+          with_materials: withMaterials,
+        })
+      }
     } catch (e: any) {
       setError(e.message)
     } finally {
@@ -207,6 +218,7 @@ export default function EstimatePage() {
           Kern<span style={{color:'var(--accent)'}}>.</span>
         </a>
         <div style={{display:'flex',alignItems:'center',gap:'16px'}}>
+          <a href="/dashboard" style={{color:'var(--muted)',fontSize:'14px',textDecoration:'none',transition:'color 0.2s'}}>Мои сметы</a>
           <span style={{color:'var(--muted)',fontSize:'13px'}}>{user?.email}</span>
           <button onClick={handleSignOut} style={{color:'var(--muted)',fontSize:'13px',background:'none',border:'none',cursor:'pointer',padding:'4px 8px'}}>Выйти</button>
           <button onClick={toggleTheme} style={{width:'42px',height:'23px',background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'12px',cursor:'pointer',position:'relative',display:'flex',alignItems:'center',padding:'0 3px',flexShrink:0}}>
