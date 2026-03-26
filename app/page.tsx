@@ -8,14 +8,25 @@ export default function Home() {
   const [submitted, setSubmitted] = useState(false)
   const [formName, setFormName] = useState('')
   const [formPhone, setFormPhone] = useState('')
+  const [formEmail, setFormEmail] = useState('')
   const [formCompany, setFormCompany] = useState('')
   const [formModule, setFormModule] = useState('')
   const [formComment, setFormComment] = useState('')
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({})
   const [formLoading, setFormLoading] = useState(false)
 
   const handleSubmit = async () => {
-    console.log('submit clicked', { formName, formPhone, formCompany, formModule, formComment })
-  
+    const errors: Record<string, string> = {}
+    if (!formName.trim()) errors.name = 'Введите имя'
+    if (!formPhone || formPhone.length < 18) errors.phone = 'Введите корректный номер'
+    if (formEmail && !formEmail.includes('@')) errors.email = 'Введите корректный email'
+
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors)
+      return
+    }
+
+    setFormLoading(true)
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
@@ -23,17 +34,17 @@ export default function Home() {
         body: JSON.stringify({
           name: formName,
           phone: formPhone,
+          email: formEmail,
           company: formCompany,
           module: formModule,
           comment: formComment,
         }),
       })
-      console.log('response status:', res.status)
-      const data = await res.json()
-      console.log('response data:', data)
       if (res.ok) setSubmitted(true)
     } catch (e) {
-      console.error('fetch error:', e)
+      console.error(e)
+    } finally {
+      setFormLoading(false)
     }
   }
 
@@ -294,10 +305,48 @@ export default function Home() {
           <p className="cta-lead">Оставьте заявку — свяжемся в течение 24 часов и настроим платформу под ваши задачи.</p>
           <div className="form-wrap reveal">
             <div className="form-row">
-              <div className="form-group"><label>Имя</label><input type="text" value={formName} onChange={e => setFormName(e.target.value)} placeholder="Иван Петров" /></div>
-              <div className="form-group"><label>Телефон</label><input type="tel" value={formPhone} onChange={e => setFormPhone(e.target.value)} placeholder="+7 (999) 000-00-00" /></div>
+              <div className="form-group"><label>Имя</label><input type="text" value={formName} onChange={e => setFormName(e.target.value)} placeholder="Иван Петров" />
+{formErrors.name && <span style={{color:'#ff8080',fontSize:'12px',marginTop:'4px'}}>{formErrors.name}</span>}
+</div>
+              <div className="form-group"><label>Телефон</label><input 
+  type="tel" 
+  value={formPhone} 
+  onChange={e => {
+    let val = e.target.value.replace(/\D/g, '')
+    if (val.startsWith('7') || val.startsWith('8')) val = val.slice(1)
+    val = val.slice(0, 10)
+    let formatted = '+7'
+    if (val.length > 0) formatted += ' (' + val.slice(0, 3)
+    if (val.length >= 3) formatted += ') ' + val.slice(3, 6)
+    if (val.length >= 6) formatted += '-' + val.slice(6, 8)
+    if (val.length >= 8) formatted += '-' + val.slice(8, 10)
+    setFormPhone(formatted)
+  }}
+  placeholder="+7 (999) 000-00-00"
+/>
+{formErrors.phone && <span style={{color:'#ff8080',fontSize:'12px',marginTop:'4px'}}>{formErrors.phone}</span>}
+</div>
+            <div className="form-group"><label>Компания</label><input type="text" value={formCompany} onChange={e => setFormCompany(e.target.value)} placeholder="ООО Строй Групп" />
             </div>
-            <div className="form-group"><label>Компания</label><input type="text" value={formCompany} onChange={e => setFormCompany(e.target.value)} placeholder="ООО Строй Групп" /></div>
+            <div className="form-group">
+              <label>Email</label>
+              <input 
+                type="email"
+                value={formEmail || ''}
+                onChange={e => {
+                  setFormEmail(e.target.value)
+                  if (formErrors.email) setFormErrors(prev => ({...prev, email: ''}))
+                }}
+                onBlur={e => {
+                  if (e.target.value && !e.target.value.includes('@')) {
+                    setFormErrors(prev => ({...prev, email: 'Введите корректный email'}))
+                  }
+                }}
+                placeholder="ivan@company.ru"
+                style={{borderColor: formErrors.email ? '#ff8080' : undefined}}
+              />
+              {formErrors.email && <span style={{color:'#ff8080',fontSize:'12px',marginTop:'4px'}}>{formErrors.email}</span>}
+            </div></div>
             <div className="form-group">
               <label>Интересует модуль</label>
               <select value={formModule} onChange={e => setFormModule(e.target.value)}>
