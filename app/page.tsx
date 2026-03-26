@@ -6,48 +6,42 @@ export default function Home() {
   const [theme, setTheme] = useState('dark')
   const [scrolled, setScrolled] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [formName, setFormName] = useState('')
+  const [formPhone, setFormPhone] = useState('')
+  const [formCompany, setFormCompany] = useState('')
+  const [formModule, setFormModule] = useState('')
+  const [formComment, setFormComment] = useState('')
+  const [formLoading, setFormLoading] = useState(false)
 
   useEffect(() => {
     const saved = localStorage.getItem('kern-theme')
     if (saved) setTheme(saved)
 
     const handleSubmit = async () => {
-      const btn = document.getElementById('submitBtn') as HTMLButtonElement
-      btn.textContent = 'Отправляем...'
-      btn.disabled = true
+    setFormLoading(true)
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formName,
+          phone: formPhone,
+          company: formCompany,
+          module: formModule,
+          comment: formComment,
+        }),
+      })
 
-      const name = (document.querySelector('input[type="text"]') as HTMLInputElement)?.value?.trim()
-      const phone = (document.querySelector('input[type="tel"]') as HTMLInputElement)?.value?.trim()
-      const company = (document.querySelectorAll('input[type="text"]')[1] as HTMLInputElement)?.value?.trim()
-      const module = (document.querySelector('select') as HTMLSelectElement)?.value
-      const comment = (document.querySelector('textarea') as HTMLTextAreaElement)?.value?.trim()
-
-      if (!name || !phone || !company || !module) {
-        alert('Пожалуйста, заполните все поля формы')
-        return
+      if (res.ok) {
+        setSubmitted(true)
+        console.log('Form submitted successfully:', { name: formName, phone: formPhone, company: formCompany, module: formModule, comment: formComment })
       }
-
-      try {
-        const res = await fetch('/api/contact', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, phone, company, module, comment }),
-        })
-
-        if (res.ok) {
-          btn.textContent = 'Заявка отправлена ✓'
-          btn.style.opacity = '0.7'
-          console.log('Form submitted successfully:', { name, phone, company, module, comment })
-          alert('Спасибо! Ваша заявка успешно отправлена. Мы свяжемся с вами в течение 24 часов.')
-        } else {
-          btn.textContent = 'Ошибка, попробуйте снова'
-          btn.disabled = false
-        }
-      } catch {
-        btn.textContent = 'Ошибка, попробуйте снова'
-        btn.disabled = false
-      }
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setFormLoading(false)
     }
+  }
 
     const handleScroll = () => setScrolled(window.scrollY > 40)
     window.addEventListener('scroll', handleScroll)
@@ -302,13 +296,13 @@ export default function Home() {
           <p className="cta-lead">Оставьте заявку — свяжемся в течение 24 часов и настроим платформу под ваши задачи.</p>
           <div className="form-wrap reveal">
             <div className="form-row">
-              <div className="form-group"><label>Имя</label><input type="text" placeholder="Иван Петров" /></div>
-              <div className="form-group"><label>Телефон</label><input type="tel" placeholder="+7 (999) 000-00-00" /></div>
+              <div className="form-group"><label>Имя</label><input type="text" value={formName} onChange={e => setFormName(e.target.value)} placeholder="Иван Петров" /></div>
+              <div className="form-group"><label>Телефон</label><input type="tel" value={formPhone} onChange={e => setFormPhone(e.target.value)} placeholder="+7 (999) 000-00-00" /></div>
             </div>
-            <div className="form-group"><label>Компания</label><input type="text" placeholder="ООО Строй Групп" /></div>
+            <div className="form-group"><label>Компания</label><input type="text" value={formCompany} onChange={e => setFormCompany(e.target.value)} placeholder="ООО Строй Групп" /></div>
             <div className="form-group">
               <label>Интересует модуль</label>
-              <select>
+              <select value={formModule} onChange={e => setFormModule(e.target.value)}>
                 <option value="">Выберите...</option>
                 <option>AI-сметчик</option>
                 <option>Контроль качества</option>
@@ -318,9 +312,9 @@ export default function Home() {
                 <option>Весь функционал</option>
               </select>
             </div>
-            <div className="form-group"><label>Комментарий</label><textarea placeholder="Расскажите о задаче..." /></div>
-            <button id="submitBtn" className="form-submit" disabled={submitted}>
-              {submitted ? 'Заявка отправлена ✓' : 'Отправить заявку'}
+            <div className="form-group"><label>Комментарий</label><textarea value={formComment} onChange={e => setFormComment(e.target.value)} placeholder="Расскажите о задаче..." /></div>
+            <button id="submitBtn" className="form-submit" disabled={formLoading || submitted}>
+              {formLoading ? 'Отправляем...' : submitted ? 'Заявка отправлена ✓' : 'Отправить заявку'}
             </button>
             <p className="form-note">Нажимая кнопку, вы соглашаетесь с <a href="/privacy" style={{color:'var(--accent)'}}>политикой конфиденциальности</a></p>
           </div>
