@@ -18,30 +18,28 @@ export default function Home() {
     if (saved) setTheme(saved)
 
     const handleSubmit = async () => {
-    setFormLoading(true)
-    try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: formName,
-          phone: formPhone,
-          company: formCompany,
-          module: formModule,
-          comment: formComment,
-        }),
-      })
-
-      if (res.ok) {
-        setSubmitted(true)
-        console.log('Form submitted successfully:', { name: formName, phone: formPhone, company: formCompany, module: formModule, comment: formComment })
-      }
-    } catch (e) {
-      console.error(e)
-    } finally {
-      setFormLoading(false)
-    }
+  console.log('submit clicked', { formName, formPhone, formCompany, formModule, formComment })
+  
+  try {
+    const res = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: formName,
+        phone: formPhone,
+        company: formCompany,
+        module: formModule,
+        comment: formComment,
+      }),
+    })
+    console.log('response status:', res.status)
+    const data = await res.json()
+    console.log('response data:', data)
+    if (res.ok) setSubmitted(true)
+  } catch (e) {
+    console.error('fetch error:', e)
   }
+}
 
     const handleScroll = () => setScrolled(window.scrollY > 40)
     window.addEventListener('scroll', handleScroll)
