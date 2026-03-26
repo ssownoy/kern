@@ -311,7 +311,7 @@ export default function Home() {
               </select>
             </div>
             <div className="form-group"><label>Комментарий</label><textarea value={formComment} onChange={e => setFormComment(e.target.value)} placeholder="Расскажите о задаче..." /></div>
-            <button id="submitBtn" className="form-submit" disabled={formLoading || submitted}>
+            <button id="submitBtn" className="form-submit" onClick={handleSubmit} disabled={formLoading || submitted}>
               {formLoading ? 'Отправляем...' : submitted ? 'Заявка отправлена ✓' : 'Отправить заявку'}
             </button>
             <p className="form-note">Нажимая кнопку, вы соглашаетесь с <a href="/privacy" style={{color:'var(--accent)'}}>политикой конфиденциальности</a></p>
