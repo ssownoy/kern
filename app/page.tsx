@@ -244,11 +244,11 @@ export default function Home() {
       <section id="pricing">
         <div className="container">
           <span className="sec-label">Тарифы</span>
-          <h2>Начните бесплатно,<br />масштабируйте когда нужно</h2>
+          <h2>Доступ на период<br />раннего запуска</h2>
           <div className="pricing-grid reveal">
             <div className="price-card">
               <div className="price-plan">Старт</div>
-              <div className="price-amount">0 <span className="price-period">₽/мес</span></div>
+              <div className="price-amount">Бесплатно</div>
               <p className="price-desc">Для малого бизнеса и частных специалистов.</p>
               <div className="price-divider"></div>
               <ul className="price-features">
@@ -263,8 +263,8 @@ export default function Home() {
             <div className="price-card featured">
               <div className="featured-label">Популярный</div>
               <div className="price-plan">Профи</div>
-              <div className="price-amount"><sup>от </sup>4 900 <span className="price-period">₽/мес</span></div>
-              <p className="price-desc">Для строительных компаний и подрядчиков.</p>
+              <div className="price-amount" style={{fontSize:'26px',paddingTop:'8px'}}>Скоро</div>
+              <p className="price-desc">Расширенный функционал — в разработке.</p>
               <div className="price-divider"></div>
               <ul className="price-features">
                 <li>Безлимитные сметы</li>
@@ -302,7 +302,9 @@ export default function Home() {
         <div className="container">
           <span className="sec-label">Ранний доступ</span>
           <h2>Начните работать<br />с Kern сегодня</h2>
-          <p className="cta-lead">Оставьте заявку — свяжемся в течение 24 часов и настроим платформу под ваши задачи.</p>
+          <p style={{color:'var(--muted)',fontSize:'17px',marginTop:'12px',fontWeight:300}}>
+  Сейчас платформа полностью бесплатна. Платные тарифы появятся позже.
+</p>
           <div className="form-wrap reveal">
             <div className="form-row">
               <div className="form-group"><label>Имя</label><input type="text" value={formName} onChange={e => setFormName(e.target.value)} placeholder="Иван Петров" />
