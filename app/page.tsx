@@ -13,33 +13,33 @@ export default function Home() {
   const [formComment, setFormComment] = useState('')
   const [formLoading, setFormLoading] = useState(false)
 
+  const handleSubmit = async () => {
+    console.log('submit clicked', { formName, formPhone, formCompany, formModule, formComment })
+  
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formName,
+          phone: formPhone,
+          company: formCompany,
+          module: formModule,
+          comment: formComment,
+        }),
+      })
+      console.log('response status:', res.status)
+      const data = await res.json()
+      console.log('response data:', data)
+      if (res.ok) setSubmitted(true)
+    } catch (e) {
+      console.error('fetch error:', e)
+    }
+  }
+
   useEffect(() => {
     const saved = localStorage.getItem('kern-theme')
     if (saved) setTheme(saved)
-
-    const handleSubmit = async () => {
-  console.log('submit clicked', { formName, formPhone, formCompany, formModule, formComment })
-  
-  try {
-    const res = await fetch('/api/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: formName,
-        phone: formPhone,
-        company: formCompany,
-        module: formModule,
-        comment: formComment,
-      }),
-    })
-    console.log('response status:', res.status)
-    const data = await res.json()
-    console.log('response data:', data)
-    if (res.ok) setSubmitted(true)
-  } catch (e) {
-    console.error('fetch error:', e)
-  }
-}
 
     const handleScroll = () => setScrolled(window.scrollY > 40)
     window.addEventListener('scroll', handleScroll)
