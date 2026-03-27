@@ -295,8 +295,12 @@ export default function EstimatePage() {
             disabled={!file || loading}
             style={{width:'100%',padding:'16px',borderRadius:'4px',background:file && !loading ? 'var(--accent)' : 'var(--border2)',color:file && !loading ? 'var(--btn-text)' : 'var(--muted)',border:'none',fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:700,cursor:file && !loading ? 'pointer' : 'not-allowed',transition:'all 0.2s',marginBottom:'48px'}}
           >
-            {loading ? 'Анализируем чертёж...' : 'Составить смету'}
-          </button>
+            {loading ? (
+  <span style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'10px'}}>
+    <span style={{width:'18px',height:'18px',border:'2px solid var(--btn-text)',borderTopColor:'transparent',borderRadius:'50%',display:'inline-block',animation:'spin 0.8s linear infinite'}}></span>
+    <span style={{color:'var(--btn-text)'}}>Анализируем чертёж...</span>
+  </span>
+) : 'Составить смету'}
 
           {error && (
             <div style={{background:'rgba(255,80,80,0.1)',border:'1px solid rgba(255,80,80,0.3)',borderRadius:'6px',padding:'16px',color:'#ff8080',fontSize:'14px',marginBottom:'32px'}}>
