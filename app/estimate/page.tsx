@@ -3,8 +3,6 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
-import jsPDF from 'jspdf'
-import autoTable from 'jspdf-autotable'
 
 interface EstimateItem {
   name: string
@@ -25,30 +23,25 @@ export default function EstimatePage() {
   const [file, setFile] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
   const [estimate, setEstimate] = useState<Estimate | null>(null)
+  const [editableItems, setEditableItems] = useState<EstimateItem[]>([])
+  const [editMode, setEditMode] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [withMaterials, setWithMaterials] = useState(false)
   const [region, setRegion] = useState('Москва')
   const [theme, setTheme] = useState('dark')
   const [user, setUser] = useState<any>(null)
-  const [checking, setChecking] = useState(true)
   const [mounted, setMounted] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
+    setMounted(true)
     const saved = localStorage.getItem('kern-theme') || 'dark'
     setTheme(saved)
     document.documentElement.setAttribute('data-theme', saved)
-
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        setUser(session.user)
-      }
-      setChecking(false)
+      if (session) setUser(session.user)
     })
-  }, [])
-
-  useEffect(() => {
-    setMounted(true)
   }, [])
 
   const toggleTheme = () => {
@@ -58,16 +51,21 @@ export default function EstimatePage() {
     localStorage.setItem('kern-theme', next)
   }
 
+  const handleSignOut = async () => {
+    await supabase.auth.signOut()
+    router.push('/')
+  }
+
   const handleSubmit = async () => {
     if (!file) return
     setLoading(true)
     setError(null)
     setEstimate(null)
+    setEditableItems([])
+    setEditMode(false)
 
     try {
       const { data: { session } } = await supabase.auth.getSession()
-      const token = session?.access_token
-
       const formData = new FormData()
       formData.append('drawing', file)
       formData.append('withMaterials', withMaterials.toString())
@@ -75,16 +73,15 @@ export default function EstimatePage() {
 
       const res = await fetch('/api/estimate', {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
+        headers: session?.access_token ? { 'Authorization': `Bearer ${session.access_token}` } : {},
         body: formData,
       })
 
       const data = await res.json()
       if (data.error) throw new Error(data.error)
       setEstimate(data)
-      
+      setEditableItems(data.items)
+
       if (user) {
         await supabase.from('estimates').insert({
           user_id: user.id,
@@ -102,125 +99,62 @@ export default function EstimatePage() {
     }
   }
 
-  const handleSignOut = async () => {
-    await supabase.auth.signOut()
-    router.push('/')
+  const updateItem = (i: number, field: string, value: any) => {
+    const updated = [...editableItems]
+    updated[i] = { ...updated[i], [field]: value }
+    if (field === 'qty' || field === 'price') {
+      updated[i].total = updated[i].qty * updated[i].price
+    }
+    setEditableItems(updated)
   }
+
+  const removeItem = (i: number) => {
+    setEditableItems(editableItems.filter((_, j) => j !== i))
+  }
+
+  const addItem = () => {
+    setEditableItems([...editableItems, { name: 'Новая позиция', unit: 'шт', qty: 1, price: 0, total: 0 }])
+  }
+
+  const totalRub = editableItems.reduce((sum, item) => sum + (item.qty * item.price), 0)
 
   const downloadPDF = () => {
     if (!estimate) return
-
     const printWindow = window.open('', '_blank')
     if (!printWindow) return
-
-    const html = `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <meta charset="UTF-8">
-        <title>Смета Kern</title>
-        <style>
-          * { margin: 0; padding: 0; box-sizing: border-box; }
-          body { font-family: Arial, sans-serif; font-size: 12px; color: #1C1A14; padding: 32px; }
-          .header { display: flex; justify-content: space-between; margin-bottom: 24px; border-bottom: 2px solid #C09070; padding-bottom: 16px; }
-          .logo { font-size: 28px; font-weight: 900; letter-spacing: -1px; }
-          .logo span { color: #C09070; }
-          .date { color: #6E6A5E; font-size: 11px; text-align: right; }
-          .summary { background: #F5F2EA; padding: 16px; border-radius: 6px; margin-bottom: 24px; }
-          .summary-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #6E6A5E; margin-bottom: 6px; }
-          .summary-text { font-size: 13px; font-weight: 600; }
-          table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-          th { background: #C09070; color: #13120F; padding: 8px 10px; text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
-          td { padding: 8px 10px; border-bottom: 1px solid #E4E0D4; font-size: 11px; }
-          tr:nth-child(even) td { background: #F5F2EA; }
-          td:last-child, th:last-child { text-align: right; }
-          td:nth-child(3), th:nth-child(3), td:nth-child(4), th:nth-child(4) { text-align: right; }
-          .total { display: flex; justify-content: space-between; align-items: center; background: #13120F; color: #EAE6DC; padding: 16px 20px; border-radius: 6px; margin-bottom: 16px; }
-          .total-label { font-size: 14px; font-weight: 600; }
-          .total-amount { font-size: 24px; font-weight: 900; color: #C09070; }
-          .notes { background: #F5F2EA; padding: 14px; border-radius: 6px; font-size: 10px; color: #6E6A5E; line-height: 1.6; }
-          .notes-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
-          @media print { body { padding: 20px; } }
-        </style>
-      </head>
-      <body>
-        <div class="header">
-          <div class="logo">Kern<span>.</span></div>
-          <div class="date">
-            <div>AI-платформа для строительства</div>
-            <div>kern-eight.vercel.app</div>
-            <div style="margin-top:4px">${new Date().toLocaleDateString('ru-RU')}</div>
-          </div>
-        </div>
-        
-        <div class="summary">
-          <div class="summary-label">Объект</div>
-          <div class="summary-text">${estimate.summary}</div>
-        </div>
-        
-        <table>
-          <thead>
-            <tr>
-              <th>Наименование</th>
-              <th>Ед.</th>
-              <th>Кол-во</th>
-              <th>Цена (₽)</th>
-              <th>Сумма (₽)</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${estimate.items.map(item => `
-              <tr>
-                <td>${item.name}</td>
-                <td>${item.unit}</td>
-                <td>${item.qty}</td>
-                <td>${item.price.toLocaleString('ru-RU')}</td>
-                <td>${item.total.toLocaleString('ru-RU')}</td>
-              </tr>
-            `).join('')}
-          </tbody>
-        </table>
-        
-        <div class="total">
-          <div class="total-label">Итого</div>
-          <div class="total-amount">${estimate.total_rub.toLocaleString('ru-RU')} ₽</div>
-        </div>
-        
-        ${estimate.notes ? `
-          <div class="notes">
-            <div class="notes-label">Замечания</div>
-            ${estimate.notes}
-          </div>
-        ` : ''}
-      </body>
-      </html>
-    `
-    
+    const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Смета Kern</title>
+    <style>* { margin: 0; padding: 0; box-sizing: border-box; } body { font-family: Arial, sans-serif; font-size: 12px; color: #1C1A14; padding: 32px; } .header { display: flex; justify-content: space-between; margin-bottom: 24px; border-bottom: 2px solid #C09070; padding-bottom: 16px; } .logo { font-size: 28px; font-weight: 900; letter-spacing: -1px; } .logo span { color: #C09070; } .date { color: #6E6A5E; font-size: 11px; text-align: right; } .summary { background: #F5F2EA; padding: 16px; border-radius: 6px; margin-bottom: 24px; } .summary-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #6E6A5E; margin-bottom: 6px; } .summary-text { font-size: 13px; font-weight: 600; } table { width: 100%; border-collapse: collapse; margin-bottom: 20px; } th { background: #C09070; color: #13120F; padding: 8px 10px; text-align: left; font-size: 10px; text-transform: uppercase; } td { padding: 8px 10px; border-bottom: 1px solid #E4E0D4; font-size: 11px; } tr:nth-child(even) td { background: #F5F2EA; } td:last-child, th:last-child { text-align: right; } td:nth-child(3), th:nth-child(3), td:nth-child(4), th:nth-child(4) { text-align: right; } .total { display: flex; justify-content: space-between; align-items: center; background: #13120F; color: #EAE6DC; padding: 16px 20px; border-radius: 6px; margin-bottom: 16px; } .total-label { font-size: 14px; font-weight: 600; } .total-amount { font-size: 24px; font-weight: 900; color: #C09070; } .notes { background: #F5F2EA; padding: 14px; border-radius: 6px; font-size: 10px; color: #6E6A5E; line-height: 1.6; } .notes-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }</style></head>
+    <body>
+    <div class="header"><div class="logo">Kern<span>.</span></div><div class="date"><div>AI-платформа для строительства</div><div>kern-eight.vercel.app</div><div style="margin-top:4px">${new Date().toLocaleDateString('ru-RU')}</div></div></div>
+    <div class="summary"><div class="summary-label">Объект</div><div class="summary-text">${estimate.summary}</div></div>
+    <table><thead><tr><th>Наименование</th><th>Ед.</th><th>Кол-во</th><th>Цена (₽)</th><th>Сумма (₽)</th></tr></thead>
+    <tbody>${editableItems.map(item => `<tr><td>${item.name}</td><td>${item.unit}</td><td>${item.qty}</td><td>${item.price.toLocaleString('ru-RU')}</td><td>${(item.qty * item.price).toLocaleString('ru-RU')}</td></tr>`).join('')}</tbody></table>
+    <div class="total"><div class="total-label">Итого</div><div class="total-amount">${totalRub.toLocaleString('ru-RU')} ₽</div></div>
+    ${estimate.notes ? `<div class="notes"><div class="notes-label">Замечания</div>${estimate.notes}</div>` : ''}
+    </body></html>`
     printWindow.document.write(html)
     printWindow.document.close()
     printWindow.focus()
-  
-    // Wait for content to load, then trigger download
-    setTimeout(() => {
-      printWindow.print()
-      printWindow.close()
-    }, 1000)
+    setTimeout(() => { printWindow.print(); printWindow.close() }, 500)
   }
 
   if (!mounted) return null
 
   return (
     <>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');`}</style>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+        @keyframes spin { to { transform: rotate(360deg); } }
+      `}</style>
 
       <nav style={{position:'fixed',top:0,left:0,right:0,zIndex:100,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'20px 52px',background:'var(--bg)',borderBottom:'1px solid var(--border)'}}>
         <a href="/" style={{fontFamily:"'Syne',sans-serif",fontSize:'22px',fontWeight:800,color:'var(--text)',textDecoration:'none',letterSpacing:'-0.5px'}}>
           Kern<span style={{color:'var(--accent)'}}>.</span>
         </a>
         <div style={{display:'flex',alignItems:'center',gap:'16px'}}>
-          <a href="/dashboard" style={{color:'var(--muted)',fontSize:'14px',textDecoration:'none',transition:'color 0.2s'}}>Мои сметы</a>
-          <span style={{color:'var(--muted)',fontSize:'13px'}}>{user?.email}</span>
-          <button onClick={handleSignOut} style={{color:'var(--muted)',fontSize:'13px',background:'none',border:'none',cursor:'pointer',padding:'4px 8px'}}>Выйти</button>
+          {user && <a href="/dashboard" style={{color:'var(--muted)',fontSize:'14px',textDecoration:'none'}}>Мои сметы</a>}
+          {user && <span style={{color:'var(--muted)',fontSize:'13px'}}>{user.email}</span>}
+          {user && <button onClick={handleSignOut} style={{color:'var(--muted)',fontSize:'13px',background:'none',border:'none',cursor:'pointer'}}>Выйти</button>}
           <button onClick={toggleTheme} style={{width:'42px',height:'23px',background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'12px',cursor:'pointer',position:'relative',display:'flex',alignItems:'center',padding:'0 3px',flexShrink:0}}>
             <span style={{fontSize:'10px',position:'absolute',pointerEvents:'none',left:'5px'}}>🌙</span>
             <div style={{width:'17px',height:'17px',borderRadius:'50%',background:'var(--accent)',transition:'transform 0.3s',flexShrink:0,transform:theme==='light'?'translateX(19px)':'translateX(0)'}}></div>
@@ -232,19 +166,11 @@ export default function EstimatePage() {
       <div style={{minHeight:'100vh',background:'var(--bg)',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",padding:'120px 52px 80px'}}>
         <div style={{maxWidth:'900px',margin:'0 auto'}}>
 
-          <a href="/" style={{color:'var(--muted)',fontSize:'14px',textDecoration:'none',display:'inline-flex',alignItems:'center',gap:'6px',marginBottom:'48px'}}>
-            ← Назад
-          </a>
+          <a href="/" style={{color:'var(--muted)',fontSize:'14px',textDecoration:'none',display:'inline-flex',alignItems:'center',gap:'6px',marginBottom:'48px'}}>← Назад</a>
 
-          <span style={{fontSize:'11px',letterSpacing:'0.16em',textTransform:'uppercase',color:'var(--accent)',marginBottom:'14px',display:'block'}}>
-            Модуль 01
-          </span>
-          <h1 style={{fontFamily:"'Syne',sans-serif",fontSize:'clamp(36px,5vw,64px)',fontWeight:800,letterSpacing:'-0.03em',lineHeight:1,marginBottom:'16px'}}>
-            AI-сметчик
-          </h1>
-          <p style={{color:'var(--muted)',fontSize:'17px',fontWeight:300,marginBottom:'52px',maxWidth:'500px'}}>
-            Загрузите чертёж или фото объекта — получите готовую смету в рублях за 30 секунд.
-          </p>
+          <span style={{fontSize:'11px',letterSpacing:'0.16em',textTransform:'uppercase',color:'var(--accent)',marginBottom:'14px',display:'block'}}>Модуль 01</span>
+          <h1 style={{fontFamily:"'Syne',sans-serif",fontSize:'clamp(36px,5vw,64px)',fontWeight:800,letterSpacing:'-0.03em',lineHeight:1,marginBottom:'16px'}}>AI-сметчик</h1>
+          <p style={{color:'var(--muted)',fontSize:'17px',fontWeight:300,marginBottom:'52px',maxWidth:'500px'}}>Загрузите чертёж или фото объекта — получите готовую смету в рублях за 30 секунд.</p>
 
           <div
             style={{border:'1px dashed var(--border2)',borderRadius:'8px',padding:'48px',textAlign:'center',marginBottom:'16px',background:'var(--card-bg)',cursor:'pointer'}}
@@ -253,9 +179,14 @@ export default function EstimatePage() {
             <input id="fileInput" type="file" accept="image/*,.pdf" style={{display:'none'}} onChange={e => setFile(e.target.files?.[0] || null)} />
             {file ? (
               <div>
-                <div style={{fontSize:'32px',marginBottom:'12px'}}>📄</div>
+                {file.type.startsWith('image/') ? (
+                  <img src={URL.createObjectURL(file)} alt="preview" style={{maxHeight:'200px',maxWidth:'100%',borderRadius:'6px',objectFit:'contain',marginBottom:'12px'}} />
+                ) : (
+                  <div style={{fontSize:'32px',marginBottom:'12px'}}>📄</div>
+                )}
                 <div style={{fontFamily:"'Syne',sans-serif",fontWeight:700,marginBottom:'4px'}}>{file.name}</div>
-                <div style={{color:'var(--muted)',fontSize:'13px'}}>{(file.size / 1024).toFixed(0)} KB</div>
+                <div style={{color:'var(--muted)',fontSize:'13px',marginBottom:'8px'}}>{(file.size / 1024).toFixed(0)} KB</div>
+                <button onClick={e => { e.stopPropagation(); setFile(null) }} style={{fontSize:'12px',color:'var(--muted)',background:'none',border:'1px solid var(--border2)',borderRadius:'4px',padding:'4px 12px',cursor:'pointer'}}>Удалить</button>
               </div>
             ) : (
               <div>
@@ -268,19 +199,10 @@ export default function EstimatePage() {
 
           <div style={{display:'flex',flexDirection:'column',gap:'7px',marginBottom:'16px'}}>
             <label style={{fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase',color:'var(--muted)'}}>Регион</label>
-            <input 
-              type="text" 
-              value={region} 
-              onChange={e => setRegion(e.target.value)}
-              placeholder="Например: Москва, Краснодар, Иркутск..."
-              style={{background:'var(--bg)',border:'1px solid var(--border)',borderRadius:'4px',padding:'11px 14px',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",fontSize:'15px',outline:'none',width:'100%'}}
-            />
+            <input type="text" value={region} onChange={e => setRegion(e.target.value)} placeholder="Например: Москва, Краснодар, Иркутск..." style={{background:'var(--bg)',border:'1px solid var(--border)',borderRadius:'4px',padding:'11px 14px',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",fontSize:'15px',outline:'none',width:'100%'}} />
           </div>
 
-          <div
-            style={{display:'flex',alignItems:'center',gap:'12px',marginBottom:'24px',padding:'20px 24px',background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',cursor:'pointer'}}
-            onClick={() => setWithMaterials(!withMaterials)}
-          >
+          <div style={{display:'flex',alignItems:'center',gap:'12px',marginBottom:'24px',padding:'20px 24px',background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',cursor:'pointer'}} onClick={() => setWithMaterials(!withMaterials)}>
             <div style={{width:'20px',height:'20px',borderRadius:'4px',border:`2px solid ${withMaterials ? 'var(--accent)' : 'var(--border2)'}`,background:withMaterials ? 'var(--accent)' : 'transparent',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,transition:'all 0.2s'}}>
               {withMaterials && <span style={{color:'var(--btn-text)',fontSize:'12px',fontWeight:700}}>✓</span>}
             </div>
@@ -290,25 +212,18 @@ export default function EstimatePage() {
             </div>
           </div>
 
-          <button
-            onClick={handleSubmit}
-            disabled={!file || loading}
-            style={{width:'100%',padding:'16px',borderRadius:'4px',background:file && !loading ? 'var(--accent)' : 'var(--border2)',color:file && !loading ? 'var(--btn-text)' : 'var(--muted)',border:'none',fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:700,cursor:file && !loading ? 'pointer' : 'not-allowed',transition:'all 0.2s',marginBottom:'48px'}}
-          >
+          <button onClick={handleSubmit} disabled={!file || loading} style={{width:'100%',padding:'16px',borderRadius:'4px',background:file && !loading ? 'var(--accent)' : 'var(--border2)',color:file && !loading ? 'var(--btn-text)' : 'var(--muted)',border:'none',fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:700,cursor:file && !loading ? 'pointer' : 'not-allowed',transition:'all 0.2s',marginBottom:'48px'}}>
             {loading ? (
-  <span style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'10px'}}>
-    <span style={{width:'18px',height:'18px',border:'2px solid var(--btn-text)',borderTopColor:'transparent',borderRadius:'50%',display:'inline-block',animation:'spin 0.8s linear infinite'}}></span>
-    <span style={{color:'var(--btn-text)'}}>Анализируем чертёж...</span>
-  </span>
-) : 'Составить смету'}
+              <span style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'10px'}}>
+                <span style={{width:'18px',height:'18px',border:'2px solid var(--btn-text)',borderTopColor:'transparent',borderRadius:'50%',display:'inline-block',animation:'spin 0.8s linear infinite'}}></span>
+                Анализируем чертёж...
+              </span>
+            ) : 'Составить смету'}
+          </button>
 
           {error && (
-            <div style={{background:'rgba(255,80,80,0.1)',border:'1px solid rgba(255,80,80,0.3)',borderRadius:'6px',padding:'16px',color:'#ff8080',fontSize:'14px',marginBottom:'32px'}}>
-              {error === 'Необходима авторизация' ? (
-                <span>Необходима авторизация. <a href="/auth" style={{color:'var(--accent)'}}>Войти</a></span>
-              ) : error === 'Лимит 5 смет в месяц исчерпан. Перейдите на тариф Профи.' ? (
-                <span>Лимит 5 смет в месяц исчерпан. <a href="/#pricing" style={{color:'var(--accent)'}}>Перейти на Профи</a></span>
-              ) : error}
+            <div style={{background:'rgba(255,80,80,0.1)',border:'1px solid rgba(255,80,80,0.3)',borderRadius:'6px',padding:'16px',color:'#ff8080',marginBottom:'32px'}}>
+              {error}
             </div>
           )}
 
@@ -317,6 +232,16 @@ export default function EstimatePage() {
               <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'32px',marginBottom:'24px'}}>
                 <div style={{fontSize:'11px',letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)',marginBottom:'8px'}}>Объект</div>
                 <div style={{fontFamily:"'Syne',sans-serif",fontSize:'18px',fontWeight:700}}>{estimate.summary}</div>
+              </div>
+
+              <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'12px'}}>
+                <span style={{fontSize:'11px',letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)'}}>Позиции сметы</span>
+                <button
+                  onClick={() => setEditMode(!editMode)}
+                  style={{display:'flex',alignItems:'center',gap:'6px',background:editMode ? 'var(--accent)' : 'transparent',color:editMode ? 'var(--btn-text)' : 'var(--muted)',border:'1px solid',borderColor:editMode ? 'var(--accent)' : 'var(--border2)',borderRadius:'4px',padding:'6px 14px',cursor:'pointer',fontSize:'13px',fontFamily:"'Syne',sans-serif",fontWeight:600,transition:'all 0.2s'}}
+                >
+                  {editMode ? '✓ Готово' : '✏ Редактировать'}
+                </button>
               </div>
 
               <div style={{border:'1px solid var(--border)',borderRadius:'8px',overflow:'hidden',marginBottom:'24px'}}>
@@ -331,40 +256,71 @@ export default function EstimatePage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {estimate.items.map((item, i) => (
+                    {editableItems.map((item, i) => (
                       <tr key={i} style={{borderBottom:'1px solid var(--border)',background:i%2===0?'var(--bg)':'var(--bg2)'}}>
-                        <td style={{padding:'14px 20px',color:'var(--text)'}}>{item.name}</td>
-                        <td style={{padding:'14px 20px',textAlign:'center',color:'var(--muted)'}}>{item.unit}</td>
-                        <td style={{padding:'14px 20px',textAlign:'right',color:'var(--muted)'}}>{item.qty}</td>
-                        <td style={{padding:'14px 20px',textAlign:'right',color:'var(--muted)'}}>{item.price.toLocaleString('ru-RU')} ₽</td>
-                        <td style={{padding:'14px 20px',textAlign:'right',color:'var(--text)',fontWeight:500}}>{item.total.toLocaleString('ru-RU')} ₽</td>
+                        <td style={{padding:'12px 20px'}}>
+                          {editMode
+                            ? <input value={item.name} onChange={e => updateItem(i, 'name', e.target.value)} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--text)',width:'100%',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',padding:'4px 8px',outline:'none'}} />
+                            : <span style={{color:'var(--text)'}}>{item.name}</span>
+                          }
+                        </td>
+                        <td style={{padding:'12px 20px',textAlign:'center'}}>
+                          {editMode
+                            ? <input value={item.unit} onChange={e => updateItem(i, 'unit', e.target.value)} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',width:'52px',textAlign:'center',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',padding:'4px 6px',outline:'none'}} />
+                            : <span style={{color:'var(--muted)'}}>{item.unit}</span>
+                          }
+                        </td>
+                        <td style={{padding:'12px 20px',textAlign:'right'}}>
+                          {editMode
+                            ? <input type="number" value={item.qty} onChange={e => updateItem(i, 'qty', Number(e.target.value))} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',width:'70px',textAlign:'right',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',padding:'4px 8px',outline:'none'}} />
+                            : <span style={{color:'var(--muted)'}}>{item.qty}</span>
+                          }
+                        </td>
+                        <td style={{padding:'12px 20px',textAlign:'right'}}>
+                          {editMode
+                            ? <input type="number" value={item.price} onChange={e => updateItem(i, 'price', Number(e.target.value))} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',width:'100px',textAlign:'right',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',padding:'4px 8px',outline:'none'}} />
+                            : <span style={{color:'var(--muted)'}}>{item.price.toLocaleString('ru-RU')} ₽</span>
+                          }
+                        </td>
+                        <td style={{padding:'12px 20px',textAlign:'right'}}>
+                          <div style={{display:'flex',alignItems:'center',justifyContent:'flex-end',gap:'10px'}}>
+                            <span style={{color:'var(--text)',fontWeight:500,whiteSpace:'nowrap'}}>{(item.qty*item.price).toLocaleString('ru-RU')} ₽</span>
+                            {editMode && (
+                              <button onClick={() => removeItem(i)} style={{background:'none',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',cursor:'pointer',fontSize:'12px',padding:'3px 8px',fontFamily:"'Syne',sans-serif",transition:'all 0.2s',whiteSpace:'nowrap'}}
+                                onMouseOver={e => { e.currentTarget.style.borderColor='#ff8080'; e.currentTarget.style.color='#ff8080' }}
+                                onMouseOut={e => { e.currentTarget.style.borderColor='var(--border2)'; e.currentTarget.style.color='var(--muted)' }}
+                              >Удалить</button>
+                            )}
+                          </div>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
+                {editMode && (
+                  <div style={{padding:'12px 20px',borderTop:'1px solid var(--border)'}}>
+                    <button onClick={addItem} style={{background:'none',border:'1px dashed var(--border2)',borderRadius:'4px',color:'var(--muted)',padding:'8px 16px',cursor:'pointer',fontSize:'13px',fontFamily:"'Syne',sans-serif",fontWeight:600,width:'100%'}}>
+                      + Добавить позицию
+                    </button>
+                  </div>
+                )}
               </div>
 
               <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'24px 32px',marginBottom:'24px'}}>
                 <span style={{fontFamily:"'Syne',sans-serif",fontSize:'16px',fontWeight:700}}>Итого</span>
-                <span style={{fontFamily:"'Syne',sans-serif",fontSize:'28px',fontWeight:800,color:'var(--accent)'}}>
-                  {estimate.total_rub.toLocaleString('ru-RU')} ₽
-                </span>
+                <span style={{fontFamily:"'Syne',sans-serif",fontSize:'28px',fontWeight:800,color:'var(--accent)'}}>{totalRub.toLocaleString('ru-RU')} ₽</span>
               </div>
-              <button
-                onClick={downloadPDF}
-                style={{width:'100%',padding:'14px',borderRadius:'4px',background:'transparent',color:'var(--accent)',border:'1px solid var(--accent)',fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:600,cursor:'pointer',transition:'all 0.2s',marginTop:'12px',marginBottom:'24px'}}
-                onMouseOver={e => (e.currentTarget.style.background = 'var(--accent)', e.currentTarget.style.color = 'var(--btn-text)')}
-                onMouseOut={e => (e.currentTarget.style.background = 'transparent', e.currentTarget.style.color = 'var(--accent)')}
-              >
-                Скачать PDF
-              </button>
 
               {estimate.notes && (
-                <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'24px 32px'}}>
+                <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'24px 32px',marginBottom:'24px'}}>
                   <div style={{fontSize:'11px',letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)',marginBottom:'8px'}}>Замечания</div>
                   <div style={{color:'var(--muted)',fontSize:'14px',lineHeight:1.6,fontWeight:300}}>{estimate.notes}</div>
                 </div>
               )}
+
+              <button onClick={downloadPDF} style={{width:'100%',padding:'14px',borderRadius:'4px',background:'transparent',color:'var(--accent)',border:'1px solid var(--accent)',fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:600,cursor:'pointer',transition:'all 0.2s'}}>
+                Скачать PDF
+              </button>
             </div>
           )}
         </div>
