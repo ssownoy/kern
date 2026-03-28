@@ -55,6 +55,16 @@ export async function POST(req: NextRequest) {
     const file = formData.get('drawing') as File | null
     const withMaterials = formData.get('withMaterials') === 'true'
     const region = formData.get('region') as string || 'Москва'
+    const soilGroup = formData.get('soilGroup') as string || 'II'
+    const workConditions = formData.get('workConditions') as string || 'normal'
+    const climateZone = formData.get('climateZone') as string || 'II'
+    const workPeriod = formData.get('workPeriod') as string || 'summer'
+    const includeWinter = formData.get('includeWinter') === 'true'
+    const includeTempBuildings = formData.get('includeTempBuildings') === 'true'
+    const estimateMethod = formData.get('estimateMethod') as string || 'resource'
+    const objectType = formData.get('objectType') as string || 'cottage'
+    const hasLandscaping = formData.get('hasLandscaping') === 'true'
+    const specialConditions = formData.get('specialConditions') as string || ''
 
     if (!file) {
       return NextResponse.json({ error: 'Файл не загружен' }, { status: 400 })
@@ -63,27 +73,41 @@ export async function POST(req: NextRequest) {
     const bytes = await file.arrayBuffer()
     const base64 = Buffer.from(bytes).toString('base64')
 
-    const prompt = withMaterials
-      ? `Ты профессиональный сметчик в России. Проанализируй строительный чертёж или фото объекта.
+    const params = `
+ПАРАМЕТРЫ СМЕТЫ:
+- Регион: ${region}
+- Тип объекта: ${objectType}
+- Группа грунтов: ${soilGroup}
+- Климатический район: ${climateZone}
+- Условия работ: ${workConditions}
+- Период выполнения: ${workPeriod}
+- Метод составления: ${estimateMethod}
+- Зимнее удорожание (325/пр): ${includeWinter ? 'включить' : 'не включать'}
+- Временные здания (332/пр): ${includeTempBuildings ? 'включить' : 'не включать'}
+- Озеленение ГЭСН 47: ${hasLandscaping ? 'включить' : 'не включать'}
+${specialConditions ? `- Особые условия: ${specialConditions}` : ''}
+`
 
-ПРАВИЛА РАСЧЁТА:
-- Используй актуальные рыночные цены для региона: ${region}
-- Цены должны быть реалистичными и конкретными, не округляй до миллионов
-- Считай объёмы работ строго по чертежу, не преувеличивай
-- Для каждой позиции укажи конкретный материал с маркой и производителем
+    const basePrompt = `Ты профессиональный сметчик в России. Проанализируй строительный чертёж.
+
+${params}
+
+ПРАВИЛА:
+- Применяй региональные цены и территориальные расценки (ТЕР) для указанного региона
+- Учитывай группу грунтов при расчёте земляных работ и фундаментов
+- Применяй коэффициенты условий работ согласно параметрам
+- Учитывай климатический район при расчёте конструкций
+- Если указано зимнее удорожание — добавь соответствующие затраты по Приказу №325/пр
+- Если указаны временные здания — добавь затраты по Приказу №332/пр
+- Используй метод составления: ${estimateMethod}
+- Цены реалистичные, не округляй до миллионов
 
 Верни ТОЛЬКО валидный JSON без markdown:
-{"summary":"описание объекта 1-2 предложения","items":[{"name":"наименование работы или материала","unit":"ед. изм.","qty":число,"price":цена за единицу в рублях,"total":итого в рублях}],"total_rub":общая сумма,"notes":"замечания"}`
-      : `Ты профессиональный сметчик в России. Проанализируй строительный чертёж или фото объекта.
+{"summary":"описание объекта","items":[{"name":"наименование","unit":"ед.","qty":число,"price":цена,"total":итого}],"total_rub":общая сумма,"notes":"замечания и применённые коэффициенты"}`
 
-ПРАВИЛА РАСЧЁТА:
-- Используй актуальные рыночные цены для региона: ${region}
-- Цены должны быть реалистичными и конкретными, не округляй до миллионов
-- Считай объёмы работ строго по чертежу, не преувеличивай
-- Включай только работы которые явно видны на чертеже
-
-Верни ТОЛЬКО валидный JSON без markdown:
-{"summary":"описание объекта 1-2 предложения","items":[{"name":"наименование работы","unit":"ед. изм.","qty":число,"price":цена за единицу в рублях,"total":итого в рублях}],"total_rub":общая сумма,"notes":"замечания"}`
+    const prompt = withMaterials 
+      ? basePrompt + '\n\nДополнительно: для каждой позиции укажи конкретный материал с маркой и производителем.'
+      : basePrompt
 
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',

@@ -28,6 +28,16 @@ export default function EstimatePage() {
   const [error, setError] = useState<string | null>(null)
   const [withMaterials, setWithMaterials] = useState(false)
   const [region, setRegion] = useState('Москва')
+  const [soilGroup, setSoilGroup] = useState('II')
+  const [workConditions, setWorkConditions] = useState('normal')
+  const [climateZone, setClimateZone] = useState('II')
+  const [workPeriod, setWorkPeriod] = useState('summer')
+  const [includeWinter, setIncludeWinter] = useState(false)
+  const [includeTempBuildings, setIncludeTempBuildings] = useState(false)
+  const [estimateMethod, setEstimateMethod] = useState('resource')
+  const [objectType, setObjectType] = useState('cottage')
+  const [hasLandscaping, setHasLandscaping] = useState(false)
+  const [specialConditions, setSpecialConditions] = useState<string[]>([])
   const [theme, setTheme] = useState('dark')
   const [user, setUser] = useState<any>(null)
   const [mounted, setMounted] = useState(false)
@@ -70,6 +80,16 @@ export default function EstimatePage() {
       formData.append('drawing', file)
       formData.append('withMaterials', withMaterials.toString())
       formData.append('region', region)
+      formData.append('soilGroup', soilGroup)
+      formData.append('workConditions', workConditions)
+      formData.append('climateZone', climateZone)
+      formData.append('workPeriod', workPeriod)
+      formData.append('includeWinter', includeWinter.toString())
+      formData.append('includeTempBuildings', includeTempBuildings.toString())
+      formData.append('estimateMethod', estimateMethod)
+      formData.append('objectType', objectType)
+      formData.append('hasLandscaping', hasLandscaping.toString())
+      formData.append('specialConditions', specialConditions.join(', '))
 
       const res = await fetch('/api/estimate', {
         method: 'POST',
@@ -248,6 +268,108 @@ export default function EstimatePage() {
           <div style={{display:'flex',flexDirection:'column',gap:'7px',marginBottom:'16px'}}>
             <label style={{fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase',color:'var(--muted)'}}>Регион</label>
             <input type="text" value={region} onChange={e => setRegion(e.target.value)} placeholder="Например: Москва, Краснодар, Иркутск..." style={{background:'var(--bg)',border:'1px solid var(--border)',borderRadius:'4px',padding:'11px 14px',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",fontSize:'15px',outline:'none',width:'100%'}} />
+          </div>
+
+          <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'28px',marginBottom:'16px'}}>
+            <div style={{fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:700,marginBottom:'20px'}}>Параметры сметы</div>
+
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'16px'}}>
+              
+              <div style={{display:'flex',flexDirection:'column',gap:'7px'}}>
+                <label style={{fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase',color:'var(--muted)'}}>Группа грунтов</label>
+                <select value={soilGroup} onChange={e => setSoilGroup(e.target.value)} style={{background:'var(--bg)',border:'1px solid var(--border)',borderRadius:'4px',padding:'10px 14px',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',outline:'none'}}>
+                  <option value="I">I — Песок, супесь</option>
+                  <option value="II">II — Суглинок лёгкий</option>
+                  <option value="III">III — Суглинок тяжёлый, глина</option>
+                  <option value="IV">IV — Тяжёлая глина, сланцы</option>
+                  <option value="V">V — Скальный грунт</option>
+                </select>
+              </div>
+
+              <div style={{display:'flex',flexDirection:'column',gap:'7px'}}>
+                <label style={{fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase',color:'var(--muted)'}}>Климатический район</label>
+                <select value={climateZone} onChange={e => setClimateZone(e.target.value)} style={{background:'var(--bg)',border:'1px solid var(--border)',borderRadius:'4px',padding:'10px 14px',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',outline:'none'}}>
+                  <option value="I">I — Крайний Север</option>
+                  <option value="II">II — Умеренный</option>
+                  <option value="III">III — Тёплый</option>
+                  <option value="IV">IV — Жаркий</option>
+                </select>
+              </div>
+
+              <div style={{display:'flex',flexDirection:'column',gap:'7px'}}>
+                <label style={{fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase',color:'var(--muted)'}}>Условия производства работ</label>
+                <select value={workConditions} onChange={e => setWorkConditions(e.target.value)} style={{background:'var(--bg)',border:'1px solid var(--border)',borderRadius:'4px',padding:'10px 14px',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',outline:'none'}}>
+                  <option value="normal">Нормальные</option>
+                  <option value="cramped">Стеснённые (к=1.15)</option>
+                  <option value="height">На высоте более 15м (к=1.25)</option>
+                  <option value="wet">Мокрый грунт (к=1.1)</option>
+                  <option value="aggressive">Агрессивная среда (к=1.3)</option>
+                </select>
+              </div>
+
+              <div style={{display:'flex',flexDirection:'column',gap:'7px'}}>
+                <label style={{fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase',color:'var(--muted)'}}>Метод составления сметы</label>
+                <select value={estimateMethod} onChange={e => setEstimateMethod(e.target.value)} style={{background:'var(--bg)',border:'1px solid var(--border)',borderRadius:'4px',padding:'10px 14px',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',outline:'none'}}>
+                  <option value="resource">Ресурсный (ГЭСН)</option>
+                  <option value="base-index">Базисно-индексный (ФЕР/ТЕР)</option>
+                  <option value="analogues">По аналогам</option>
+                  <option value="market">По рыночным ценам</option>
+                </select>
+              </div>
+
+              <div style={{display:'flex',flexDirection:'column',gap:'7px'}}>
+                <label style={{fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase',color:'var(--muted)'}}>Тип объекта</label>
+                <select value={objectType} onChange={e => setObjectType(e.target.value)} style={{background:'var(--bg)',border:'1px solid var(--border)',borderRadius:'4px',padding:'10px 14px',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',outline:'none'}}>
+                  <option value="cottage">Жилой коттедж</option>
+                  <option value="apartment">Многоквартирный дом</option>
+                  <option value="commercial">Общественное здание</option>
+                  <option value="industrial">Промышленный объект</option>
+                  <option value="renovation">Реконструкция/ремонт</option>
+                  <option value="infrastructure">Инфраструктура</option>
+                </select>
+              </div>
+
+              <div style={{display:'flex',flexDirection:'column',gap:'7px'}}>
+                <label style={{fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase',color:'var(--muted)'}}>Период выполнения работ</label>
+                <select value={workPeriod} onChange={e => setWorkPeriod(e.target.value)} style={{background:'var(--bg)',border:'1px solid var(--border)',borderRadius:'4px',padding:'10px 14px',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',outline:'none'}}>
+                  <option value="summer">Лето (апрель–октябрь)</option>
+                  <option value="winter">Зима (ноябрь–март)</option>
+                  <option value="year">Круглогодично</option>
+                </select>
+              </div>
+
+            </div>
+
+            <div style={{marginTop:'20px',display:'flex',flexDirection:'column',gap:'12px'}}>
+              
+              {[
+                { key: 'includeWinter', value: includeWinter, setter: setIncludeWinter, label: 'Зимнее удорожание (Приказ №325/пр)', desc: 'Доп. затраты на производство работ в зимнее время' },
+                { key: 'includeTempBuildings', value: includeTempBuildings, setter: setIncludeTempBuildings, label: 'Временные здания и сооружения (Приказ №332/пр)', desc: 'Для сводного сметного расчёта' },
+                { key: 'hasLandscaping', value: hasLandscaping, setter: setHasLandscaping, label: 'Озеленение и благоустройство (ГЭСН 47)', desc: 'Газоны, цветники, посадка деревьев' },
+              ].map(({ key, value, setter, label, desc }) => (
+                <div key={key} style={{display:'flex',alignItems:'flex-start',gap:'12px',cursor:'pointer'}} onClick={() => setter(!value)}>
+                  <div style={{width:'20px',height:'20px',borderRadius:'4px',border:`2px solid ${value ? 'var(--accent)' : 'var(--border2)'}`,background:value ? 'var(--accent)' : 'transparent',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:'2px',transition:'all 0.2s'}}>
+                    {value && <span style={{color:'var(--btn-text)',fontSize:'12px',fontWeight:700}}>✓</span>}
+                  </div>
+                  <div>
+                    <div style={{fontSize:'14px',fontWeight:500}}>{label}</div>
+                    <div style={{fontSize:'12px',color:'var(--muted)',marginTop:'2px'}}>{desc}</div>
+                  </div>
+                </div>
+              ))}
+
+              <div style={{marginTop:'8px'}}>
+                <label style={{fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase',color:'var(--muted)',display:'block',marginBottom:'10px'}}>Особые условия</label>
+                <div style={{display:'flex',flexWrap:'wrap',gap:'8px'}}>
+                  {['Работы на высоте >15м','Мокрый грунт','Агрессивная среда','Стеснённые условия','Сейсмическая зона','Вечная мерзлота','Подземные воды'].map(cond => (
+                    <div key={cond} onClick={() => setSpecialConditions(prev => prev.includes(cond) ? prev.filter(c => c !== cond) : [...prev, cond])}
+                      style={{padding:'6px 14px',borderRadius:'4px',border:`1px solid ${specialConditions.includes(cond) ? 'var(--accent)' : 'var(--border2)'}`,background:specialConditions.includes(cond) ? 'var(--tag-bg)' : 'transparent',color:specialConditions.includes(cond) ? 'var(--accent)' : 'var(--muted)',fontSize:'13px',cursor:'pointer',transition:'all 0.2s'}}>
+                      {cond}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
 
           <div style={{display:'flex',alignItems:'center',gap:'12px',marginBottom:'24px',padding:'20px 24px',background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',cursor:'pointer'}} onClick={() => setWithMaterials(!withMaterials)}>
