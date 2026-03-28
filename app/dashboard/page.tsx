@@ -59,6 +59,13 @@ export default function DashboardPage() {
     router.push('/')
   }
 
+  const deleteEstimate = async (id: string, e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (!confirm('Удалить смету?')) return
+    await supabase.from('estimates').delete().eq('id', id)
+    setEstimates(estimates.filter(est => est.id !== id))
+  }
+
   if (!mounted) return null
 
   return (
@@ -120,8 +127,18 @@ export default function DashboardPage() {
                       )}
                     </div>
                   </div>
-                  <div style={{fontFamily:"'Syne',sans-serif",fontSize:'20px',fontWeight:800,color:'var(--accent)',whiteSpace:'nowrap'}}>
-                    {est.total_rub?.toLocaleString('ru-RU')} ₽
+                  <div style={{display:'flex',alignItems:'center',gap:'16px'}}>
+                    <div style={{fontFamily:"'Syne',sans-serif",fontSize:'20px',fontWeight:800,color:'var(--accent)',whiteSpace:'nowrap'}}>
+                      {est.total_rub?.toLocaleString('ru-RU')} ₽
+                    </div>
+                    <button
+                      onClick={(e) => deleteEstimate(est.id, e)}
+                      style={{background:'none',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',cursor:'pointer',fontSize:'12px',padding:'4px 10px',fontFamily:"'Syne',sans-serif",flexShrink:0,transition:'all 0.2s'}}
+                      onMouseOver={e => { e.currentTarget.style.borderColor='#ff8080'; e.currentTarget.style.color='#ff8080' }}
+                      onMouseOut={e => { e.currentTarget.style.borderColor='var(--border2)'; e.currentTarget.style.color='var(--muted)' }}
+                    >
+                      Удалить
+                    </button>
                   </div>
                 </div>
               ))}

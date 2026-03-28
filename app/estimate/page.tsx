@@ -176,7 +176,7 @@ export default function EstimatePage() {
             style={{border:'1px dashed var(--border2)',borderRadius:'8px',padding:'48px',textAlign:'center',marginBottom:'16px',background:'var(--card-bg)',cursor:'pointer'}}
             onClick={() => document.getElementById('fileInput')?.click()}
           >
-            <input id="fileInput" type="file" accept="image/*,.pdf" style={{display:'none'}} onChange={e => setFile(e.target.files?.[0] || null)} />
+            <input id="fileInput" type="file" accept="image/*,.pdf" style={{display:'none'}} value="" onChange={e => { setFile(e.target.files?.[0] || null); }} />
             {file ? (
               <div>
                 {file.type.startsWith('image/') ? (
@@ -186,7 +186,12 @@ export default function EstimatePage() {
                 )}
                 <div style={{fontFamily:"'Syne',sans-serif",fontWeight:700,marginBottom:'4px'}}>{file.name}</div>
                 <div style={{color:'var(--muted)',fontSize:'13px',marginBottom:'8px'}}>{(file.size / 1024).toFixed(0)} KB</div>
-                <button onClick={e => { e.stopPropagation(); setFile(null) }} style={{fontSize:'12px',color:'var(--muted)',background:'none',border:'1px solid var(--border2)',borderRadius:'4px',padding:'4px 12px',cursor:'pointer'}}>Удалить</button>
+                <button onClick={e => { 
+  e.stopPropagation(); 
+  setFile(null);
+  const input = document.getElementById('fileInput') as HTMLInputElement;
+  if (input) input.value = '';
+}} style={{fontSize:'12px',color:'var(--muted)',background:'none',border:'1px solid var(--border2)',borderRadius:'4px',padding:'4px 12px',cursor:'pointer'}}>Удалить</button>
               </div>
             ) : (
               <div>
