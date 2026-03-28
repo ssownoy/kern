@@ -154,22 +154,31 @@ footer { padding:44px 52px; border-top:1px solid var(--border); display:flex; al
 .rd1 { transition-delay:0.09s; }
 .rd2 { transition-delay:0.18s; }
 @media (max-width:900px) {
-  nav { padding:16px 24px; }
+  nav { padding:16px 20px; }
   .nav-links { display:none!important; }
-  .hero,section { padding-left:24px; padding-right:24px; }
-  h1 { font-size:42px; }
-  .modules-grid,.adv-grid,.pricing-grid { grid-template-columns:1fr; }
-  .prof-inner { grid-template-columns:1fr; gap:40px; }
-  .pcd-badge { display:none; }
+  .hero { padding:100px 20px 60px; }
+  section { padding:64px 20px; }
+  h1 { font-size:40px; }
+  h2 { font-size:28px; }
+  .hero-actions { flex-direction:column; align-items:stretch; gap:12px; }
+  .btn-primary { text-align:center; justify-content:center; }
+  .btn-ghost { justify-content:center; height:48px; border:1px solid var(--border2); border-radius:4px; }
   .hero-stats { flex-direction:column; max-width:100%; }
   .stat { border-right:none; border-bottom:1px solid var(--border); }
   .stat:last-child { border-bottom:none; }
+  .modules-grid { grid-template-columns:1fr; }
+  .modules-head { flex-direction:column; align-items:flex-start; }
+  .adv-grid { grid-template-columns:1fr; }
   .adv-item { border-right:none!important; }
-  .hero-actions { flex-direction: column; align-items: flex-start; gap: 12px; }
-  .btn-ghost { height: auto; }
-  footer { flex-direction:column; gap:16px; text-align:center; padding: 32px 24px; }
-  .footer-links { flex-wrap:wrap; justify-content:center; gap:16px; }
+  .pricing-grid { grid-template-columns:1fr; }
+  .prof-inner { grid-template-columns:1fr; gap:40px; }
+  .pcd-badge { display:none; }
+  footer { flex-direction:column; gap:20px; text-align:center; padding:32px 20px; }
+  .footer-links { flex-wrap:wrap; justify-content:center; gap:12px; }
   .footer-copy { font-size:12px; }
   .form-row { grid-template-columns:1fr; }
-  .form-wrap { padding:28px 20px; }
+  .form-wrap { padding:24px 16px; }
+  .price-card { margin-top:8px; }
+  .hero-stats .stat-num { font-size:22px; }
+  .cta-section h2 { font-size:28px; }
 }

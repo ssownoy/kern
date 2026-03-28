@@ -6,6 +6,8 @@ import { useRouter, useParams } from 'next/navigation'
 
 export default function EstimateDetailPage() {
   const [estimate, setEstimate] = useState<any>(null)
+  const [editableItems, setEditableItems] = useState<any[]>([])
+  const [editMode, setEditMode] = useState(false)
   const [loading, setLoading] = useState(true)
   const [theme, setTheme] = useState('dark')
   const [mounted, setMounted] = useState(false)
@@ -30,7 +32,10 @@ export default function EstimateDetailPage() {
       .select('*')
       .eq('id', id)
       .single()
-    if (data) setEstimate(data)
+    if (data) {
+      setEstimate(data)
+      setEditableItems(data.items || [])
+    }
     setLoading(false)
   }
 
@@ -40,6 +45,30 @@ export default function EstimateDetailPage() {
     document.documentElement.setAttribute('data-theme', next)
     localStorage.setItem('kern-theme', next)
   }
+
+  const updateItem = (i: number, field: string, value: any) => {
+    const updated = [...editableItems]
+    updated[i] = { ...updated[i], [field]: value }
+    if (field === 'qty' || field === 'price') {
+      updated[i].total = updated[i].qty * updated[i].price
+    }
+    setEditableItems(updated)
+  }
+  
+  const removeItem = (i: number) => setEditableItems(editableItems.filter((_, j) => j !== i))
+  const addItem = () => setEditableItems([...editableItems, { name: 'Новая позиция', unit: 'шт', qty: 1, price: 0, total: 0 }])
+  
+  const saveChanges = async () => {
+    const newTotal = editableItems.reduce((sum, item) => sum + item.qty * item.price, 0)
+    await supabase.from('estimates').update({
+      items: editableItems,
+      total_rub: newTotal,
+    }).eq('id', params.id as string)
+    setEstimate({ ...estimate, items: editableItems, total_rub: newTotal })
+    setEditMode(false)
+  }
+  
+  const totalRub = editableItems.reduce((sum, item) => sum + item.qty * item.price, 0)
 
   const downloadPDF = () => {
     if (!estimate) return
@@ -51,7 +80,25 @@ export default function EstimateDetailPage() {
     <div class="header"><div class="logo">Kern<span>.</span></div><div class="date"><div>AI-платформа для строительства</div><div>${new Date(estimate.created_at).toLocaleDateString('ru-RU')}</div></div></div>
     <div class="summary"><div class="summary-label">Объект</div><div class="summary-text">${estimate.summary}</div></div>
     <table><thead><tr><th>Наименование</th><th>Ед.</th><th>Кол-во</th><th>Цена (₽)</th><th>Сумма (₽)</th></tr></thead>
-    <tbody>${estimate.items?.map((item: any) => `<tr><td>${item.name}</td><td>${item.unit}</td><td>${item.qty}</td><td>${item.price?.toLocaleString('ru-RU')}</td><td>${item.total?.toLocaleString('ru-RU')}</td></tr>`).join('')}</tbody></table>
+    <tbody>${editableItems.map((item: any, i: number) => (
+                  <tr key={i} style={{borderBottom:'1px solid var(--border)',background:i%2===0?'var(--bg)':'var(--bg2)'}}>
+                    <td style={{padding:'14px 20px',color:'var(--text)'}}>{editMode ? <input value={item.name} onChange={e => updateItem(i, 'name', e.target.value)} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--text)',width:'100%',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',padding:'4px 8px',outline:'none'}} /> : <span>{item.name}</span>}</td>
+                    <td style={{padding:'14px 20px',textAlign:'center',color:'var(--muted)'}}>{editMode ? <input value={item.unit} onChange={e => updateItem(i, 'unit', e.target.value)} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--text)',width:'100%',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',padding:'4px 8px',outline:'none'}} /> : <span>{item.unit}</span>}</td>
+                    <td style={{padding:'14px 20px',textAlign:'right',color:'var(--muted)'}}>{editMode ? <input type="number" value={item.qty} onChange={e => updateItem(i, 'qty', Number(e.target.value))} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',width:'70px',textAlign:'right',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',padding:'4px 8px',outline:'none'}} /> : <span>{item.qty}</span>}</td>
+                    <td style={{padding:'14px 20px',textAlign:'right',color:'var(--muted)'}}>{editMode ? <input type="number" value={item.price} onChange={e => updateItem(i, 'price', Number(e.target.value))} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',width:'100px',textAlign:'right',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',padding:'4px 8px',outline:'none'}} /> : <span>{item.price?.toLocaleString('ru-RU')} ₽</span>}</td>
+                    <td style={{padding:'14px 20px',textAlign:'right',color:'var(--text)',fontWeight:500}}>
+                      <div style={{display:'flex',alignItems:'center',justifyContent:'flex-end',gap:'10px'}}>
+                        <span style={{color:'var(--text)',fontWeight:500,whiteSpace:'nowrap'}}>{(item.qty*item.price).toLocaleString('ru-RU')} ₽</span>
+                        {editMode && (
+                          <button onClick={() => removeItem(i)} style={{background:'none',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',cursor:'pointer',fontSize:'12px',padding:'3px 8px',fontFamily:"'Syne',sans-serif",transition:'all 0.2s',whiteSpace:'nowrap'}}
+                            onMouseOver={e => { e.currentTarget.style.borderColor='#ff8080'; e.currentTarget.style.color='#ff8080' }}
+                            onMouseOut={e => { e.currentTarget.style.borderColor='var(--border2)'; e.currentTarget.style.color='var(--muted)' }}
+                          >Удалить</button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                )).join('')}</table>
     <div class="total"><div class="total-label">Итого</div><div class="total-amount">${estimate.total_rub?.toLocaleString('ru-RU')} ₽</div></div>
     ${estimate.notes ? `<div class="notes"><div class="notes-label">Замечания</div>${estimate.notes}</div>` : ''}
     </body></html>`
@@ -81,7 +128,22 @@ export default function EstimateDetailPage() {
       <div style={{minHeight:'100vh',background:'var(--bg)',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",padding:'120px 52px 80px'}}>
         <div style={{maxWidth:'900px',margin:'0 auto'}}>
           
-          <span style={{fontSize:'11px',letterSpacing:'0.16em',textTransform:'uppercase',color:'var(--accent)',marginBottom:'14px',display:'block'}}>Смета</span>
+          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'12px'}}>
+            <span style={{fontSize:'11px',letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)'}}>Позиции сметы</span>
+            <div style={{display:'flex',gap:'8px'}}>
+              {editMode && (
+                <button onClick={addItem} style={{background:'none',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',padding:'6px 14px',cursor:'pointer',fontSize:'13px',fontFamily:"'Syne',sans-serif",fontWeight:600}}>
+                  + Позиция
+                </button>
+              )}
+              <button
+                onClick={() => editMode ? saveChanges() : setEditMode(true)}
+                style={{background:editMode?'var(--accent)':'transparent',color:editMode?'var(--btn-text)':'var(--muted)',border:'1px solid',borderColor:editMode?'var(--accent)':'var(--border2)',borderRadius:'4px',padding:'6px 14px',cursor:'pointer',fontSize:'13px',fontFamily:"'Syne',sans-serif",fontWeight:600,transition:'all 0.2s'}}
+              >
+                {editMode ? '✓ Сохранить' : '✏ Редактировать'}
+              </button>
+            </div>
+          </div>
           <h1 style={{fontFamily:"'Syne',sans-serif",fontSize:'clamp(24px,3vw,36px)',fontWeight:800,letterSpacing:'-0.02em',marginBottom:'8px'}}>{estimate.summary}</h1>
           <p style={{color:'var(--muted)',fontSize:'14px',marginBottom:'48px'}}>{new Date(estimate.created_at).toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'})}</p>
 
@@ -97,13 +159,23 @@ export default function EstimateDetailPage() {
                 </tr>
               </thead>
               <tbody>
-                {estimate.items?.map((item: any, i: number) => (
+                {editableItems.map((item: any, i: number) => (
                   <tr key={i} style={{borderBottom:'1px solid var(--border)',background:i%2===0?'var(--bg)':'var(--bg2)'}}>
-                    <td style={{padding:'14px 20px',color:'var(--text)'}}>{item.name}</td>
-                    <td style={{padding:'14px 20px',textAlign:'center',color:'var(--muted)'}}>{item.unit}</td>
-                    <td style={{padding:'14px 20px',textAlign:'right',color:'var(--muted)'}}>{item.qty}</td>
-                    <td style={{padding:'14px 20px',textAlign:'right',color:'var(--muted)'}}>{item.price?.toLocaleString('ru-RU')} ₽</td>
-                    <td style={{padding:'14px 20px',textAlign:'right',color:'var(--text)',fontWeight:500}}>{item.total?.toLocaleString('ru-RU')} ₽</td>
+                    <td style={{padding:'14px 20px',color:'var(--text)'}}>{editMode ? <input value={item.name} onChange={e => updateItem(i, 'name', e.target.value)} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--text)',width:'100%',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',padding:'4px 8px',outline:'none'}} /> : <span>{item.name}</span>}</td>
+                    <td style={{padding:'14px 20px',textAlign:'center',color:'var(--muted)'}}>{editMode ? <input value={item.unit} onChange={e => updateItem(i, 'unit', e.target.value)} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--text)',width:'100%',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',padding:'4px 8px',outline:'none'}} /> : <span>{item.unit}</span>}</td>
+                    <td style={{padding:'14px 20px',textAlign:'right',color:'var(--muted)'}}>{editMode ? <input type="number" value={item.qty} onChange={e => updateItem(i, 'qty', Number(e.target.value))} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',width:'70px',textAlign:'right',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',padding:'4px 8px',outline:'none'}} /> : <span>{item.qty}</span>}</td>
+                    <td style={{padding:'14px 20px',textAlign:'right',color:'var(--muted)'}}>{editMode ? <input type="number" value={item.price} onChange={e => updateItem(i, 'price', Number(e.target.value))} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',width:'100px',textAlign:'right',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',padding:'4px 8px',outline:'none'}} /> : <span>{item.price?.toLocaleString('ru-RU')} ₽</span>}</td>
+                    <td style={{padding:'14px 20px',textAlign:'right',color:'var(--text)',fontWeight:500}}>
+                      <div style={{display:'flex',alignItems:'center',justifyContent:'flex-end',gap:'10px'}}>
+                        <span style={{color:'var(--text)',fontWeight:500,whiteSpace:'nowrap'}}>{(item.qty*item.price).toLocaleString('ru-RU')} ₽</span>
+                        {editMode && (
+                          <button onClick={() => removeItem(i)} style={{background:'none',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',cursor:'pointer',fontSize:'12px',padding:'3px 8px',fontFamily:"'Syne',sans-serif",transition:'all 0.2s',whiteSpace:'nowrap'}}
+                            onMouseOver={e => { e.currentTarget.style.borderColor='#ff8080'; e.currentTarget.style.color='#ff8080' }}
+                            onMouseOut={e => { e.currentTarget.style.borderColor='var(--border2)'; e.currentTarget.style.color='var(--muted)' }}
+                          >Удалить</button>
+                        )}
+                      </div>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -112,7 +184,7 @@ export default function EstimateDetailPage() {
 
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'24px 32px',marginBottom:'24px'}}>
             <span style={{fontFamily:"'Syne',sans-serif",fontSize:'16px',fontWeight:700}}>Итого</span>
-            <span style={{fontFamily:"'Syne',sans-serif",fontSize:'28px',fontWeight:800,color:'var(--accent)'}}>{estimate.total_rub?.toLocaleString('ru-RU')} ₽</span>
+            <span style={{fontFamily:"'Syne',sans-serif",fontSize:'28px',fontWeight:800,color:'var(--accent)'}}>{totalRub.toLocaleString('ru-RU')} ₽</span>
           </div>
 
           {estimate.notes && (
