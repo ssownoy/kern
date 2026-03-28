@@ -165,8 +165,11 @@ footer { padding:44px 52px; border-top:1px solid var(--border); display:flex; al
   .stat { border-right:none; border-bottom:1px solid var(--border); }
   .stat:last-child { border-bottom:none; }
   .adv-item { border-right:none!important; }
-  footer { flex-direction:column; gap:20px; text-align:center; }
-  .footer-links { flex-wrap:wrap; justify-content:center; }
+  .hero-actions { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .btn-ghost { height: auto; }
+  footer { flex-direction:column; gap:16px; text-align:center; padding: 32px 24px; }
+  .footer-links { flex-wrap:wrap; justify-content:center; gap:16px; }
+  .footer-copy { font-size:12px; }
   .form-row { grid-template-columns:1fr; }
   .form-wrap { padding:28px 20px; }
 }

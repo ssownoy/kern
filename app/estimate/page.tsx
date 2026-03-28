@@ -292,13 +292,13 @@ export default function EstimatePage() {
                 </button>
               </div>
 
-              <div style={{border:'1px solid var(--border)',borderRadius:'8px',overflow:'hidden',marginBottom:'24px'}}>
-                <table style={{width:'100%',borderCollapse:'collapse',fontSize:'14px'}}>
+              <div style={{border:'1px solid var(--border)',borderRadius:'8px',overflow:'auto',marginBottom:'24px'}}>
+                <table style={{width:'100%',borderCollapse:'collapse',fontSize:'14px',minWidth:'600px'}}>
                   <thead>
                     <tr style={{background:'var(--bg2)',borderBottom:'1px solid var(--border)'}}>
                       <th style={{padding:'14px 20px',textAlign:'left',color:'var(--muted)',fontWeight:500,fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase'}}>Наименование</th>
                       <th style={{padding:'14px 20px',textAlign:'center',color:'var(--muted)',fontWeight:500,fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase'}}>Ед.</th>
-                      <th style={{padding:'14px 20px',textAlign:'right',color:'var(--muted)',fontWeight:500,fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase'}}>Кол-во</th>
+                      <th style={{padding:'14px 20px',textAlign:'right',color:'var(--muted)',fontWeight:500,fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase',whiteSpace:'nowrap'}}>Кол-во</th>
                       <th style={{padding:'14px 20px',textAlign:'right',color:'var(--muted)',fontWeight:500,fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase'}}>Цена</th>
                       <th style={{padding:'14px 20px',textAlign:'right',color:'var(--muted)',fontWeight:500,fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase'}}>Сумма</th>
                     </tr>
