@@ -138,6 +138,49 @@ export default function EstimatePage() {
     setTimeout(() => { printWindow.print(); printWindow.close() }, 500)
   }
 
+  const downloadExcel = () => {
+    if (!estimate || editableItems.length === 0) return
+    
+    const rows = [
+      ['KERN — AI-платформа для строительства'],
+      ['kern-eight.vercel.app'],
+      [`Дата: ${new Date().toLocaleDateString('ru-RU')}`],
+      [],
+      ['Объект:', estimate.summary],
+      [],
+      ['Наименование', 'Ед. изм.', 'Кол-во', 'Цена (₽)', 'Сумма (₽)'],
+      ...editableItems.map(item => [
+        item.name,
+        item.unit,
+        item.qty,
+        item.price,
+        item.qty * item.price,
+      ]),
+      [],
+      ['', '', '', 'ИТОГО:', totalRub],
+      [],
+      ['Замечания:', estimate.notes || ''],
+    ]
+
+    const csvContent = rows.map(row =>
+      row.map(cell => {
+        const str = String(cell ?? '')
+        return str.includes(',') || str.includes('"') || str.includes('\n')
+          ? `"${str.replace(/"/g, '""')}"` 
+          : str
+      }).join(';')
+    ).join('\n')
+
+    const BOM = '\uFEFF'
+    const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `kern-smeta-${Date.now()}.csv` 
+    link.click()
+    URL.revokeObjectURL(url)
+  }
+
   if (!mounted) return null
 
   return (
@@ -325,6 +368,9 @@ export default function EstimatePage() {
 
               <button onClick={downloadPDF} style={{width:'100%',padding:'14px',borderRadius:'4px',background:'transparent',color:'var(--accent)',border:'1px solid var(--accent)',fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:600,cursor:'pointer',transition:'all 0.2s'}}>
                 Скачать PDF
+              </button>
+              <button onClick={downloadExcel} style={{width:'100%',padding:'14px',borderRadius:'4px',background:'transparent',color:'var(--muted)',border:'1px solid var(--border2)',fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:600,cursor:'pointer',transition:'all 0.2s',marginTop:'12px'}}>
+                Скачать Excel (CSV)
               </button>
             </div>
           )}
