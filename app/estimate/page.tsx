@@ -249,6 +249,9 @@ export default function EstimatePage() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
         @keyframes spin { to { transform: rotate(360deg); } }
+        @media (max-width: 600px) {
+          .params-grid { grid-template-columns: 1fr !important; }
+        }
       `}</style>
 
       <nav style={{position:'fixed',top:0,left:0,right:0,zIndex:100,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'20px 52px',background:'var(--bg)',borderBottom:'1px solid var(--border)'}}>
@@ -345,7 +348,7 @@ export default function EstimatePage() {
             </button>
             {showParams && (
               <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderTop:'none',borderRadius:'0 0 8px 8px',padding:'20px'}}>
-                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'16px'}}>
+                <div className="params-grid" style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(240px, 1fr))',gap:'16px'}}>
                   
                   <div style={{display:'flex',flexDirection:'column',gap:'7px'}}>
                     <label style={{fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase',color:'var(--muted)'}}>Группа грунтов</label>

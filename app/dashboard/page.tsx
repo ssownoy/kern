@@ -115,32 +115,37 @@ export default function DashboardPage() {
           ) : (
             <div style={{display:'flex',flexDirection:'column',gap:'1px',background:'var(--border)',border:'1px solid var(--border)',borderRadius:'8px',overflow:'hidden'}}>
               {estimates.map((est, i) => (
-                <div key={est.id} onClick={() => router.push(`/dashboard/${est.id}`)} className="dash-row" style={{background:'var(--bg)',padding:'20px 24px',display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:'16px',transition:'background 0.2s',cursor:'pointer',flexWrap:'wrap'}}
+                <div
+                  key={est.id}
+                  className="dash-row"
+                  style={{background:'var(--bg)',padding:'20px 24px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:'16px',transition:'background 0.2s',cursor:'pointer'}}
                   onMouseOver={e => e.currentTarget.style.background = 'var(--card-hover)'}
                   onMouseOut={e => e.currentTarget.style.background = 'var(--bg)'}
                 >
-                  <div style={{flex:1,minWidth:0}}>
+                  <div style={{flex:1,minWidth:0}} onClick={() => router.push(`/dashboard/${est.id}`)}>
                     <div style={{fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:700,marginBottom:'6px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>
                       {est.summary || 'Без описания'}
                     </div>
-                  <div style={{display:'flex',gap:'16px',alignItems:'center'}} className="dash-actions">
+                    <div style={{display:'flex',gap:'12px',alignItems:'center',flexWrap:'wrap'}}>
                       <span style={{color:'var(--muted)',fontSize:'13px'}}>
-                        {new Date(est.created_at).toLocaleDateString('ru-RU', {day:'numeric',month:'long',year:'numeric'})}
+                        {new Date(est.created_at).toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'})}
                       </span>
                       {est.with_materials && (
-                        <span style={{fontSize:'11px',color:'var(--accent)',border:'1px solid var(--tag-border)',background:'var(--tag-bg)',padding:'2px 8px',borderRadius:'2px',letterSpacing:'0.06em'}}>
-                          С материалами
-                        </span>
+                        <span style={{fontSize:'11px',color:'var(--accent)',border:'1px solid var(--tag-border)',background:'var(--tag-bg)',padding:'2px 8px',borderRadius:'2px'}}>С материалами</span>
                       )}
                     </div>
                   </div>
-                  <div style={{display:'flex',alignItems:'center',gap:'16px'}}>
-                    <div className="dash-amount" style={{fontFamily:"'Syne',sans-serif",fontSize:'20px',fontWeight:800,color:'var(--accent)',whiteSpace:'nowrap'}}>
+                  <div style={{display:'flex',flexDirection:'column',alignItems:'flex-end',gap:'8px',flexShrink:0}}>
+                    <div
+                      className="dash-amount"
+                      style={{fontFamily:"'Syne',sans-serif",fontSize:'18px',fontWeight:800,color:'var(--accent)',whiteSpace:'nowrap',cursor:'pointer'}}
+                      onClick={() => router.push(`/dashboard/${est.id}`)}
+                    >
                       {est.total_rub?.toLocaleString('ru-RU')} ₽
                     </div>
                     <button
                       onClick={(e) => deleteEstimate(est.id, e)}
-                      style={{background:'none',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',cursor:'pointer',fontSize:'12px',padding:'4px 10px',fontFamily:"'Syne',sans-serif",flexShrink:0,transition:'all 0.2s'}}
+                      style={{background:'none',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',cursor:'pointer',fontSize:'12px',padding:'3px 10px',fontFamily:"'Syne',sans-serif",transition:'all 0.2s',whiteSpace:'nowrap'}}
                       onMouseOver={e => { e.currentTarget.style.borderColor='#ff8080'; e.currentTarget.style.color='#ff8080' }}
                       onMouseOut={e => { e.currentTarget.style.borderColor='var(--border2)'; e.currentTarget.style.color='var(--muted)' }}
                     >
