@@ -70,16 +70,61 @@ export default function DashboardPage() {
 
   return (
     <>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');`}</style>
       <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+        * { box-sizing: border-box; }
         @media (max-width: 600px) {
-          .dash-row { flex-direction: column !important; gap: 12px !important; padding: 16px !important; }
-          .dash-amount { font-size: 18px !important; }
-          .dash-actions { width: 100%; display: flex; justify-content: space-between; }
+          .dash-container { padding: 100px 16px 60px !important; }
+          .dash-header { font-size: 28px !important; }
+          .dash-row { padding: 16px !important; gap: 12px !important; }
+          .dash-amount { font-size: 16px !important; }
+          .dash-nav { padding: 14px 16px !important; }
+          .dash-title { font-size: 28px !important; }
+        }
+        .dash-nav {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          z-index: 100;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 20px 52px;
+          background: var(--bg);
+          border-bottom: 1px solid var(--border);
+        }
+        .dash-title {
+          font-family: 'Syne', sans-serif;
+          font-size: clamp(32px, 4vw, 52px);
+          font-weight: 800;
+          letter-spacing: -0.02em;
+          margin-bottom: 48px;
+        }
+        .dash-row {
+          background: var(--bg);
+          padding: 20px 24px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 16px;
+          transition: background 0.2s;
+          cursor: pointer;
+        }
+        .dash-row:hover {
+          background: var(--card-hover);
+        }
+        .dash-amount {
+          font-family: 'Syne', sans-serif;
+          font-size: 18px;
+          font-weight: 800;
+          color: var(--accent);
+          white-space: nowrap;
+          cursor: pointer;
         }
       `}</style>
 
-      <nav style={{position:'fixed',top:0,left:0,right:0,zIndex:100,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'20px 52px',background:'var(--bg)',borderBottom:'1px solid var(--border)'}}>
+      <nav className="dash-nav">
         <a href="/" style={{fontFamily:"'Syne',sans-serif",fontSize:'22px',fontWeight:800,color:'var(--text)',textDecoration:'none',letterSpacing:'-0.5px'}}>
           Kern<span style={{color:'var(--accent)'}}>.</span>
         </a>
@@ -95,11 +140,11 @@ export default function DashboardPage() {
         </div>
       </nav>
 
-      <div style={{minHeight:'100vh',background:'var(--bg)',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",padding:'120px 52px 80px'}}>
+      <div className="dash-container" style={{minHeight:'100vh',background:'var(--bg)',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",padding:'120px 52px 80px'}}>
         <div style={{maxWidth:'900px',margin:'0 auto'}}>
           
           <span style={{fontSize:'11px',letterSpacing:'0.16em',textTransform:'uppercase',color:'var(--accent)',marginBottom:'14px',display:'block'}}>Личный кабинет</span>
-          <h1 style={{fontFamily:"'Syne',sans-serif",fontSize:'clamp(32px,4vw,52px)',fontWeight:800,letterSpacing:'-0.02em',marginBottom:'48px'}}>Мои сметы</h1>
+          <h1 className="dash-title" style={{fontFamily:"'Syne',sans-serif",fontSize:'clamp(32px,4vw,52px)',fontWeight:800,letterSpacing:'-0.02em',marginBottom:'48px'}}>Мои сметы</h1>
 
           {loading ? (
             <div style={{color:'var(--muted)',fontSize:'15px'}}>Загрузка...</div>
@@ -136,9 +181,7 @@ export default function DashboardPage() {
                     </div>
                   </div>
                   <div style={{display:'flex',flexDirection:'column',alignItems:'flex-end',gap:'8px',flexShrink:0}}>
-                    <div
-                      className="dash-amount"
-                      style={{fontFamily:"'Syne',sans-serif",fontSize:'18px',fontWeight:800,color:'var(--accent)',whiteSpace:'nowrap',cursor:'pointer'}}
+                  <div className="dash-amount" style={{fontFamily:"'Syne',sans-serif",fontSize:'18px',fontWeight:800,color:'var(--accent)',whiteSpace:'nowrap',cursor:'pointer'}}
                       onClick={() => router.push(`/dashboard/${est.id}`)}
                     >
                       {est.total_rub?.toLocaleString('ru-RU')} ₽
