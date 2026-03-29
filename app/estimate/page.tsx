@@ -353,30 +353,30 @@ export default function EstimatePage() {
                   <div style={{display:'flex',flexDirection:'column',gap:'7px'}}>
                     <label style={{fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase',color:'var(--muted)'}}>Группа грунтов</label>
                     <select value={soilGroup} onChange={e => setSoilGroup(e.target.value)} style={{background:'var(--bg)',border:'1px solid var(--border)',borderRadius:'4px',padding:'10px 14px',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',outline:'none'}}>
-                      <option value="">— Не указано</option>
-                      <option value="I">I — Песок, супесь</option>
-                      <option value="II">II — Суглинок лёгкий</option>
-                      <option value="III">III — Суглинок тяжёлый, глина</option>
-                      <option value="IV">IV — Тяжёлая глина, сланцы</option>
-                      <option value="V">V — Скальный грунт</option>
+                      <option value="">Не указано</option>
+                      <option value="I">Песок, супесь</option>
+                      <option value="II">Суглинок лёгкий</option>
+                      <option value="III">Суглинок тяжёлый, глина</option>
+                      <option value="IV">Тяжёлая глина, сланцы</option>
+                      <option value="V">Скальный грунт</option>
                     </select>
                   </div>
 
                   <div style={{display:'flex',flexDirection:'column',gap:'7px'}}>
                     <label style={{fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase',color:'var(--muted)'}}>Климатический район</label>
                     <select value={climateZone} onChange={e => setClimateZone(e.target.value)} style={{background:'var(--bg)',border:'1px solid var(--border)',borderRadius:'4px',padding:'10px 14px',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',outline:'none'}}>
-                      <option value="">— Не указано</option>
-                      <option value="I">I — Крайний Север</option>
-                      <option value="II">II — Умеренный</option>
-                      <option value="III">III — Тёплый</option>
-                      <option value="IV">IV — Жаркий</option>
+                      <option value="">Не указано</option>
+                      <option value="I">Крайний Север</option>
+                      <option value="II">Умеренный</option>
+                      <option value="III">Тёплый</option>
+                      <option value="IV">Жаркий</option>
                     </select>
                   </div>
 
                   <div style={{display:'flex',flexDirection:'column',gap:'7px'}}>
                     <label style={{fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase',color:'var(--muted)'}}>Условия производства работ</label>
                     <select value={workConditions} onChange={e => setWorkConditions(e.target.value)} style={{background:'var(--bg)',border:'1px solid var(--border)',borderRadius:'4px',padding:'10px 14px',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',outline:'none'}}>
-                      <option value="">— Не указано</option>
+                      <option value="">Не указано</option>
                       <option value="normal">Нормальные</option>
                       <option value="cramped">Стеснённые</option>
                       <option value="height">На высоте более 15м</option>
@@ -388,9 +388,9 @@ export default function EstimatePage() {
                   <div style={{display:'flex',flexDirection:'column',gap:'7px'}}>
                     <label style={{fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase',color:'var(--muted)'}}>Метод составления сметы</label>
                     <select value={estimateMethod} onChange={e => setEstimateMethod(e.target.value)} style={{background:'var(--bg)',border:'1px solid var(--border)',borderRadius:'4px',padding:'10px 14px',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',outline:'none'}}>
-                      <option value="">— Не указано</option>
-                      <option value="resource">Ресурсный (ГЭСН)</option>
-                      <option value="base-index">Базисно-индексный (ФЕР/ТЕР)</option>
+                      <option value="">Не указано</option>
+                      <option value="resource">Ресурсный</option>
+                      <option value="base-index">Базисно-индексный</option>
                       <option value="analogues">По аналогам</option>
                       <option value="market">По рыночным ценам</option>
                     </select>
@@ -399,7 +399,7 @@ export default function EstimatePage() {
                   <div style={{display:'flex',flexDirection:'column',gap:'7px'}}>
                     <label style={{fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase',color:'var(--muted)'}}>Тип объекта</label>
                     <select value={objectType} onChange={e => setObjectType(e.target.value)} style={{background:'var(--bg)',border:'1px solid var(--border)',borderRadius:'4px',padding:'10px 14px',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',outline:'none'}}>
-                      <option value="">— Не указано</option>
+                      <option value="">Не указано</option>
                       <option value="cottage">Жилой коттедж</option>
                       <option value="apartment">Многоквартирный дом</option>
                       <option value="commercial">Общественное здание</option>
@@ -412,7 +412,7 @@ export default function EstimatePage() {
                   <div style={{display:'flex',flexDirection:'column',gap:'7px'}}>
                     <label style={{fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase',color:'var(--muted)'}}>Период выполнения работ</label>
                     <select value={workPeriod} onChange={e => setWorkPeriod(e.target.value)} style={{background:'var(--bg)',border:'1px solid var(--border)',borderRadius:'4px',padding:'10px 14px',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',outline:'none'}}>
-                      <option value="">— Не указано</option>
+                      <option value="">Не указано</option>
                       <option value="summer">Лето (апрель–октябрь)</option>
                       <option value="winter">Зима (ноябрь–март)</option>
                       <option value="year">Круглогодично</option>
