@@ -96,7 +96,17 @@ export default function EstimateDetailPage() {
   return (
     <>
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');`}</style>
-      <nav style={{position:'fixed',top:0,left:0,right:0,zIndex:100,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'20px 52px',background:'var(--bg)',borderBottom:'1px solid var(--border)'}}>
+      <style>{`
+        @media (max-width: 600px) {
+          .detail-nav { padding: 14px 16px !important; }
+          .detail-container { padding: 90px 16px 60px !important; }
+          .detail-title { font-size: 22px !important; }
+          .detail-total-amount { font-size: 20px !important; }
+          .detail-table-wrap { overflow-x: auto; }
+          .detail-table { min-width: 520px; }
+        }
+      `}</style>
+      <nav className="detail-nav" style={{position:'fixed',top:0,left:0,right:0,zIndex:100,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'20px 52px',background:'var(--bg)',borderBottom:'1px solid var(--border)'}}>
         <a href="/" style={{fontFamily:"'Syne',sans-serif",fontSize:'22px',fontWeight:800,color:'var(--text)',textDecoration:'none',letterSpacing:'-0.5px'}}>Kern<span style={{color:'var(--accent)'}}>.</span></a>
         <div style={{display:'flex',alignItems:'center',gap:'16px'}}>
           <a href="/dashboard" style={{color:'var(--muted)',fontSize:'14px',textDecoration:'none',transition:'color 0.2s'}}>← Мои сметы</a>
@@ -108,7 +118,7 @@ export default function EstimateDetailPage() {
         </div>
       </nav>
 
-      <div style={{minHeight:'100vh',background:'var(--bg)',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",padding:'120px 52px 80px'}}>
+      <div className="detail-container" style={{minHeight:'100vh',background:'var(--bg)',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",padding:'120px 52px 80px'}}>
         <div style={{maxWidth:'900px',margin:'0 auto'}}>
           
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'12px'}}>
@@ -127,11 +137,11 @@ export default function EstimateDetailPage() {
               </button>
             </div>
           </div>
-          <h1 style={{fontFamily:"'Syne',sans-serif",fontSize:'clamp(24px,3vw,36px)',fontWeight:800,letterSpacing:'-0.02em',marginBottom:'8px'}}>{estimate.summary}</h1>
+          <h1 className="detail-title" style={{fontFamily:"'Syne',sans-serif",fontSize:'clamp(24px,3vw,36px)',fontWeight:800,letterSpacing:'-0.02em',marginBottom:'8px'}}>{estimate.summary}</h1>
           <p style={{color:'var(--muted)',fontSize:'14px',marginBottom:'48px'}}>{new Date(estimate.created_at).toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'})}</p>
 
-          <div style={{border:'1px solid var(--border)',borderRadius:'8px',overflow:'hidden',marginBottom:'24px'}}>
-            <table style={{width:'100%',borderCollapse:'collapse',fontSize:'14px'}}>
+          <div className="detail-table-wrap" style={{border:'1px solid var(--border)',borderRadius:'8px',overflow:'auto',marginBottom:'24px'}}>
+            <table className="detail-table" style={{width:'100%',borderCollapse:'collapse',fontSize:'14px',minWidth:'520px'}}>
               <thead>
                 <tr style={{background:'var(--bg2)',borderBottom:'1px solid var(--border)'}}>
                   <th style={{padding:'14px 20px',textAlign:'left',color:'var(--muted)',fontWeight:500,fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase'}}>Наименование</th>
@@ -167,7 +177,7 @@ export default function EstimateDetailPage() {
 
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'24px 32px',marginBottom:'24px'}}>
             <span style={{fontFamily:"'Syne',sans-serif",fontSize:'16px',fontWeight:700}}>Итого</span>
-            <span style={{fontFamily:"'Syne',sans-serif",fontSize:'28px',fontWeight:800,color:'var(--accent)'}}>{totalRub.toLocaleString('ru-RU')} ₽</span>
+            <span className="detail-total-amount" style={{fontFamily:"'Syne',sans-serif",fontSize:'28px',fontWeight:800,color:'var(--accent)'}}>{totalRub.toLocaleString('ru-RU')} ₽</span>
           </div>
 
           {estimate.notes && (
