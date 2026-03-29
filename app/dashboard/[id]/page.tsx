@@ -34,7 +34,8 @@ export default function EstimateDetailPage() {
       .single()
     if (data) {
       setEstimate(data)
-      setEditableItems(data.items || [])
+      const items = typeof data.items === 'string' ? JSON.parse(data.items) : data.items
+      setEditableItems(items || [])
     }
     setLoading(false)
   }
@@ -80,26 +81,8 @@ export default function EstimateDetailPage() {
     <div class="header"><div class="logo">Kern<span>.</span></div><div class="date"><div>AI-платформа для строительства</div><div>${new Date(estimate.created_at).toLocaleDateString('ru-RU')}</div></div></div>
     <div class="summary"><div class="summary-label">Объект</div><div class="summary-text">${estimate.summary}</div></div>
     <table><thead><tr><th>Наименование</th><th>Ед.</th><th>Кол-во</th><th>Цена (₽)</th><th>Сумма (₽)</th></tr></thead>
-    <tbody>${editableItems.map((item: any, i: number) => (
-                  <tr key={i} style={{borderBottom:'1px solid var(--border)',background:i%2===0?'var(--bg)':'var(--bg2)'}}>
-                    <td style={{padding:'14px 20px',color:'var(--text)'}}>{editMode ? <input value={item.name} onChange={e => updateItem(i, 'name', e.target.value)} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--text)',width:'100%',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',padding:'4px 8px',outline:'none'}} /> : <span>{item.name}</span>}</td>
-                    <td style={{padding:'14px 20px',textAlign:'center',color:'var(--muted)'}}>{editMode ? <input value={item.unit} onChange={e => updateItem(i, 'unit', e.target.value)} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--text)',width:'100%',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',padding:'4px 8px',outline:'none'}} /> : <span>{item.unit}</span>}</td>
-                    <td style={{padding:'14px 20px',textAlign:'right',color:'var(--muted)'}}>{editMode ? <input type="number" value={item.qty} onChange={e => updateItem(i, 'qty', Number(e.target.value))} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',width:'70px',textAlign:'right',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',padding:'4px 8px',outline:'none'}} /> : <span>{item.qty}</span>}</td>
-                    <td style={{padding:'14px 20px',textAlign:'right',color:'var(--muted)'}}>{editMode ? <input type="number" value={item.price} onChange={e => updateItem(i, 'price', Number(e.target.value))} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',width:'100px',textAlign:'right',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',padding:'4px 8px',outline:'none'}} /> : <span>{item.price?.toLocaleString('ru-RU')} ₽</span>}</td>
-                    <td style={{padding:'14px 20px',textAlign:'right',color:'var(--text)',fontWeight:500}}>
-                      <div style={{display:'flex',alignItems:'center',justifyContent:'flex-end',gap:'10px'}}>
-                        <span style={{color:'var(--text)',fontWeight:500,whiteSpace:'nowrap'}}>{(item.qty*item.price).toLocaleString('ru-RU')} ₽</span>
-                        {editMode && (
-                          <button onClick={() => removeItem(i)} style={{background:'none',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',cursor:'pointer',fontSize:'12px',padding:'3px 8px',fontFamily:"'Syne',sans-serif",transition:'all 0.2s',whiteSpace:'nowrap'}}
-                            onMouseOver={e => { e.currentTarget.style.borderColor='#ff8080'; e.currentTarget.style.color='#ff8080' }}
-                            onMouseOut={e => { e.currentTarget.style.borderColor='var(--border2)'; e.currentTarget.style.color='var(--muted)' }}
-                          >Удалить</button>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                )).join('')}</table>
-    <div class="total"><div class="total-label">Итого</div><div class="total-amount">${estimate.total_rub?.toLocaleString('ru-RU')} ₽</div></div>
+    <tbody>${editableItems.map((item: any) => `<tr><td>${item.name}</td><td>${item.unit}</td><td>${item.qty}</td><td>${item.price?.toLocaleString('ru-RU')}</td><td>${item.total?.toLocaleString('ru-RU')}</td></tr>`).join('')}</tbody></table>
+    <div class="total"><div class="total-label">Итого</div><div class="total-amount">${totalRub.toLocaleString('ru-RU')} ₽</div></div>
     ${estimate.notes ? `<div class="notes"><div class="notes-label">Замечания</div>${estimate.notes}</div>` : ''}
     </body></html>`
     printWindow.document.write(html)

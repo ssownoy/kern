@@ -80,6 +80,7 @@ export default function DashboardPage() {
           .dash-amount { font-size: 16px !important; }
           .dash-nav { padding: 14px 16px !important; }
           .dash-title { font-size: 28px !important; }
+          .hide-mobile { display: none !important; }
         }
         .dash-nav {
           position: fixed;
@@ -124,14 +125,14 @@ export default function DashboardPage() {
         }
       `}</style>
 
-      <nav className="dash-nav">
+      <nav className="dash-nav" style={{position:'fixed',top:0,left:0,right:0,zIndex:100,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'20px 52px',background:'var(--bg)',borderBottom:'1px solid var(--border)'}}>
         <a href="/" style={{fontFamily:"'Syne',sans-serif",fontSize:'22px',fontWeight:800,color:'var(--text)',textDecoration:'none',letterSpacing:'-0.5px'}}>
           Kern<span style={{color:'var(--accent)'}}>.</span>
         </a>
-        <div style={{display:'flex',alignItems:'center',gap:'16px'}}>
-          <a href="/estimate" style={{color:'var(--muted)',fontSize:'14px',textDecoration:'none',transition:'color 0.2s'}}>Новая смета</a>
-          <span style={{color:'var(--muted)',fontSize:'13px'}}>{user?.email}</span>
-          <button onClick={handleSignOut} style={{color:'var(--muted)',fontSize:'13px',background:'none',border:'none',cursor:'pointer'}}>Выйти</button>
+        <div style={{display:'flex',alignItems:'center',gap:'12px'}}>
+          <a href="/estimate" style={{color:'var(--muted)',fontSize:'14px',textDecoration:'none'}} className="hide-mobile">Новая смета</a>
+          <span style={{color:'var(--muted)',fontSize:'13px'}} className="hide-mobile">{user?.email}</span>
+          <button onClick={handleSignOut} className="hide-mobile" style={{color:'var(--muted)',fontSize:'13px',background:'none',border:'none',cursor:'pointer'}}>Выйти</button>
           <button onClick={toggleTheme} style={{width:'42px',height:'23px',background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'12px',cursor:'pointer',position:'relative',display:'flex',alignItems:'center',padding:'0 3px',flexShrink:0}}>
             <span style={{fontSize:'10px',position:'absolute',pointerEvents:'none',left:'5px'}}>🌙</span>
             <div style={{width:'17px',height:'17px',borderRadius:'50%',background:'var(--accent)',transition:'transform 0.3s',flexShrink:0,transform:theme==='light'?'translateX(19px)':'translateX(0)'}}></div>

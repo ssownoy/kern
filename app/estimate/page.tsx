@@ -549,7 +549,7 @@ export default function EstimatePage() {
 
               <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'24px 32px',marginBottom:'24px'}}>
                 <span style={{fontFamily:"'Syne',sans-serif",fontSize:'16px',fontWeight:700}}>Итого</span>
-                <span style={{fontFamily:"'Syne',sans-serif",fontSize:'28px',fontWeight:800,color:'var(--accent)'}}>{totalRub.toLocaleString('ru-RU')} ₽</span>
+                <span style={{fontFamily:"'Syne',sans-serif",fontSize:'clamp(18px,4vw,28px)',fontWeight:800,color:'var(--accent)',whiteSpace:'nowrap'}}>{totalRub.toLocaleString('ru-RU')} ₽</span>
               </div>
 
               {estimate.notes && (
