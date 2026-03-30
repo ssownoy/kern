@@ -137,13 +137,15 @@ export default function Home() {
               <span className="module-badge badge-live">Доступно</span>
             </div>
             </a>
-            <div className="module-card">
-              <div className="module-num">02</div>
-              <div className="module-icon">🔍</div>
-              <h3>Контроль качества</h3>
-              <p>Фото строительного объекта анализируется нейросетью. AI определяет дефекты, отклонения от норм и формирует акт осмотра.</p>
-              <span className="module-badge badge-soon">Скоро</span>
-            </div>
+            <a href="/quality" style={{textDecoration:'none',color:'inherit'}}>
+              <div className="module-card" style={{cursor:'pointer'}}>
+                <div className="module-num">02</div>
+                <div className="module-icon">🔍</div>
+                <h3>Контроль качества</h3>
+                <p>Фото строительного объекта анализируется нейросетью. AI определяет дефекты, отклонения от норм и формирует акт осмотра.</p>
+                <span className="module-badge badge-live">Доступно</span>
+              </div>
+            </a>
             <div className="module-card">
               <div className="module-num">03</div>
               <div className="module-icon">📋</div>
