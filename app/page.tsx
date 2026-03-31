@@ -89,6 +89,9 @@ export default function Home() {
           <li><a onClick={() => goTo('contact')}>Контакты</a></li>
         </ul>
         <div className="nav-right">
+          {/* Auth will be handled client-side */}
+          <a href="/dashboard" style={{color:'var(--muted)',fontSize:'14px',textDecoration:'none',transition:'color 0.2s'}} onMouseOver={e=>e.currentTarget.style.color='var(--text)'} onMouseOut={e=>e.currentTarget.style.color='var(--muted)'}>История</a>
+          <a href="/auth" style={{color:'var(--muted)',fontSize:'14px',textDecoration:'none',transition:'color 0.2s'}} onMouseOver={e=>e.currentTarget.style.color='var(--text)'} onMouseOut={e=>e.currentTarget.style.color='var(--muted)'}>Войти</a>
           <button className="theme-btn" onClick={() => setTheme(t => t === 'dark' ? 'light' : 'dark')} aria-label="Сменить тему">
             <span className="theme-icon moon">🌙</span>
             <div className={`theme-knob${theme === 'light' ? ' light' : ''}`}></div>
@@ -137,7 +140,7 @@ export default function Home() {
               <span className="module-badge badge-live">Доступно</span>
             </div>
             </a>
-            <a href="/quality" style={{textDecoration:'none',color:'inherit'}}>
+            <a href="/quality" style={{textDecoration:'none',color:'inherit',display:'block'}}>
               <div className="module-card" style={{cursor:'pointer'}}>
                 <div className="module-num">02</div>
                 <div className="module-icon">🔍</div>

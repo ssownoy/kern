@@ -18,6 +18,8 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true)
   const [theme, setTheme] = useState('dark')
   const [mounted, setMounted] = useState(false)
+  const [activeTab, setActiveTab] = useState<'estimates' | 'quality'>('estimates')
+  const [qualityChecks, setQualityChecks] = useState<any[]>([])
   const router = useRouter()
 
   useEffect(() => {
@@ -33,6 +35,7 @@ export default function DashboardPage() {
       }
       setUser(session.user)
       loadEstimates(session.user.id)
+      loadQualityChecks(session.user.id)
     })
   }, [])
 
@@ -45,6 +48,15 @@ export default function DashboardPage() {
     
     if (data) setEstimates(data)
     setLoading(false)
+  }
+
+  const loadQualityChecks = async (userId: string) => {
+    const { data } = await supabase
+      .from('quality_checks')
+      .select('*')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false })
+    if (data) setQualityChecks(data)
   }
 
   const toggleTheme = () => {
@@ -147,18 +159,34 @@ export default function DashboardPage() {
           <span style={{fontSize:'11px',letterSpacing:'0.16em',textTransform:'uppercase',color:'var(--accent)',marginBottom:'14px',display:'block'}}>Личный кабинет</span>
           <h1 className="dash-title" style={{fontFamily:"'Syne',sans-serif",fontSize:'clamp(32px,4vw,52px)',fontWeight:800,letterSpacing:'-0.02em',marginBottom:'48px'}}>Мои сметы</h1>
 
+          <div style={{display:'flex',gap:'1px',background:'var(--border)',border:'1px solid var(--border)',borderRadius:'6px',overflow:'hidden',marginBottom:'32px'}}>
+            {[
+              { key: 'estimates', label: 'Сметы' },
+              { key: 'quality', label: 'Контроль качества' },
+            ].map(tab => (
+              <button
+                key={tab.key}
+                onClick={() => setActiveTab(tab.key as any)}
+                style={{flex:1,padding:'12px',background:activeTab===tab.key?'var(--accent)':'var(--bg)',color:activeTab===tab.key?'var(--btn-text)':'var(--muted)',border:'none',cursor:'pointer',fontFamily:"'Syne',sans-serif",fontSize:'14px',fontWeight:600,transition:'all 0.2s'}}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
           {loading ? (
             <div style={{color:'var(--muted)',fontSize:'15px'}}>Загрузка...</div>
-          ) : estimates.length === 0 ? (
-            <div style={{textAlign:'center',padding:'80px 0'}}>
-              <div style={{fontSize:'48px',marginBottom:'20px'}}>📐</div>
-              <h2 style={{fontFamily:"'Syne',sans-serif",fontSize:'22px',fontWeight:700,marginBottom:'12px'}}>Смет пока нет</h2>
-              <p style={{color:'var(--muted)',fontSize:'15px',marginBottom:'32px'}}>Загрузите чертёж и получите первую смету за 30 секунд</p>
-              <a href="/estimate" style={{background:'var(--accent)',color:'var(--btn-text)',padding:'14px 32px',borderRadius:'4px',textDecoration:'none',fontFamily:"'Syne',sans-serif",fontWeight:600,fontSize:'15px'}}>
-                Создать смету
-              </a>
-            </div>
-          ) : (
+          ) : activeTab === 'estimates' && (
+            estimates.length === 0 ? (
+              <div style={{textAlign:'center',padding:'80px 0'}}>
+                <div style={{fontSize:'48px',marginBottom:'20px'}}>📐</div>
+                <h2 style={{fontFamily:"'Syne',sans-serif",fontSize:'22px',fontWeight:700,marginBottom:'12px'}}>Смет пока нет</h2>
+                <p style={{color:'var(--muted)',fontSize:'15px',marginBottom:'32px'}}>Загрузите чертёж и получите первую смету за 30 секунд</p>
+                <a href="/estimate" style={{background:'var(--accent)',color:'var(--btn-text)',padding:'14px 32px',borderRadius:'4px',textDecoration:'none',fontFamily:"'Syne',sans-serif",fontWeight:600,fontSize:'15px'}}>
+                  Создать смету
+                </a>
+              </div>
+            ) : (
             <div style={{display:'flex',flexDirection:'column',gap:'1px',background:'var(--border)',border:'1px solid var(--border)',borderRadius:'8px',overflow:'hidden'}}>
               {estimates.map((est, i) => (
                 <div
@@ -199,15 +227,58 @@ export default function DashboardPage() {
                 </div>
               ))}
             </div>
+          )
           )}
 
-          {estimates.length > 0 && (
-            <div style={{marginTop:'32px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-              <span style={{color:'var(--muted)',fontSize:'14px'}}>Всего смет: {estimates.length}</span>
-              <a href="/estimate" style={{background:'var(--accent)',color:'var(--btn-text)',padding:'12px 28px',borderRadius:'4px',textDecoration:'none',fontFamily:"'Syne',sans-serif",fontWeight:600,fontSize:'14px'}}>
-                Новая смета
-              </a>
-            </div>
+          {activeTab === 'quality' && (
+            qualityChecks.length === 0 ? (
+              <div style={{textAlign:'center',padding:'80px 0'}}>
+                <div style={{fontSize:'48px',marginBottom:'20px'}}>📸</div>
+                <h2 style={{fontFamily:"'Syne',sans-serif",fontSize:'22px',fontWeight:700,marginBottom:'12px'}}>Проверок пока нет</h2>
+                <p style={{color:'var(--muted)',fontSize:'15px',marginBottom:'32px'}}>Загрузите фото объекта для анализа качества</p>
+                <a href="/quality" style={{background:'var(--accent)',color:'var(--btn-text)',padding:'14px 32px',borderRadius:'4px',textDecoration:'none',fontFamily:"'Syne',sans-serif",fontWeight:600,fontSize:'15px'}}>
+                  Проверить качество
+                </a>
+              </div>
+            ) : (
+              <div style={{display:'flex',flexDirection:'column',gap:'1px',background:'var(--border)',border:'1px solid var(--border)',borderRadius:'8px',overflow:'hidden'}}>
+                {qualityChecks.map(check => {
+                  const statusColor = check.overall_status === 'ok' ? '#6E9E6E' : check.overall_status === 'critical' ? '#E85050' : '#C09070'
+                  const statusLabel = check.overall_status === 'ok' ? 'Норма' : check.overall_status === 'critical' ? 'Критично' : 'Нарушения'
+                  return (
+                    <div key={check.id} className="dash-row" style={{background:'var(--bg)',padding:'20px 24px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:'16px'}}
+                      onMouseOver={e => e.currentTarget.style.background = 'var(--card-hover)'}
+                      onMouseOut={e => e.currentTarget.style.background = 'var(--bg)'}
+                    >
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:700,marginBottom:'6px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>
+                          {check.object_description || 'Без описания'}
+                        </div>
+                        <div style={{display:'flex',gap:'12px',alignItems:'center',flexWrap:'wrap'}}>
+                          <span style={{color:'var(--muted)',fontSize:'13px'}}>
+                            {new Date(check.created_at).toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'})}
+                          </span>
+                          <span style={{fontSize:'11px',color:statusColor,border:`1px solid ${statusColor}`,padding:'2px 8px',borderRadius:'2px',opacity:0.8}}>{statusLabel}</span>
+                          <span style={{color:'var(--muted)',fontSize:'13px'}}>{check.defects?.length || 0} дефектов</span>
+                        </div>
+                      </div>
+                      <button
+                        onClick={async () => {
+                          if (!confirm('Удалить проверку?')) return
+                          await supabase.from('quality_checks').delete().eq('id', check.id)
+                          setQualityChecks(qualityChecks.filter(c => c.id !== check.id))
+                        }}
+                        style={{background:'none',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',cursor:'pointer',fontSize:'12px',padding:'4px 10px',fontFamily:"'Syne',sans-serif",transition:'all 0.2s',whiteSpace:'nowrap',flexShrink:0}}
+                        onMouseOver={e => { e.currentTarget.style.borderColor='#ff8080'; e.currentTarget.style.color='#ff8080' }}
+                        onMouseOut={e => { e.currentTarget.style.borderColor='var(--border2)'; e.currentTarget.style.color='var(--muted)' }}
+                      >
+                        Удалить
+                      </button>
+                    </div>
+                  )
+                })}
+              </div>
+            )
           )}
 
         </div>

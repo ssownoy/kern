@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { supabase } from '@/lib/supabase'
 
 interface Defect {
   title: string
@@ -26,12 +27,17 @@ export default function QualityPage() {
   const [error, setError] = useState<string | null>(null)
   const [theme, setTheme] = useState('dark')
   const [mounted, setMounted] = useState(false)
+  const [user, setUser] = useState<any>(null)
 
   useEffect(() => {
     setMounted(true)
     const saved = localStorage.getItem('kern-theme') || 'dark'
     setTheme(saved)
     document.documentElement.setAttribute('data-theme', saved)
+    
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) setUser(session.user)
+    })
   }, [])
 
   const toggleTheme = () => {
@@ -59,6 +65,17 @@ export default function QualityPage() {
       const data = await res.json()
       if (data.error) throw new Error(data.error)
       setResult(data)
+      
+      if (user) {
+        await supabase.from('quality_checks').insert({
+          user_id: user.id,
+          object_description: data.object_description,
+          overall_status: data.overall_status,
+          defects: data.defects,
+          summary: data.summary,
+          notes: data.notes,
+        })
+      }
     } catch (e: any) {
       setError(e.message)
     } finally {
