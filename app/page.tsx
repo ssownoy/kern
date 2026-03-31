@@ -89,15 +89,10 @@ export default function Home() {
           <li><a onClick={() => goTo('contact')}>Контакты</a></li>
         </ul>
         <div className="nav-right">
-          {/* Auth will be handled client-side */}
-          <a href="/dashboard" style={{color:'var(--muted)',fontSize:'14px',textDecoration:'none',display:'flex',alignItems:'center',gap:'6px',transition:'color 0.2s'}} onMouseOver={e=>e.currentTarget.style.color='var(--text)'} onMouseOut={e=>e.currentTarget.style.color='var(--muted)'}>
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="8" cy="5" r="3" stroke="currentColor" strokeWidth="1.5"/>
-    <path d="M2 14c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-  </svg>
-  Кабинет
-</a>
-          <a href="/auth" style={{color:'var(--muted)',fontSize:'14px',textDecoration:'none',transition:'color 0.2s'}} onMouseOver={e=>e.currentTarget.style.color='var(--text)'} onMouseOut={e=>e.currentTarget.style.color='var(--muted)'}>Войти</a>
+          <a href="/dashboard" style={{display:'flex',alignItems:'center',gap:'7px',color:'var(--text)',fontSize:'14px',textDecoration:'none',border:'1px solid var(--border2)',borderRadius:'4px',padding:'8px 16px',fontFamily:"'Syne',sans-serif",fontWeight:600,transition:'all 0.2s',background:'var(--card-bg)'}} onMouseOver={e=>{e.currentTarget.style.borderColor='var(--accent)';e.currentTarget.style.color='var(--accent)'}} onMouseOut={e=>{e.currentTarget.style.borderColor='var(--border2)';e.currentTarget.style.color='var(--text)'}}>
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" strokeWidth="1.5"/><path d="M2 14c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+            Кабинет
+          </a>
           <button className="theme-btn" onClick={() => setTheme(t => t === 'dark' ? 'light' : 'dark')} aria-label="Сменить тему">
             <span className="theme-icon moon">🌙</span>
             <div className={`theme-knob${theme === 'light' ? ' light' : ''}`}></div>
@@ -138,7 +133,7 @@ export default function Home() {
           </div>
           <div className="modules-grid reveal">
             <a href="/estimate" style={{textDecoration:'none',color:'inherit'}}>
-            <div className="module-card" style={{cursor:'pointer'}}>
+            <div className="module-card" style={{cursor:'pointer',display:'flex',flexDirection:'column'}}>
               <div className="module-num">01</div>
               <div className="module-icon">📐</div>
               <h3>AI-сметчик</h3>
@@ -147,27 +142,33 @@ export default function Home() {
             </div>
             </a>
             <a href="/quality" style={{textDecoration:'none',color:'inherit',display:'contents'}}>
-              <div className="module-card" style={{cursor:'pointer'}}>
+              <div className="module-card" style={{cursor:'pointer',display:'flex',flexDirection:'column'}}>
                 <div className="module-num">02</div>
                 <div className="module-icon">🔍</div>
                 <h3>Контроль качества</h3>
                 <p>Фото строительного объекта анализируется нейросетью. AI определяет дефекты, отклонения от норм и формирует акт осмотра.</p>
+                <div style={{marginTop:'auto',paddingTop:'22px'}}>
                 <span className="module-badge badge-live">Доступно</span>
               </div>
+            </div>
             </a>
-            <div className="module-card">
+            <div className="module-card" style={{display:'flex',flexDirection:'column'}}>
               <div className="module-num">03</div>
               <div className="module-icon">📋</div>
               <h3>Генератор документов</h3>
               <p>Контракты, разрешения и акты по российским стандартам (ГОСТ, СНиП). Генерация за 30 секунд, готово к подписанию.</p>
-              <span className="module-badge badge-soon">Скоро</span>
+              <div style={{marginTop:'auto',paddingTop:'22px'}}>
+                <span className="module-badge badge-soon">Скоро</span>
+              </div>
             </div>
             <div className="module-card">
               <div className="module-num">04</div>
               <div className="module-icon">🏗️</div>
               <h3>Тендерная платформа</h3>
               <p>Размещайте тендеры и получайте заявки от верифицированных подрядчиков. AI оценивает каждую заявку и ранжирует исполнителей.</p>
-              <span className="module-badge badge-dev">В разработке</span>
+              <div style={{marginTop:'auto',paddingTop:'22px'}}>
+                <span className="module-badge badge-dev">Скоро</span>
+              </div>
             </div>
           </div>
         </div>
@@ -383,16 +384,44 @@ export default function Home() {
 
       {/* FOOTER */}
       <footer>
-        <div className="footer-logo">Kern<span className="logo-dot">.</span></div>
-        <ul className="footer-links">
-          <li><a onClick={() => goTo('modules')}>Модули</a></li>
-          <li><a onClick={() => goTo('advantages')}>Преимущества</a></li>
-          <li><a onClick={() => goTo('pricing')}>Тарифы</a></li>
-          <li><a onClick={() => goTo('contact')}>Контакты</a></li>
-          <li><a href="/privacy">Конфиденциальность</a></li>
-          <li><a href="/terms">Соглашение</a></li>
-        </ul>
-        <span className="footer-copy">© 2026 Kern. Все права защищены.</span>
+        <div className="container" style={{maxWidth:'1100px',margin:'0 auto',display:'flex',flexDirection:'column',gap:'40px'}}>
+          <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:'40px',flexWrap:'wrap'}}>
+            <div>
+              <div className="footer-logo">Kern<span className="logo-dot">.</span></div>
+              <p style={{color:'var(--muted)',fontSize:'13px',marginTop:'10px',maxWidth:'220px',lineHeight:1.6,fontWeight:300}}>AI-платформа для строительной индустрии России</p>
+            </div>
+            <div style={{display:'flex',gap:'60px',flexWrap:'wrap'}}>
+              <div>
+                <div style={{fontFamily:"'Syne',sans-serif",fontSize:'12px',fontWeight:700,letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)',marginBottom:'16px'}}>Платформа</div>
+                <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
+                  <a onClick={() => goTo('modules')} style={{color:'var(--text)',textDecoration:'none',fontSize:'14px',cursor:'pointer',transition:'color 0.2s'}} onMouseOver={e=>e.currentTarget.style.color='var(--accent)'} onMouseOut={e=>e.currentTarget.style.color='var(--text)'}>Модули</a>
+                  <a onClick={() => goTo('advantages')} style={{color:'var(--text)',textDecoration:'none',fontSize:'14px',cursor:'pointer',transition:'color 0.2s'}} onMouseOver={e=>e.currentTarget.style.color='var(--accent)'} onMouseOut={e=>e.currentTarget.style.color='var(--text)'}>Преимущества</a>
+                  <a onClick={() => goTo('pricing')} style={{color:'var(--text)',textDecoration:'none',fontSize:'14px',cursor:'pointer',transition:'color 0.2s'}} onMouseOver={e=>e.currentTarget.style.color='var(--accent)'} onMouseOut={e=>e.currentTarget.style.color='var(--text)'}>Тарифы</a>
+                </div>
+              </div>
+              <div>
+                <div style={{fontFamily:"'Syne',sans-serif",fontSize:'12px',fontWeight:700,letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)',marginBottom:'16px'}}>Инструменты</div>
+                <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
+                  <a href="/estimate" style={{color:'var(--text)',textDecoration:'none',fontSize:'14px',transition:'color 0.2s'}} onMouseOver={e=>e.currentTarget.style.color='var(--accent)'} onMouseOut={e=>e.currentTarget.style.color='var(--text)'}>AI-сметчик</a>
+                  <a href="/quality" style={{color:'var(--text)',textDecoration:'none',fontSize:'14px',transition:'color 0.2s'}} onMouseOver={e=>e.currentTarget.style.color='var(--accent)'} onMouseOut={e=>e.currentTarget.style.color='var(--text)'}>Контроль качества</a>
+                  <a href="/dashboard" style={{color:'var(--text)',textDecoration:'none',fontSize:'14px',transition:'color 0.2s'}} onMouseOver={e=>e.currentTarget.style.color='var(--accent)'} onMouseOut={e=>e.currentTarget.style.color='var(--text)'}>Личный кабинет</a>
+                </div>
+              </div>
+              <div>
+                <div style={{fontFamily:"'Syne',sans-serif",fontSize:'12px',fontWeight:700,letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)',marginBottom:'16px'}}>Компания</div>
+                <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
+                  <a href="/privacy" style={{color:'var(--text)',textDecoration:'none',fontSize:'14px',transition:'color 0.2s'}} onMouseOver={e=>e.currentTarget.style.color='var(--accent)'} onMouseOut={e=>e.currentTarget.style.color='var(--text)'}>Конфиденциальность</a>
+                  <a href="/terms" style={{color:'var(--text)',textDecoration:'none',fontSize:'14px',transition:'color 0.2s'}} onMouseOver={e=>e.currentTarget.style.color='var(--accent)'} onMouseOut={e=>e.currentTarget.style.color='var(--text)'}>Соглашение</a>
+                  <a onClick={() => goTo('contact')} style={{color:'var(--text)',textDecoration:'none',fontSize:'14px',cursor:'pointer',transition:'color 0.2s'}} onMouseOver={e=>e.currentTarget.style.color='var(--accent)'} onMouseOut={e=>e.currentTarget.style.color='var(--text)'}>Контакты</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style={{borderTop:'1px solid var(--border)',paddingTop:'24px',display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:'12px'}}>
+            <span style={{fontSize:'13px',color:'var(--muted)'}}>© 2026 Kern. Все права защищены.</span>
+            <span style={{fontSize:'13px',color:'var(--muted)'}}>kern.platform@yandex.ru</span>
+          </div>
+        </div>
       </footer>
     </>
   )
