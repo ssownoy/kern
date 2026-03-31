@@ -142,9 +142,8 @@ export default function DashboardPage() {
           Kern<span style={{color:'var(--accent)'}}>.</span>
         </a>
         <div style={{display:'flex',alignItems:'center',gap:'12px'}}>
-          <a href="/estimate" style={{color:'var(--muted)',fontSize:'14px',textDecoration:'none'}} className="hide-mobile">Новая смета</a>
-          <span style={{color:'var(--muted)',fontSize:'13px'}} className="hide-mobile">{user?.email}</span>
-          <button onClick={handleSignOut} className="hide-mobile" style={{color:'var(--muted)',fontSize:'13px',background:'none',border:'none',cursor:'pointer'}}>Выйти</button>
+          <a href="/estimate" style={{color:'var(--muted)',fontSize:'13px',textDecoration:'none'}} className="hide-mobile">AI-сметчик</a>
+          <a href="/quality" style={{color:'var(--muted)',fontSize:'13px',textDecoration:'none'}} className="hide-mobile">Контроль качества</a>
           <button onClick={toggleTheme} style={{width:'42px',height:'23px',background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'12px',cursor:'pointer',position:'relative',display:'flex',alignItems:'center',padding:'0 3px',flexShrink:0}}>
             <span style={{fontSize:'10px',position:'absolute',pointerEvents:'none',left:'5px'}}>🌙</span>
             <div style={{width:'17px',height:'17px',borderRadius:'50%',background:'var(--accent)',transition:'transform 0.3s',flexShrink:0,transform:theme==='light'?'translateX(19px)':'translateX(0)'}}></div>
@@ -157,7 +156,23 @@ export default function DashboardPage() {
         <div style={{maxWidth:'900px',margin:'0 auto'}}>
           
           <span style={{fontSize:'11px',letterSpacing:'0.16em',textTransform:'uppercase',color:'var(--accent)',marginBottom:'14px',display:'block'}}>Личный кабинет</span>
-          <h1 className="dash-title" style={{fontFamily:"'Syne',sans-serif",fontSize:'clamp(32px,4vw,52px)',fontWeight:800,letterSpacing:'-0.02em',marginBottom:'48px'}}>Мои сметы</h1>
+          <h1 className="dash-title" style={{fontFamily:"'Syne',sans-serif",fontSize:'clamp(32px,4vw,52px)',fontWeight:800,letterSpacing:'-0.02em',marginBottom:'48px'}}>Личный кабинет</h1>
+
+          <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'24px 32px',marginBottom:'32px',display:'flex',alignItems:'center',gap:'16px'}}>
+            <div style={{width:'48px',height:'48px',borderRadius:'8px',background:'var(--tag-bg)',border:'1px solid var(--tag-border)',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:"'Syne',sans-serif",fontSize:'18px',fontWeight:700,color:'var(--accent)',flexShrink:0}}>
+              {user?.email?.[0]?.toUpperCase()}
+            </div>
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{fontFamily:"'Syne',sans-serif",fontSize:'16px',fontWeight:700,marginBottom:'2px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{user?.email}</div>
+              <div style={{color:'var(--muted)',fontSize:'13px'}}>Бесплатный тариф · {estimates.length} смет · {qualityChecks.length} проверок</div>
+            </div>
+            <button onClick={handleSignOut} style={{color:'var(--muted)',fontSize:'13px',background:'none',border:'1px solid var(--border2)',borderRadius:'4px',padding:'6px 14px',cursor:'pointer',fontFamily:"'Syne',sans-serif",fontWeight:600,whiteSpace:'nowrap',transition:'all 0.2s'}}
+              onMouseOver={e => e.currentTarget.style.borderColor='var(--accent)'}
+              onMouseOut={e => e.currentTarget.style.borderColor='var(--border2)'}
+            >
+              Выйти
+            </button>
+          </div>
 
           <div style={{display:'flex',gap:'1px',background:'var(--border)',border:'1px solid var(--border)',borderRadius:'6px',overflow:'hidden',marginBottom:'32px'}}>
             {[

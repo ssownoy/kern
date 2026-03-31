@@ -34,10 +34,16 @@ export default function QualityPage() {
     const saved = localStorage.getItem('kern-theme') || 'dark'
     setTheme(saved)
     document.documentElement.setAttribute('data-theme', saved)
-    
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) setUser(session.user)
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user || null)
     })
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user || null)
+    })
+
+    return () => subscription.unsubscribe()
   }, [])
 
   const toggleTheme = () => {
