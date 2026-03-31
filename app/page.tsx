@@ -138,7 +138,9 @@ export default function Home() {
               <div className="module-icon">📐</div>
               <h3>AI-сметчик</h3>
               <p>Загрузите чертёж или фото объекта — получите готовую смету в рублях по актуальным рыночным ценам. Поддержка PDF, DWG, PNG.</p>
-              <span className="module-badge badge-live">Доступно</span>
+              <div style={{marginTop:'auto',paddingTop:'22px'}}>
+                <span className="module-badge badge-live">Доступно</span>
+              </div>
             </div>
             </a>
             <a href="/quality" style={{textDecoration:'none',color:'inherit',display:'contents'}}>
