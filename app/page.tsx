@@ -90,7 +90,13 @@ export default function Home() {
         </ul>
         <div className="nav-right">
           {/* Auth will be handled client-side */}
-          <a href="/dashboard" style={{color:'var(--muted)',fontSize:'14px',textDecoration:'none',transition:'color 0.2s'}} onMouseOver={e=>e.currentTarget.style.color='var(--text)'} onMouseOut={e=>e.currentTarget.style.color='var(--muted)'}>История</a>
+          <a href="/dashboard" style={{color:'var(--muted)',fontSize:'14px',textDecoration:'none',display:'flex',alignItems:'center',gap:'6px',transition:'color 0.2s'}} onMouseOver={e=>e.currentTarget.style.color='var(--text)'} onMouseOut={e=>e.currentTarget.style.color='var(--muted)'}>
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="8" cy="5" r="3" stroke="currentColor" strokeWidth="1.5"/>
+    <path d="M2 14c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+  </svg>
+  Кабинет
+</a>
           <a href="/auth" style={{color:'var(--muted)',fontSize:'14px',textDecoration:'none',transition:'color 0.2s'}} onMouseOver={e=>e.currentTarget.style.color='var(--text)'} onMouseOut={e=>e.currentTarget.style.color='var(--muted)'}>Войти</a>
           <button className="theme-btn" onClick={() => setTheme(t => t === 'dark' ? 'light' : 'dark')} aria-label="Сменить тему">
             <span className="theme-icon moon">🌙</span>
@@ -140,7 +146,7 @@ export default function Home() {
               <span className="module-badge badge-live">Доступно</span>
             </div>
             </a>
-            <a href="/quality" style={{textDecoration:'none',color:'inherit',display:'block'}}>
+            <a href="/quality" style={{textDecoration:'none',color:'inherit',display:'contents'}}>
               <div className="module-card" style={{cursor:'pointer'}}>
                 <div className="module-num">02</div>
                 <div className="module-icon">🔍</div>
