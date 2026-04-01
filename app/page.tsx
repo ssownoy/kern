@@ -68,10 +68,7 @@ export default function Home() {
       entries.forEach(e => {
         if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target) }
       })
-    }, { threshold: 0.1 })
-    reveals.forEach(el => obs.observe(el))
-    return () => obs.disconnect()
-  }, [])
+    }, [])
 
   const goTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
