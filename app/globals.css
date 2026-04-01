@@ -37,8 +37,27 @@ nav.scrolled { background:var(--bg); border-bottom:1px solid var(--border); }
 .theme-icon { font-size:10px; position:absolute; pointer-events:none; }
 .theme-icon.moon { left:5px; }
 .theme-icon.sun { right:4px; }
-.nav-cta { background:var(--accent); color:var(--btn-text); padding:9px 22px; border-radius:4px; font-weight:500; font-size:14px; transition:opacity 0.2s; text-decoration:none; cursor:pointer; }
-.nav-cta:hover { opacity:0.85; }
+.nav-cta { background:var(--accent); color:var(--btn-text); padding:9px 22px; border-radius:4px; font-weight:500; font-size:14px; transition:all 0.2s; text-decoration:none; cursor:pointer; border:1px solid var(--accent); }
+.nav-cta:hover {
+  background: var(--btn-text);
+  color: var(--accent);
+}
+.nav-cabinet-inverted {
+  background: var(--btn-text);
+  color: var(--accent);
+  padding: 9px 22px;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid var(--accent);
+}
+.nav-cabinet-inverted:hover {
+  background: var(--accent);
+  color: var(--btn-text);
+}
 .hero { min-height:100vh; display:flex; align-items:center; padding:130px 52px 90px; position:relative; overflow:hidden; }
 .hero-grid { position:absolute; inset:0; pointer-events:none; background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px); background-size:72px 72px; mask-image:radial-gradient(ellipse 75% 65% at 50% 38%,black 5%,transparent 78%); }
 .hero-glow { position:absolute; top:0; left:50%; transform:translateX(-50%); width:900px; height:550px; pointer-events:none; background:radial-gradient(ellipse,var(--glow) 0%,transparent 68%); }

@@ -144,14 +144,9 @@ export default function DashboardPage() {
         <div style={{display:'flex',alignItems:'center',gap:'12px'}}>
           <a href="/estimate" style={{color:'var(--muted)',fontSize:'13px',textDecoration:'none'}} className="hide-mobile">AI-сметчик</a>
           <a href="/quality" style={{color:'var(--muted)',fontSize:'13px',textDecoration:'none'}} className="hide-mobile">Контроль качества</a>
-          <a href="/dashboard" style={{display:'flex',alignItems:'center',gap:'7px',color:'var(--text)',fontSize:'13px',textDecoration:'none',border:'1px solid var(--border2)',borderRadius:'4px',padding:'6px 14px',fontFamily:"'Syne',sans-serif",fontWeight:600,transition:'all 0.2s'}} onMouseOver={e=>{e.currentTarget.style.borderColor='var(--accent)';e.currentTarget.style.color='var(--accent)'}} onMouseOut={e=>{e.currentTarget.style.borderColor='var(--border2)';e.currentTarget.style.color='var(--text)'}}>
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" strokeWidth="1.5"/><path d="M2 14c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
-            Кабинет
-          </a>
+          <a href="/dashboard" className="nav-cabinet-inverted">Кабинет</a>
           <button onClick={toggleTheme} style={{width:'42px',height:'23px',background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'12px',cursor:'pointer',position:'relative',display:'flex',alignItems:'center',padding:'0 3px',flexShrink:0}}>
-            <span style={{fontSize:'10px',position:'absolute',pointerEvents:'none',left:'5px'}}>🌙</span>
             <div style={{width:'17px',height:'17px',borderRadius:'50%',background:'var(--accent)',transition:'transform 0.3s',flexShrink:0,transform:theme==='light'?'translateX(19px)':'translateX(0)'}}></div>
-            <span style={{fontSize:'10px',position:'absolute',pointerEvents:'none',right:'4px'}}>☀️</span>
           </button>
         </div>
       </nav>
