@@ -80,25 +80,27 @@ export default function Home() {
   return (
     <>
       {/* NAV */}
-      <nav className={scrolled ? 'scrolled' : ''}>
-        <a href="#" className="logo">Kern<span className="logo-dot">.</span></a>
-        <ul className="nav-links">
-          <li><a onClick={() => goTo('modules')}>Модули</a></li>
-          <li><a onClick={() => goTo('advantages')}>Преимущества</a></li>
-          <li><a onClick={() => goTo('pricing')}>Тарифы</a></li>
-          <li><a onClick={() => goTo('contact')}>Контакты</a></li>
-        </ul>
-        <div className="nav-right">
-          <a href="/dashboard" style={{display:'flex',alignItems:'center',gap:'7px',color:'var(--text)',fontSize:'14px',textDecoration:'none',border:'1px solid var(--border2)',borderRadius:'4px',padding:'8px 16px',fontFamily:"'Syne',sans-serif",fontWeight:600,transition:'all 0.2s',background:'var(--card-bg)'}} onMouseOver={e=>{e.currentTarget.style.borderColor='var(--accent)';e.currentTarget.style.color='var(--accent)'}} onMouseOut={e=>{e.currentTarget.style.borderColor='var(--border2)';e.currentTarget.style.color='var(--text)'}}>
-            <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" strokeWidth="1.5"/><path d="M2 14c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
-            Кабинет
-          </a>
-          <button className="theme-btn" onClick={() => setTheme(t => t === 'dark' ? 'light' : 'dark')} aria-label="Сменить тему">
-            <span className="theme-icon moon">🌙</span>
-            <div className={`theme-knob${theme === 'light' ? ' light' : ''}`}></div>
-            <span className="theme-icon sun">☀️</span>
-          </button>
-          <a onClick={() => goTo('contact')} className="nav-cta">Начать</a>
+      <nav id="nav" style={{position:'fixed',top:0,left:0,right:0,zIndex:100,transition:'all 0.4s'}}>
+        <div style={{maxWidth:'1100px',margin:'0 auto',display:'flex',alignItems:'center',justifyContent:'space-between',padding:'20px 52px'}}>
+          <a href="#" className="logo">Kern<span className="logo-dot">.</span></a>
+          <ul className="nav-links">
+            <li><a onClick={() => goTo('modules')}>Модули</a></li>
+            <li><a onClick={() => goTo('advantages')}>Преимущества</a></li>
+            <li><a onClick={() => goTo('pricing')}>Тарифы</a></li>
+            <li><a onClick={() => goTo('contact')}>Контакты</a></li>
+          </ul>
+          <div className="nav-right">
+            <a href="/dashboard" style={{display:'flex',alignItems:'center',gap:'7px',color:'var(--text)',fontSize:'14px',textDecoration:'none',border:'1px solid var(--border2)',borderRadius:'4px',padding:'9px 22px',fontFamily:"'Syne',sans-serif",fontWeight:600,transition:'all 0.2s',whiteSpace:'nowrap'}} onMouseOver={e=>{e.currentTarget.style.borderColor='var(--accent)';e.currentTarget.style.color='var(--accent)'}} onMouseOut={e=>{e.currentTarget.style.borderColor='var(--border2)';e.currentTarget.style.color='var(--text)'}}>
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" strokeWidth="1.5"/><path d="M2 14c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+              Кабинет
+            </a>
+            <button className="theme-btn" onClick={() => setTheme(t => t === 'dark' ? 'light' : 'dark')} aria-label="Сменить тему">
+              <span className="theme-icon moon">🌙</span>
+              <div className={`theme-knob${theme === 'light' ? ' light' : ''}`}></div>
+              <span className="theme-icon sun">☀️</span>
+            </button>
+            <a onClick={() => goTo('contact')} className="nav-cta">Начать</a>
+          </div>
         </div>
       </nav>
 
@@ -132,30 +134,39 @@ export default function Home() {
             <p className="sec-intro">Каждый модуль решает конкретную задачу — от сметы до поиска проверенного специалиста.</p>
           </div>
           <div className="modules-grid reveal">
-            <a href="/estimate" style={{textDecoration:'none',color:'inherit'}}>
-            <div className="module-card" style={{cursor:'pointer',display:'flex',flexDirection:'column'}}>
-              <div className="module-num">01</div>
-              <div className="module-icon">📐</div>
-              <h3>AI-сметчик</h3>
-              <p>Загрузите чертёж или фото объекта — получите готовую смету в рублях по актуальным рыночным ценам. Поддержка PDF, DWG, PNG.</p>
-              <div style={{marginTop:'auto',paddingTop:'22px'}}>
-                <span className="module-badge badge-live">Доступно</span>
-              </div>
-            </div>
-            </a>
+            <a href="/estimate" style={{textDecoration:'none',color:'inherit',display:'contents'}}>
+<div className="module-card" style={{cursor:'pointer',display:'flex',flexDirection:'column'}}>
+  <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'24px'}}>
+    <div className="module-num">01</div>
+    <span className="module-badge badge-live">Доступно</span>
+  </div>
+  <div className="module-icon">📐</div>
+  <h3>AI-сметчик</h3>
+  <p>Загрузите чертёж или фото объекта — получите готовую смету в рублях по актуальным рыночным ценам. Поддержка PDF, DWG, PNG.</p>
+  <div style={{marginTop:'auto',paddingTop:'24px',display:'flex',alignItems:'center',gap:'8px',color:'var(--accent)',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:600}}>
+    Попробовать <span style={{transition:'transform 0.2s'}}>→</span>
+  </div>
+</div>
+</a>
             <a href="/quality" style={{textDecoration:'none',color:'inherit',display:'contents'}}>
-              <div className="module-card" style={{cursor:'pointer',display:'flex',flexDirection:'column'}}>
-                <div className="module-num">02</div>
-                <div className="module-icon">🔍</div>
-                <h3>Контроль качества</h3>
-                <p>Фото строительного объекта анализируется нейросетью. AI определяет дефекты, отклонения от норм и формирует акт осмотра.</p>
-                <div style={{marginTop:'auto',paddingTop:'22px'}}>
-                <span className="module-badge badge-live">Доступно</span>
-              </div>
-            </div>
-            </a>
+<div className="module-card" style={{cursor:'pointer',display:'flex',flexDirection:'column'}}>
+  <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'24px'}}>
+    <div className="module-num">02</div>
+    <span className="module-badge badge-live">Доступно</span>
+  </div>
+  <div className="module-icon">🔍</div>
+  <h3>Контроль качества</h3>
+  <p>Фото строительного объекта анализируется нейросетью. AI определяет дефекты, отклонения от норм и формирует акт осмотра.</p>
+  <div style={{marginTop:'auto',paddingTop:'24px',display:'flex',alignItems:'center',gap:'8px',color:'var(--accent)',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:600}}>
+    Попробовать <span style={{transition:'transform 0.2s'}}>→</span>
+  </div>
+</div>
+</a>
             <div className="module-card" style={{display:'flex',flexDirection:'column'}}>
-              <div className="module-num">03</div>
+              <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'24px'}}>
+                <div className="module-num">03</div>
+                <span className="module-badge badge-soon">Скоро</span>
+              </div>
               <div className="module-icon">📋</div>
               <h3>Генератор документов</h3>
               <p>Контракты, разрешения и акты по российским стандартам (ГОСТ, СНиП). Генерация за 30 секунд, готово к подписанию.</p>
@@ -163,8 +174,11 @@ export default function Home() {
                 <span className="module-badge badge-soon">Скоро</span>
               </div>
             </div>
-            <div className="module-card">
-              <div className="module-num">04</div>
+            <div className="module-card" style={{display:'flex',flexDirection:'column'}}>
+              <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'24px'}}>
+                <div className="module-num">04</div>
+                <span className="module-badge badge-dev">Скоро</span>
+              </div>
               <div className="module-icon">🏗️</div>
               <h3>Тендерная платформа</h3>
               <p>Размещайте тендеры и получайте заявки от верифицированных подрядчиков. AI оценивает каждую заявку и ранжирует исполнителей.</p>
@@ -320,67 +334,63 @@ export default function Home() {
   Сейчас платформа полностью бесплатна. Платные тарифы появятся позже.
 </p>
           <div className="form-wrap reveal">
-            <div className="form-row">
-              <div className="form-group"><label>Имя</label><input type="text" value={formName} onChange={e => setFormName(e.target.value)} placeholder="Иван Петров" />
-{formErrors.name && <span style={{color:'#ff8080',fontSize:'12px',marginTop:'4px'}}>{formErrors.name}</span>}
-</div>
-              <div className="form-group"><label>Телефон</label><input 
-  type="tel" 
-  value={formPhone} 
-  onChange={e => {
-    let val = e.target.value.replace(/\D/g, '')
-    if (val.startsWith('7') || val.startsWith('8')) val = val.slice(1)
-    val = val.slice(0, 10)
-    let formatted = '+7'
-    if (val.length > 0) formatted += ' (' + val.slice(0, 3)
-    if (val.length >= 3) formatted += ') ' + val.slice(3, 6)
-    if (val.length >= 6) formatted += '-' + val.slice(6, 8)
-    if (val.length >= 8) formatted += '-' + val.slice(8, 10)
-    setFormPhone(formatted)
-  }}
-  placeholder="+7 (999) 000-00-00"
-/>
-{formErrors.phone && <span style={{color:'#ff8080',fontSize:'12px',marginTop:'4px'}}>{formErrors.phone}</span>}
-</div>
-            <div className="form-group"><label>Компания</label><input type="text" value={formCompany} onChange={e => setFormCompany(e.target.value)} placeholder="ООО Строй Групп" />
-            </div>
-            <div className="form-group">
-              <label>Email</label>
-              <input 
-                type="email"
-                value={formEmail || ''}
-                onChange={e => {
-                  setFormEmail(e.target.value)
-                  if (formErrors.email) setFormErrors(prev => ({...prev, email: ''}))
-                }}
-                onBlur={e => {
-                  if (e.target.value && !e.target.value.includes('@')) {
-                    setFormErrors(prev => ({...prev, email: 'Введите корректный email'}))
-                  }
-                }}
-                placeholder="ivan@company.ru"
-                style={{borderColor: formErrors.email ? '#ff8080' : undefined}}
-              />
-              {formErrors.email && <span style={{color:'#ff8080',fontSize:'12px',marginTop:'4px'}}>{formErrors.email}</span>}
-            </div></div>
-            <div className="form-group">
-              <label>Интересует модуль</label>
-              <select value={formModule} onChange={e => setFormModule(e.target.value)}>
-                <option value="">Выберите...</option>
-                <option>AI-сметчик</option>
-                <option>Контроль качества</option>
-                <option>Генератор документов</option>
-                <option>Тендерная платформа</option>
-                <option>Платформа профессионалов</option>
-                <option>Весь функционал</option>
-              </select>
-            </div>
-            <div className="form-group"><label>Комментарий</label><textarea value={formComment} onChange={e => setFormComment(e.target.value)} placeholder="Расскажите о задаче..." /></div>
-            <button id="submitBtn" className="form-submit" onClick={handleSubmit} disabled={formLoading || submitted}>
-              {formLoading ? 'Отправляем...' : submitted ? 'Заявка отправлена ✓' : 'Отправить заявку'}
-            </button>
-            <p className="form-note">Нажимая кнопку, вы соглашаетесь с <a href="/privacy" style={{color:'var(--accent)'}}>политикой конфиденциальности</a></p>
+          <div style={{marginBottom:'28px'}}>
+            <h3 style={{fontFamily:"'Syne',sans-serif",fontSize:'20px',fontWeight:700,marginBottom:'6px'}}>Оставьте заявку</h3>
+            <p style={{color:'var(--muted)',fontSize:'14px',fontWeight:300}}>Свяжемся в течение 24 часов</p>
           </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Имя *</label>
+              <input type="text" value={formName} onChange={e => { setFormName(e.target.value); if(formErrors.name) setFormErrors(p=>({...p,name:''})) }} placeholder="Иван Петров" style={{borderColor:formErrors.name?'#ff8080':undefined}} />
+              {formErrors.name && <span style={{color:'#ff8080',fontSize:'12px',marginTop:'4px',display:'block'}}>{formErrors.name}</span>}
+            </div>
+            <div className="form-group">
+              <label>Телефон *</label>
+              <input type="tel" value={formPhone} onChange={e => {
+                let val = e.target.value.replace(/\D/g, '')
+                if (val.startsWith('7') || val.startsWith('8')) val = val.slice(1)
+                val = val.slice(0, 10)
+                let formatted = '+7'
+                if (val.length > 0) formatted += ' (' + val.slice(0, 3)
+                if (val.length >= 3) formatted += ') ' + val.slice(3, 6)
+                if (val.length >= 6) formatted += '-' + val.slice(6, 8)
+                if (val.length >= 8) formatted += '-' + val.slice(8, 10)
+                setFormPhone(formatted)
+                if(formErrors.phone) setFormErrors(p=>({...p,phone:''}))
+              }} placeholder="+7 (999) 000-00-00" style={{borderColor:formErrors.phone?'#ff8080':undefined}} />
+              {formErrors.phone && <span style={{color:'#ff8080',fontSize:'12px',marginTop:'4px',display:'block'}}>{formErrors.phone}</span>}
+            </div>
+          </div>
+          <div className="form-group">
+            <label>Email</label>
+            <input type="email" value={formEmail} onChange={e => { setFormEmail(e.target.value); if(formErrors.email) setFormErrors(p=>({...p,email:''})) }} onBlur={e => { if(e.target.value && !e.target.value.includes('@')) setFormErrors(p=>({...p,email:'Введите корректный email'})) }} placeholder="ivan@company.ru" style={{borderColor:formErrors.email?'#ff8080':undefined}} />
+            {formErrors.email && <span style={{color:'#ff8080',fontSize:'12px',marginTop:'4px',display:'block'}}>{formErrors.email}</span>}
+          </div>
+          <div className="form-group">
+            <label>Компания</label>
+            <input type="text" value={formCompany} onChange={e => setFormCompany(e.target.value)} placeholder="ООО Строй Групп" />
+          </div>
+          <div className="form-group">
+            <label>Интересует модуль</label>
+            <select value={formModule} onChange={e => setFormModule(e.target.value)}>
+              <option value="">Выберите...</option>
+              <option>AI-сметчик</option>
+              <option>Контроль качества</option>
+              <option>Генератор документов</option>
+              <option>Тендерная платформа</option>
+              <option>Платформа профессионалов</option>
+              <option>Весь функционал</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <label>Комментарий</label>
+            <textarea value={formComment} onChange={e => setFormComment(e.target.value)} placeholder="Расскажите о вашей задаче..." />
+          </div>
+          <button className="form-submit" onClick={handleSubmit} disabled={formLoading || submitted}>
+            {formLoading ? 'Отправляем...' : submitted ? 'Заявка отправлена ✓' : 'Отправить заявку →'}
+          </button>
+          <p className="form-note">Нажимая кнопку, вы соглашаетесь с <a href="/privacy" style={{color:'var(--accent)'}}>политикой конфиденциальности</a></p>
+        </div>
         </div>
       </section>
 

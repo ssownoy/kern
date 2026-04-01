@@ -72,15 +72,17 @@ export default function QualityPage() {
       if (data.error) throw new Error(data.error)
       setResult(data)
       
-      if (user) {
-        await supabase.from('quality_checks').insert({
-          user_id: user.id,
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session?.user) {
+        const { error: saveError } = await supabase.from('quality_checks').insert({
+          user_id: session.user.id,
           object_description: data.object_description,
           overall_status: data.overall_status,
           defects: data.defects,
           summary: data.summary,
           notes: data.notes,
         })
+        if (saveError) console.error('Save error:', saveError)
       }
     } catch (e: any) {
       setError(e.message)
