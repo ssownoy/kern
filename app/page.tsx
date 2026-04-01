@@ -74,10 +74,10 @@ export default function Home() {
             <div className={`theme-knob${theme === 'light' ? ' light' : ''}`}></div>
             <span className="theme-icon sun">☀️</span>
           </button>
-          <a href="/dashboard" className="nav-cabinet">
+          <button className="nav-cabinet" onClick={() => window.location.href='/dashboard'}>
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" strokeWidth="1.5"/><path d="M2 14c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
             Кабинет
-          </a>
+          </button>
           <a onClick={() => goTo('contact')} className="nav-cta">Начать</a>
         </div>
       </nav>
