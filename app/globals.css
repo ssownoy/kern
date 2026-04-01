@@ -162,6 +162,7 @@ footer { padding:44px 52px; border-top:1px solid var(--border); display:flex; al
   h2 { font-size:28px; }
   .hero-actions { flex-direction:column; align-items:stretch; gap:12px; }
   .btn-primary { text-align:center; justify-content:center; }
+}
   .btn-ghost { justify-content:center; height:48px; border:1px solid var(--border2); border-radius:4px; }
   .hero-stats { flex-direction:column; max-width:100%; }
   .stat { border-right:none; border-bottom:1px solid var(--border); }
