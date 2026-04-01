@@ -74,10 +74,10 @@ export default function Home() {
             <div className={`theme-knob${theme === 'light' ? ' light' : ''}`}></div>
             <span className="theme-icon sun">☀️</span>
           </button>
-          <button className="nav-cabinet" onClick={() => window.location.href='/dashboard'}>
+          <a href="/dashboard" style={{display:'flex',alignItems:'center',gap:'7px',color:'var(--text)',fontSize:'13px',textDecoration:'none',border:'1px solid var(--border2)',borderRadius:'4px',padding:'6px 14px',fontFamily:"'Syne',sans-serif",fontWeight:600,transition:'all 0.2s'}} onMouseOver={e=>{e.currentTarget.style.borderColor='var(--accent)';e.currentTarget.style.color='var(--accent)'}} onMouseOut={e=>{e.currentTarget.style.borderColor='var(--border2)';e.currentTarget.style.color='var(--text)'}}>
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" strokeWidth="1.5"/><path d="M2 14c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
             Кабинет
-          </button>
+          </a>
           <a onClick={() => goTo('contact')} className="nav-cta">Начать</a>
         </div>
       </nav>
