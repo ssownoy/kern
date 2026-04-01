@@ -80,27 +80,25 @@ export default function Home() {
   return (
     <>
       {/* NAV */}
-      <nav id="nav" style={{position:'fixed',top:0,left:0,right:0,zIndex:100,transition:'all 0.4s'}}>
-        <div style={{maxWidth:'1100px',margin:'0 auto',display:'flex',alignItems:'center',justifyContent:'space-between',padding:'20px 52px'}}>
-          <a href="#" className="logo">Kern<span className="logo-dot">.</span></a>
-          <ul className="nav-links">
-            <li><a onClick={() => goTo('modules')}>Модули</a></li>
-            <li><a onClick={() => goTo('advantages')}>Преимущества</a></li>
-            <li><a onClick={() => goTo('pricing')}>Тарифы</a></li>
-            <li><a onClick={() => goTo('contact')}>Контакты</a></li>
-          </ul>
-          <div className="nav-right">
-            <a href="/dashboard" style={{display:'flex',alignItems:'center',gap:'7px',color:'var(--text)',fontSize:'14px',textDecoration:'none',border:'1px solid var(--border2)',borderRadius:'4px',padding:'9px 22px',fontFamily:"'Syne',sans-serif",fontWeight:600,transition:'all 0.2s',whiteSpace:'nowrap'}} onMouseOver={e=>{e.currentTarget.style.borderColor='var(--accent)';e.currentTarget.style.color='var(--accent)'}} onMouseOut={e=>{e.currentTarget.style.borderColor='var(--border2)';e.currentTarget.style.color='var(--text)'}}>
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" strokeWidth="1.5"/><path d="M2 14c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
-              Кабинет
-            </a>
-            <button className="theme-btn" onClick={() => setTheme(t => t === 'dark' ? 'light' : 'dark')} aria-label="Сменить тему">
-              <span className="theme-icon moon">🌙</span>
-              <div className={`theme-knob${theme === 'light' ? ' light' : ''}`}></div>
-              <span className="theme-icon sun">☀️</span>
-            </button>
-            <a onClick={() => goTo('contact')} className="nav-cta">Начать</a>
-          </div>
+      <nav id="nav" className={scrolled ? 'scrolled' : ''}>
+        <a href="#" className="logo">Kern<span className="logo-dot">.</span></a>
+        <ul className="nav-links">
+          <li><a onClick={() => goTo('modules')}>Модули</a></li>
+          <li><a onClick={() => goTo('advantages')}>Преимущества</a></li>
+          <li><a onClick={() => goTo('pricing')}>Тарифы</a></li>
+          <li><a onClick={() => goTo('contact')}>Контакты</a></li>
+        </ul>
+        <div className="nav-right">
+          <button className="theme-btn" onClick={() => setTheme(t => t === 'dark' ? 'light' : 'dark')} aria-label="Сменить тему">
+            <span className="theme-icon moon">🌙</span>
+            <div className={`theme-knob${theme === 'light' ? ' light' : ''}`}></div>
+            <span className="theme-icon sun">☀️</span>
+          </button>
+          <a href="/dashboard" className="nav-cabinet">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" strokeWidth="1.5"/><path d="M2 14c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+            Кабинет
+          </a>
+          <a onClick={() => goTo('contact')} className="nav-cta">Начать</a>
         </div>
       </nav>
 
@@ -134,58 +132,53 @@ export default function Home() {
             <p className="sec-intro">Каждый модуль решает конкретную задачу — от сметы до поиска проверенного специалиста.</p>
           </div>
           <div className="modules-grid reveal">
-            <a href="/estimate" style={{textDecoration:'none',color:'inherit',display:'contents'}}>
-<div className="module-card" style={{cursor:'pointer',display:'flex',flexDirection:'column'}}>
-  <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'24px'}}>
-    <div className="module-num">01</div>
-    <span className="module-badge badge-live">Доступно</span>
+
+  <a href="/estimate" style={{textDecoration:'none',color:'inherit',display:'contents'}}>
+    <div className="module-card" style={{cursor:'pointer',display:'flex',flexDirection:'column'}}>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'20px'}}>
+        <div className="module-num">01</div>
+        <span className="module-badge badge-live">Доступно</span>
+      </div>
+      <div className="module-icon">📐</div>
+      <h3>AI-сметчик</h3>
+      <p>Загрузите чертёж или фото объекта — получите готовую смету в рублях по актуальным рыночным ценам. Поддержка PDF, DWG, PNG.</p>
+      <div style={{marginTop:'auto',paddingTop:'20px',display:'flex',alignItems:'center',gap:'6px',color:'var(--accent)',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:600}}>
+        Попробовать →
+      </div>
+    </div>
+  </a>
+
+  <a href="/quality" style={{textDecoration:'none',color:'inherit',display:'contents'}}>
+    <div className="module-card" style={{cursor:'pointer',display:'flex',flexDirection:'column'}}>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'20px'}}>
+        <div className="module-num">02</div>
+        <span className="module-badge badge-live">Доступно</span>
+      </div>
+      <div className="module-icon">🔍</div>
+      <h3>Контроль качества</h3>
+      <p>Фото строительного объекта анализируется нейросетью. AI определяет дефекты, отклонения от норм и формирует акт осмотра.</p>
+      <div style={{marginTop:'auto',paddingTop:'20px',display:'flex',alignItems:'center',gap:'6px',color:'var(--accent)',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:600}}>
+        Попробовать →
+      </div>
+    </div>
+  </a>
+
+  <div className="module-card" style={{display:'flex',flexDirection:'column'}}>
+    <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'20px'}}>
+      <div className="module-num">03</div>
+      <span className="module-badge badge-soon">Скоро</span>
+    </div>
+    <div className="module-icon">📋</div>
+    <h3>Генератор документов</h3>
+    <p>Контракты, разрешения и акты по российским стандартам (ГОСТ, СНиП). Генерация за 30 секунд, готово к подписанию.</p>
   </div>
-  <div className="module-icon">📐</div>
-  <h3>AI-сметчик</h3>
-  <p>Загрузите чертёж или фото объекта — получите готовую смету в рублях по актуальным рыночным ценам. Поддержка PDF, DWG, PNG.</p>
-  <div style={{marginTop:'auto',paddingTop:'24px',display:'flex',alignItems:'center',gap:'8px',color:'var(--accent)',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:600}}>
-    Попробовать <span style={{transition:'transform 0.2s'}}>→</span>
-  </div>
-</div>
-</a>
-            <a href="/quality" style={{textDecoration:'none',color:'inherit',display:'contents'}}>
-<div className="module-card" style={{cursor:'pointer',display:'flex',flexDirection:'column'}}>
-  <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'24px'}}>
-    <div className="module-num">02</div>
-    <span className="module-badge badge-live">Доступно</span>
-  </div>
-  <div className="module-icon">🔍</div>
-  <h3>Контроль качества</h3>
-  <p>Фото строительного объекта анализируется нейросетью. AI определяет дефекты, отклонения от норм и формирует акт осмотра.</p>
-  <div style={{marginTop:'auto',paddingTop:'24px',display:'flex',alignItems:'center',gap:'8px',color:'var(--accent)',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:600}}>
-    Попробовать <span style={{transition:'transform 0.2s'}}>→</span>
-  </div>
-</div>
-</a>
-            <div className="module-card" style={{display:'flex',flexDirection:'column'}}>
-              <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'24px'}}>
-                <div className="module-num">03</div>
-                <span className="module-badge badge-soon">Скоро</span>
-              </div>
-              <div className="module-icon">📋</div>
-              <h3>Генератор документов</h3>
-              <p>Контракты, разрешения и акты по российским стандартам (ГОСТ, СНиП). Генерация за 30 секунд, готово к подписанию.</p>
-              <div style={{marginTop:'auto',paddingTop:'22px'}}>
-                <span className="module-badge badge-soon">Скоро</span>
-              </div>
-            </div>
-            <div className="module-card" style={{display:'flex',flexDirection:'column'}}>
-              <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'24px'}}>
-                <div className="module-num">04</div>
-                <span className="module-badge badge-dev">Скоро</span>
-              </div>
-              <div className="module-icon">🏗️</div>
-              <h3>Тендерная платформа</h3>
-              <p>Размещайте тендеры и получайте заявки от верифицированных подрядчиков. AI оценивает каждую заявку и ранжирует исполнителей.</p>
-              <div style={{marginTop:'auto',paddingTop:'22px'}}>
-                <span className="module-badge badge-dev">Скоро</span>
-              </div>
-            </div>
+
+  <div className="module-card" style={{display:'flex',flexDirection:'column'}}>
+    <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'20px'}}>
+      <div className="module-num">04</div>
+      <span className="module-badge badge-soon">Скоро</span>
+    </div>
+
           </div>
         </div>
       </section>
