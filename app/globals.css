@@ -220,7 +220,7 @@ footer { padding:44px 52px; border-top:1px solid var(--border); display:flex; al
   border-radius: 4px;
   padding: 9px 22px;
   font-family: 'Syne', sans-serif;
-  font-weight: 600;
+  font-weight: 500;
   transition: all 0.2s;
   white-space: nowrap;
 }
