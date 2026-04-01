@@ -113,8 +113,7 @@ export default function Home() {
           </div>
           <div className="modules-grid reveal">
 
-            <a href="/estimate" style={{textDecoration:'none',color:'inherit',display:'contents'}}>
-            <div className="module-card" style={{cursor:'pointer',display:'flex',flexDirection:'column'}}>
+            <div className="module-card" style={{cursor:'pointer',display:'flex',flexDirection:'column'}} onClick={() => window.location.href='/estimate'}>
               <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'20px'}}>
                 <div className="module-num">01</div>
                 <span className="module-badge badge-live">Доступно</span>
@@ -124,10 +123,8 @@ export default function Home() {
               <p>Загрузите чертёж или фото объекта — получите готовую смету в рублях по актуальным рыночным ценам. Поддержка PDF, DWG, PNG.</p>
               <div style={{marginTop:'auto',paddingTop:'20px',display:'flex',alignItems:'center',gap:'6px',color:'var(--accent)',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:600}}>Попробовать →</div>
             </div>
-            </a>
 
-            <a href="/quality" style={{textDecoration:'none',color:'inherit',display:'contents'}}>
-            <div className="module-card" style={{cursor:'pointer',display:'flex',flexDirection:'column'}}>
+            <div className="module-card" style={{cursor:'pointer',display:'flex',flexDirection:'column'}} onClick={() => window.location.href='/quality'}>
               <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'20px'}}>
                 <div className="module-num">02</div>
                 <span className="module-badge badge-live">Доступно</span>
@@ -137,7 +134,6 @@ export default function Home() {
               <p>Фото строительного объекта анализируется нейросетью. AI определяет дефекты, отклонения от норм и формирует акт осмотра.</p>
               <div style={{marginTop:'auto',paddingTop:'20px',display:'flex',alignItems:'center',gap:'6px',color:'var(--accent)',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:600}}>Попробовать →</div>
             </div>
-            </a>
 
             <div className="module-card" style={{display:'flex',flexDirection:'column'}}>
               <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'20px'}}>
