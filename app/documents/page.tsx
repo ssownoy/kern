@@ -77,7 +77,6 @@ export default function DocumentsPage() {
     setLoading(true)
     setError(null)
     setResult(null)
-
     try {
       const res = await fetch('/api/documents', {
         method: 'POST',
@@ -92,18 +91,14 @@ export default function DocumentsPage() {
     } finally {
       setLoading(false)
     }
+  }
 
   const downloadPDF = () => {
     if (!result) return
     const doc = docTypes.find(d => d.id === selectedDoc)
     const printWindow = window.open('', '_blank')
     if (!printWindow) return
-    const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${doc?.label}</title>
-    <style>* { margin:0; padding:0; box-sizing:border-box; } body { font-family: Arial, sans-serif; font-size: 13px; color: #1C1A14; padding: 40px; line-height: 1.8; } .header { border-bottom: 2px solid #C09070; padding-bottom: 16px; margin-bottom: 24px; display: flex; justify-content: space-between; } .logo { font-size: 22px; font-weight: 900; } .logo span { color: #C09070; } .content { white-space: pre-wrap; } @media print { body { padding: 20px; } }</style>
-    </head><body>
-    <div class="header"><div class="logo">Kern<span>.</span></div><div style="font-size:11px;color:#6E6A5E;text-align:right"><div>kern-eight.vercel.app</div><div>${new Date().toLocaleDateString('ru-RU')}</div></div></div>
-    <div class="content">${result.replace(/\n/g, '<br/>')}</div>
-    </body></html>`
+    const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${doc?.label}</title><style>* { margin:0; padding:0; box-sizing:border-box; } body { font-family: Arial, sans-serif; font-size: 13px; color: #1C1A14; padding: 40px; line-height: 1.8; } .header { border-bottom: 2px solid #C09070; padding-bottom: 16px; margin-bottom: 24px; display: flex; justify-content: space-between; } .logo { font-size: 22px; font-weight: 900; } .logo span { color: #C09070; } .content { white-space: pre-wrap; }</style></head><body><div class="header"><div class="logo">Kern<span>.</span></div><div style="font-size:11px;color:#6E6A5E;text-align:right"><div>kern-eight.vercel.app</div><div>${new Date().toLocaleDateString('ru-RU')}</div></div></div><div class="content">${result.replace(/\n/g, '<br/>')}</div></body></html>` 
     printWindow.document.write(html)
     printWindow.document.close()
     printWindow.focus()
@@ -112,7 +107,6 @@ export default function DocumentsPage() {
 
   const downloadTXT = () => {
     if (!result) return
-    const doc = docTypes.find(d => d.id === selectedDoc)
     const blob = new Blob([result], { type: 'text/plain;charset=utf-8' })
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
@@ -126,16 +120,7 @@ export default function DocumentsPage() {
 
   return (
     <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
-        @keyframes spin { to { transform: rotate(360deg); } }
-        @media (max-width: 600px) {
-          .docs-nav { padding: 14px 16px !important; }
-          .docs-container { padding: 90px 16px 60px !important; }
-          .doc-types-grid { grid-template-columns: 1fr 1fr !important; }
-          .fields-grid { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap'); @keyframes spin { to { transform: rotate(360deg); } } @media (max-width: 600px) { .docs-nav { padding: 14px 16px !important; } .docs-container { padding: 90px 16px 60px !important; } .doc-types-grid { grid-template-columns: 1fr 1fr !important; } .fields-grid { grid-template-columns: 1fr !important; } }`}</style>
 
       <nav className="docs-nav" style={{position:'fixed',top:0,left:0,right:0,zIndex:100,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'20px 52px',background:'var(--bg)',borderBottom:'1px solid var(--border)'}}>
         <a href="/" style={{fontFamily:"'Syne',sans-serif",fontSize:'22px',fontWeight:800,color:'var(--text)',textDecoration:'none',letterSpacing:'-0.5px'}}>
@@ -163,7 +148,6 @@ export default function DocumentsPage() {
           <h1 style={{fontFamily:"'Syne',sans-serif",fontSize:'clamp(36px,5vw,64px)',fontWeight:800,letterSpacing:'-0.03em',lineHeight:1,marginBottom:'16px'}}>Генератор документов</h1>
           <p style={{color:'var(--muted)',fontSize:'17px',fontWeight:300,marginBottom:'52px',maxWidth:'500px'}}>Выберите тип документа, заполните данные — AI сгенерирует готовый документ по российским стандартам.</p>
 
-          {/* Doc type selector */}
           <div className="doc-types-grid" style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'12px',marginBottom:'40px'}}>
             {docTypes.map(doc => (
               <div key={doc.id} onClick={() => { setSelectedDoc(doc.id); setResult(null); setFields({}) }}
@@ -175,7 +159,6 @@ export default function DocumentsPage() {
             ))}
           </div>
 
-          {/* Fields */}
           {selectedDoc && (
             <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'32px',marginBottom:'24px'}}>
               <div style={{fontFamily:"'Syne',sans-serif",fontSize:'16px',fontWeight:700,marginBottom:'24px'}}>
@@ -195,7 +178,6 @@ export default function DocumentsPage() {
                   </div>
                 ))}
               </div>
-
               <button onClick={handleGenerate} disabled={loading} style={{width:'100%',padding:'16px',borderRadius:'4px',background:'var(--accent)',color:'var(--btn-text)',border:'none',fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:700,cursor:loading?'not-allowed':'pointer',opacity:loading?0.7:1,transition:'all 0.2s',marginTop:'24px'}}>
                 {loading ? (
                   <span style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'10px'}}>
@@ -218,7 +200,7 @@ export default function DocumentsPage() {
               <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px'}}>
                 <span style={{fontSize:'11px',letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)'}}>Готовый документ</span>
                 <div style={{display:'flex',gap:'8px'}}>
-                  <button onClick={downloadTXT} style={{background:'none',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',padding:'6px 16px',cursor:'pointer',fontSize:'13px',fontFamily:"'Syne",sans-serif",fontWeight:600,transition:'all 0.2s'}} onMouseOver={e=>{e.currentTarget.style.borderColor='var(--accent)';e.currentTarget.style.color='var(--accent)'}} onMouseOut={e=>{e.currentTarget.style.borderColor='var(--border2)';e.currentTarget.style.color='var(--muted)'}}>
+                  <button onClick={downloadTXT} style={{background:'none',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',padding:'6px 16px',cursor:'pointer',fontSize:'13px',fontFamily:"'Syne',sans-serif",fontWeight:600,transition:'all 0.2s'}} onMouseOver={e=>{e.currentTarget.style.borderColor='var(--accent)';e.currentTarget.style.color='var(--accent)'}} onMouseOut={e=>{e.currentTarget.style.borderColor='var(--border2)';e.currentTarget.style.color='var(--muted)'}}>
                     Скачать TXT
                   </button>
                   <button onClick={downloadPDF} style={{background:'var(--accent)',border:'none',borderRadius:'4px',color:'var(--btn-text)',padding:'6px 16px',cursor:'pointer',fontSize:'13px',fontFamily:"'Syne",sans-serif",fontWeight:600}}>
