@@ -130,14 +130,15 @@ export default function Home() {
               <div style={{marginTop:'auto',paddingTop:'20px',display:'flex',alignItems:'center',gap:'6px',color:'var(--accent)',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:600}}>Попробовать →</div>
             </div>
 
-            <div className="module-card" style={{display:'flex',flexDirection:'column'}}>
+            <div className="module-card" style={{display:'flex',flexDirection:'column',cursor:'pointer'}} onClick={() => window.location.href='/documents'}>
               <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'20px'}}>
                 <div className="module-num">03</div>
-                <span className="module-badge badge-soon">Скоро</span>
+                <span className="module-badge badge-live">Доступно</span>
               </div>
               <div className="module-icon">📋</div>
               <h3>Генератор документов</h3>
               <p>Контракты, разрешения и акты по российским стандартам (ГОСТ, СНиП). Генерация за 30 секунд, готово к подписанию.</p>
+              <div style={{marginTop:'auto',paddingTop:'20px',display:'flex',alignItems:'center',gap:'6px',color:'var(--accent)',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:600}}>Попробовать →</div>
             </div>
 
             <div className="module-card" style={{display:'flex',flexDirection:'column'}}>
