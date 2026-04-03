@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { supabase } from '@/lib/supabase'
 
 const docTypes = [
   { id: 'contract', label: 'Договор подряда', icon: '📄', desc: 'Договор строительного подряда по ГК РФ' },
@@ -86,6 +87,17 @@ export default function DocumentsPage() {
       const data = await res.json()
       if (data.error) throw new Error(data.error)
       setResult(data.text)
+      
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session?.user) {
+        await supabase.from('documents').insert({
+          user_id: session.user.id,
+          doc_type: selectedDoc,
+          doc_label: docTypes.find(d => d.id === selectedDoc)?.label || '',
+          content: data.text,
+          fields: fields,
+        })
+      }
     } catch (e: any) {
       setError(e.message)
     } finally {

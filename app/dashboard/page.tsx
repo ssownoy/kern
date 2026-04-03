@@ -14,12 +14,16 @@ interface EstimateRecord {
 
 export default function DashboardPage() {
   const [estimates, setEstimates] = useState<EstimateRecord[]>([])
+  const [documents, setDocuments] = useState<any[]>([])
   const [user, setUser] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [theme, setTheme] = useState('dark')
   const [mounted, setMounted] = useState(false)
-  const [activeTab, setActiveTab] = useState<'estimates' | 'quality'>('estimates')
+  const [activeTab, setActiveTab] = useState<'estimates' | 'quality' | 'documents' | 'profile'>('estimates')
   const [qualityChecks, setQualityChecks] = useState<any[]>([])
+  const [profile, setProfile] = useState<any>({})
+  const [editingProfile, setEditingProfile] = useState(false)
+  const [profileLoading, setProfileLoading] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -36,6 +40,8 @@ export default function DashboardPage() {
       setUser(session.user)
       loadEstimates(session.user.id)
       loadQualityChecks(session.user.id)
+      loadDocuments(session.user.id)
+      loadProfile(session.user.id)
     })
   }, [])
 
@@ -57,6 +63,34 @@ export default function DashboardPage() {
       .eq('user_id', userId)
       .order('created_at', { ascending: false })
     if (data) setQualityChecks(data)
+  }
+
+  const loadDocuments = async (userId: string) => {
+    const { data } = await supabase
+      .from('documents')
+      .select('*')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false })
+    if (data) setDocuments(data)
+  }
+
+  const loadProfile = async (userId: string) => {
+    const { data } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', userId)
+      .single()
+    if (data) setProfile(data)
+  }
+
+  const saveProfile = async () => {
+    setProfileLoading(true)
+    await supabase.from('profiles').update({
+      full_name: profile.full_name,
+      phone: profile.phone,
+    }).eq('id', user.id)
+    setProfileLoading(false)
+    setEditingProfile(false)
   }
 
   const toggleTheme = () => {
@@ -177,6 +211,8 @@ export default function DashboardPage() {
             {[
               { key: 'estimates', label: 'Сметы' },
               { key: 'quality', label: 'Контроль качества' },
+              { key: 'documents', label: 'Документы' },
+              { key: 'profile', label: 'Профиль' },
             ].map(tab => (
               <button
                 key={tab.key}
@@ -293,6 +329,105 @@ export default function DashboardPage() {
                 })}
               </div>
             )
+          )}
+
+          {activeTab === 'documents' && (
+            documents.length === 0 ? (
+              <div style={{textAlign:'center',padding:'80px 0'}}>
+                <div style={{fontSize:'48px',marginBottom:'20px'}}>📄</div>
+                <h2 style={{fontFamily:"'Syne',sans-serif",fontSize:'22px',fontWeight:700,marginBottom:'12px'}}>Документов пока нет</h2>
+                <p style={{color:'var(--muted)',fontSize:'15px',marginBottom:'32px'}}>Сгенерируйте договор, акт или техническое задание</p>
+                <a href="/documents" style={{background:'var(--accent)',color:'var(--btn-text)',padding:'14px 32px',borderRadius:'4px',textDecoration:'none',fontFamily:"'Syne',sans-serif",fontWeight:600,fontSize:'15px'}}>
+                  Создать документ
+                </a>
+              </div>
+            ) : (
+              <div style={{display:'flex',flexDirection:'column',gap:'1px',background:'var(--border)',border:'1px solid var(--border)',borderRadius:'8px',overflow:'hidden'}}>
+                {documents.map(doc => (
+                  <div key={doc.id} className="dash-row" style={{background:'var(--bg)',padding:'20px 24px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:'16px'}}
+                    onMouseOver={e => e.currentTarget.style.background = 'var(--card-hover)'}
+                    onMouseOut={e => e.currentTarget.style.background = 'var(--bg)'}
+                  >
+                    <div style={{flex:1,minWidth:0}}>
+                      <div style={{fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:700,marginBottom:'6px'}}>{doc.doc_label}</div>
+                      <span style={{color:'var(--muted)',fontSize:'13px'}}>
+                        {new Date(doc.created_at).toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'})}
+                      </span>
+                    </div>
+                    <button
+                      onClick={async () => {
+                        if (!confirm('Удалить документ?')) return
+                        await supabase.from('documents').delete().eq('id', doc.id)
+                        setDocuments(documents.filter(d => d.id !== doc.id))
+                      }}
+                      style={{background:'none',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',cursor:'pointer',fontSize:'12px',padding:'4px 10px',fontFamily:"'Syne',sans-serif",transition:'all 0.2s',whiteSpace:'nowrap',flexShrink:0}}
+                      onMouseOver={e => { e.currentTarget.style.borderColor='#ff8080'; e.currentTarget.style.color='#ff8080' }}
+                      onMouseOut={e => { e.currentTarget.style.borderColor='var(--border2)'; e.currentTarget.style.color='var(--muted)' }}
+                    >
+                      Удалить
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )
+          )}
+
+          {activeTab === 'profile' && (
+            <div style={{maxWidth:'560px'}}>
+              <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'32px',marginBottom:'24px'}}>
+                <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'28px'}}>
+                  <div style={{fontFamily:"'Syne',sans-serif",fontSize:'18px',fontWeight:700}}>Личные данные</div>
+                  <button
+                    onClick={() => editingProfile ? saveProfile() : setEditingProfile(true)}
+                    style={{background:editingProfile?'var(--accent)':'transparent',color:editingProfile?'var(--btn-text)':'var(--muted)',border:'1px solid',borderColor:editingProfile?'var(--accent)':'var(--border2)',borderRadius:'4px',padding:'6px 16px',cursor:'pointer',fontSize:'13px',fontFamily:"'Syne',sans-serif",fontWeight:600,transition:'all 0.2s'}}
+                  >
+                    {profileLoading ? 'Сохраняем...' : editingProfile ? '✓ Сохранить' : '✏ Изменить'}
+                  </button>
+                </div>
+
+                <div style={{display:'flex',flexDirection:'column',gap:'20px'}}>
+                  <div style={{display:'flex',flexDirection:'column',gap:'7px'}}>
+                    <label style={{fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase',color:'var(--muted)'}}>Имя и фамилия</label>
+                    {editingProfile ? (
+                      <input value={profile.full_name || ''} onChange={e => setProfile({...profile, full_name: e.target.value})} placeholder="Иван Петров" style={{background:'var(--bg)',border:'1px solid var(--border)',borderRadius:'4px',padding:'11px 14px',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",fontSize:'15px',outline:'none'}} />
+                    ) : (
+                      <div style={{fontSize:'15px',color:profile.full_name ? 'var(--text)' : 'var(--muted)'}}>{profile.full_name || 'Не указано'}</div>
+                    )}
+                  </div>
+
+                  <div style={{display:'flex',flexDirection:'column',gap:'7px'}}>
+                    <label style={{fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase',color:'var(--muted)'}}>Email</label>
+                    <div style={{fontSize:'15px',color:'var(--text)'}}>{user?.email}</div>
+                    <div style={{fontSize:'12px',color:'var(--muted)'}}>Для смены email обратитесь на kern.platform@yandex.ru</div>
+                  </div>
+
+                  <div style={{display:'flex',flexDirection:'column',gap:'7px'}}>
+                    <label style={{fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase',color:'var(--muted)'}}>Телефон</label>
+                    {editingProfile ? (
+                      <input value={profile.phone || ''} onChange={e => setProfile({...profile, phone: e.target.value})} placeholder="+7 (999) 000-00-00" style={{background:'var(--bg)',border:'1px solid var(--border)',borderRadius:'4px',padding:'11px 14px',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",fontSize:'15px',outline:'none'}} />
+                    ) : (
+                      <div style={{fontSize:'15px',color:profile.phone ? 'var(--text)' : 'var(--muted)'}}>{profile.phone || 'Не указано'}</div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'32px'}}>
+                <div style={{fontFamily:"'Syne',sans-serif",fontSize:'18px',fontWeight:700,marginBottom:'20px'}}>Статистика</div>
+                <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'16px'}}>
+                  {[
+                    { label: 'Смет', value: estimates.length },
+                    { label: 'Проверок', value: qualityChecks.length },
+                    { label: 'Документов', value: documents.length },
+                  ].map(stat => (
+                    <div key={stat.label} style={{textAlign:'center',padding:'20px',background:'var(--bg)',borderRadius:'6px',border:'1px solid var(--border)'}}>
+                      <div style={{fontFamily:"'Syne',sans-serif",fontSize:'28px',fontWeight:800,color:'var(--accent)',marginBottom:'4px'}}>{stat.value}</div>
+                      <div style={{color:'var(--muted)',fontSize:'13px'}}>{stat.label}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           )}
 
         </div>
