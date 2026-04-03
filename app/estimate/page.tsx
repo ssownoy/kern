@@ -543,6 +543,13 @@ export default function EstimatePage() {
                 )}
               </div>
 
+              <div style={{background:'var(--bg2)',borderTop:'2px solid var(--border)',padding:'16px 20px',display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'32px'}}>
+                <span style={{color:'var(--muted)',fontSize:'13px'}}>Позиций: {editableItems.length}</span>
+                <span style={{fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:700}}>
+                  Итого: {totalRub.toLocaleString('ru-RU')} ₽
+                </span>
+              </div>
+
               <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'24px 32px',marginBottom:'24px'}}>
                 <span style={{fontFamily:"'Syne',sans-serif",fontSize:'16px',fontWeight:700}}>Итого</span>
                 <span style={{fontFamily:"'Syne',sans-serif",fontSize:'clamp(18px,4vw,28px)',fontWeight:800,color:'var(--accent)',whiteSpace:'nowrap'}}>{totalRub.toLocaleString('ru-RU')} ₽</span>
