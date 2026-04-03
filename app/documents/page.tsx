@@ -111,7 +111,7 @@ export default function DocumentsPage() {
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
-    link.download = `kern-${selectedDoc}-${Date.now()}.txt` 
+    link.download = `kern-${selectedDoc}-${Date.now()}.txt`
     link.click()
     URL.revokeObjectURL(url)
   }
