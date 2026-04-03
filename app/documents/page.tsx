@@ -92,7 +92,6 @@ export default function DocumentsPage() {
     } finally {
       setLoading(false)
     }
-  }
 
   const downloadPDF = () => {
     if (!result) return
