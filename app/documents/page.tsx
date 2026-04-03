@@ -1,4 +1,4 @@
-'use client'
+]'use client'
 
 import { useState, useEffect } from 'react'
 
@@ -203,7 +203,7 @@ export default function DocumentsPage() {
                   <button onClick={downloadTXT} style={{background:'none',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',padding:'6px 16px',cursor:'pointer',fontSize:'13px',fontFamily:"'Syne',sans-serif",fontWeight:600,transition:'all 0.2s'}} onMouseOver={e=>{e.currentTarget.style.borderColor='var(--accent)';e.currentTarget.style.color='var(--accent)'}} onMouseOut={e=>{e.currentTarget.style.borderColor='var(--border2)';e.currentTarget.style.color='var(--muted)'}}>
                     Скачать TXT
                   </button>
-                  <button onClick={downloadPDF} style={{background:'var(--accent)',border:'none',borderRadius:'4px',color:'var(--btn-text)',padding:'6px 16px',cursor:'pointer',fontSize:'13px',fontFamily:"'Syne",sans-serif",fontWeight:600}}>
+                  <button onClick={downloadPDF} style={{background:'var(--accent)',border:'none',borderRadius:'4px',color:'var(--btn-text)',padding:'6px 16px',cursor:'pointer',fontSize:'13px',fontFamily:"'Syne',sans-serif",fontWeight:600}}>
                     Скачать PDF
                   </button>
                 </div>
