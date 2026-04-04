@@ -19,6 +19,34 @@ interface Estimate {
   notes: string
 }
 
+const cities = [
+  { name: 'Москва', climate: 'II', soil: 'II' },
+  { name: 'Санкт-Петербург', climate: 'II', soil: 'II' },
+  { name: 'Новосибирск', climate: 'I', soil: 'III' },
+  { name: 'Екатеринбург', climate: 'I', soil: 'II' },
+  { name: 'Казань', climate: 'II', soil: 'II' },
+  { name: 'Нижний Новгород', climate: 'II', soil: 'II' },
+  { name: 'Челябинск', climate: 'I', soil: 'II' },
+  { name: 'Самара', climate: 'II', soil: 'II' },
+  { name: 'Уфа', climate: 'I', soil: 'II' },
+  { name: 'Ростов-на-Дону', climate: 'III', soil: 'II' },
+  { name: 'Краснодар', climate: 'III', soil: 'II' },
+  { name: 'Красноярск', climate: 'I', soil: 'III' },
+  { name: 'Воронеж', climate: 'II', soil: 'II' },
+  { name: 'Пермь', climate: 'I', soil: 'II' },
+  { name: 'Волгоград', climate: 'II', soil: 'II' },
+  { name: 'Иркутск', climate: 'I', soil: 'III' },
+  { name: 'Хабаровск', climate: 'I', soil: 'III' },
+  { name: 'Владивосток', climate: 'II', soil: 'III' },
+  { name: 'Якутск', climate: 'I', soil: 'IV' },
+  { name: 'Сыктывкар', climate: 'I', soil: 'III' },
+  { name: 'Архангельск', climate: 'I', soil: 'III' },
+  { name: 'Мурманск', climate: 'I', soil: 'IV' },
+  { name: 'Тюмень', climate: 'I', soil: 'III' },
+  { name: 'Омск', climate: 'I', soil: 'II' },
+  { name: 'Барнаул', climate: 'I', soil: 'II' },
+]
+
 export default function EstimatePage() {
   const [file, setFile] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
@@ -30,50 +58,20 @@ export default function EstimatePage() {
   const [region, setRegion] = useState('Москва')
   const [cityQuery, setCityQuery] = useState('Москва')
   const [showCityList, setShowCityList] = useState(false)
-  const [soilGroup, setSoilGroup] = useState('')
-  const [workConditions, setWorkConditions] = useState('')
-  const [climateZone, setClimateZone] = useState('')
-  const [workPeriod, setWorkPeriod] = useState('')
-  const [includeWinter, setIncludeWinter] = useState(false)
-  const [includeTempBuildings, setIncludeTempBuildings] = useState(false)
-  const [estimateMethod, setEstimateMethod] = useState('')
-  const [objectType, setObjectType] = useState('')
-  const [hasLandscaping, setHasLandscaping] = useState(false)
-  const [specialConditions, setSpecialConditions] = useState<string[]>([])
-  const [showParams, setShowParams] = useState(false)
   const [theme, setTheme] = useState('dark')
   const [user, setUser] = useState<any>(null)
   const [mounted, setMounted] = useState(false)
-  const [submitted, setSubmitted] = useState(false)
+  const [showParams, setShowParams] = useState(false)
+  const [soilGroup, setSoilGroup] = useState('')
+  const [climateZone, setClimateZone] = useState('')
+  const [workConditions, setWorkConditions] = useState('')
+  const [estimateMethod, setEstimateMethod] = useState('')
+  const [objectType, setObjectType] = useState('')
+  const [workPeriod, setWorkPeriod] = useState('')
+  const [includeWinter, setIncludeWinter] = useState(false)
+  const [includeTempBuildings, setIncludeTempBuildings] = useState(false)
+  const [hasLandscaping, setHasLandscaping] = useState(false)
   const router = useRouter()
-
-  const cities = [
-    { name: 'Москва', climate: 'II', soil: 'II', zone: 'central' },
-    { name: 'Санкт-Петербург', climate: 'II', soil: 'II', zone: 'northwest' },
-    { name: 'Новосибирск', climate: 'I', soil: 'III', zone: 'siberia' },
-    { name: 'Екатеринбург', climate: 'I', soil: 'II', zone: 'ural' },
-    { name: 'Казань', climate: 'II', soil: 'II', zone: 'volga' },
-    { name: 'Нижний Новгород', climate: 'II', soil: 'II', zone: 'volga' },
-    { name: 'Челябинск', climate: 'I', soil: 'II', zone: 'ural' },
-    { name: 'Самара', climate: 'II', soil: 'II', zone: 'volga' },
-    { name: 'Уфа', climate: 'I', soil: 'II', zone: 'ural' },
-    { name: 'Ростов-на-Дону', climate: 'III', soil: 'II', zone: 'south' },
-    { name: 'Краснодар', climate: 'III', soil: 'II', zone: 'south' },
-    { name: 'Красноярск', climate: 'I', soil: 'III', zone: 'siberia' },
-    { name: 'Воронеж', climate: 'II', soil: 'II', zone: 'central' },
-    { name: 'Пермь', climate: 'I', soil: 'II', zone: 'ural' },
-    { name: 'Волгоград', climate: 'II', soil: 'II', zone: 'south' },
-    { name: 'Иркутск', climate: 'I', soil: 'III', zone: 'siberia' },
-    { name: 'Хабаровск', climate: 'I', soil: 'III', zone: 'fareast' },
-    { name: 'Владивосток', climate: 'II', soil: 'III', zone: 'fareast' },
-    { name: 'Якутск', climate: 'I', soil: 'IV', zone: 'north' },
-    { name: 'Сыктывкар', climate: 'I', soil: 'III', zone: 'north' },
-    { name: 'Архангельск', climate: 'I', soil: 'III', zone: 'north' },
-    { name: 'Мурманск', climate: 'I', soil: 'IV', zone: 'north' },
-    { name: 'Тюмень', climate: 'I', soil: 'III', zone: 'siberia' },
-    { name: 'Омск', climate: 'I', soil: 'II', zone: 'siberia' },
-    { name: 'Барнаул', climate: 'I', soil: 'II', zone: 'siberia' },
-  ]
 
   const filteredCities = cities.filter(c => c.name.toLowerCase().startsWith(cityQuery.toLowerCase()))
 
@@ -90,9 +88,13 @@ export default function EstimatePage() {
     const saved = localStorage.getItem('kern-theme') || 'dark'
     setTheme(saved)
     document.documentElement.setAttribute('data-theme', saved)
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) setUser(session.user)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => {
+      setUser(session?.user || null)
     })
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user || null)
+    })
+    return () => subscription.unsubscribe()
   }, [])
 
   const toggleTheme = () => {
@@ -102,11 +104,6 @@ export default function EstimatePage() {
     localStorage.setItem('kern-theme', next)
   }
 
-  const handleSignOut = async () => {
-    await supabase.auth.signOut()
-    router.push('/')
-  }
-
   const handleSubmit = async () => {
     if (!file) return
     setLoading(true)
@@ -114,7 +111,6 @@ export default function EstimatePage() {
     setEstimate(null)
     setEditableItems([])
     setEditMode(false)
-
     try {
       const { data: { session } } = await supabase.auth.getSession()
       const formData = new FormData()
@@ -130,22 +126,18 @@ export default function EstimatePage() {
       formData.append('estimateMethod', estimateMethod)
       formData.append('objectType', objectType)
       formData.append('hasLandscaping', hasLandscaping.toString())
-      formData.append('specialConditions', specialConditions.join(', '))
-
       const res = await fetch('/api/estimate', {
         method: 'POST',
         headers: session?.access_token ? { 'Authorization': `Bearer ${session.access_token}` } : {},
         body: formData,
       })
-
       const data = await res.json()
       if (data.error) throw new Error(data.error)
       setEstimate(data)
       setEditableItems(data.items)
-
-      if (user) {
+      if (session?.user) {
         await supabase.from('estimates').insert({
-          user_id: user.id,
+          user_id: session.user.id,
           summary: data.summary,
           total_rub: data.total_rub,
           items: data.items,
@@ -163,36 +155,19 @@ export default function EstimatePage() {
   const updateItem = (i: number, field: string, value: any) => {
     const updated = [...editableItems]
     updated[i] = { ...updated[i], [field]: value }
-    if (field === 'qty' || field === 'price') {
-      updated[i].total = updated[i].qty * updated[i].price
-    }
+    if (field === 'qty' || field === 'price') updated[i].total = updated[i].qty * updated[i].price
     setEditableItems(updated)
   }
 
-  const removeItem = (i: number) => {
-    setEditableItems(editableItems.filter((_, j) => j !== i))
-  }
-
-  const addItem = () => {
-    setEditableItems([...editableItems, { name: 'Новая позиция', unit: 'шт', qty: 1, price: 0, total: 0 }])
-  }
-
-  const totalRub = editableItems.reduce((sum, item) => sum + (item.qty * item.price), 0)
+  const removeItem = (i: number) => setEditableItems(editableItems.filter((_, j) => j !== i))
+  const addItem = () => setEditableItems([...editableItems, { name: 'Новая позиция', unit: 'шт', qty: 1, price: 0, total: 0 }])
+  const totalRub = editableItems.reduce((sum, item) => sum + item.qty * item.price, 0)
 
   const downloadPDF = () => {
     if (!estimate) return
     const printWindow = window.open('', '_blank')
     if (!printWindow) return
-    const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Смета Kern</title>
-    <style>* { margin: 0; padding: 0; box-sizing: border-box; } body { font-family: Arial, sans-serif; font-size: 12px; color: #1C1A14; padding: 32px; } .header { display: flex; justify-content: space-between; margin-bottom: 24px; border-bottom: 2px solid #C09070; padding-bottom: 16px; } .logo { font-size: 28px; font-weight: 900; letter-spacing: -1px; } .logo span { color: #C09070; } .date { color: #6E6A5E; font-size: 11px; text-align: right; } .summary { background: #F5F2EA; padding: 16px; border-radius: 6px; margin-bottom: 24px; } .summary-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #6E6A5E; margin-bottom: 6px; } .summary-text { font-size: 13px; font-weight: 600; } table { width: 100%; border-collapse: collapse; margin-bottom: 20px; } th { background: #C09070; color: #13120F; padding: 8px 10px; text-align: left; font-size: 10px; text-transform: uppercase; } td { padding: 8px 10px; border-bottom: 1px solid #E4E0D4; font-size: 11px; } tr:nth-child(even) td { background: #F5F2EA; } td:last-child, th:last-child { text-align: right; } td:nth-child(3), th:nth-child(3), td:nth-child(4), th:nth-child(4) { text-align: right; } .total { display: flex; justify-content: space-between; align-items: center; background: #13120F; color: #EAE6DC; padding: 16px 20px; border-radius: 6px; margin-bottom: 16px; } .total-label { font-size: 14px; font-weight: 600; } .total-amount { font-size: 24px; font-weight: 900; color: #C09070; } .notes { background: #F5F2EA; padding: 14px; border-radius: 6px; font-size: 10px; color: #6E6A5E; line-height: 1.6; } .notes-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }</style></head>
-    <body>
-    <div class="header"><div class="logo">Kern<span>.</span></div><div class="date"><div>AI-платформа для строительства</div><div>kern-eight.vercel.app</div><div style="margin-top:4px">${new Date().toLocaleDateString('ru-RU')}</div></div></div>
-    <div class="summary"><div class="summary-label">Объект</div><div class="summary-text">${estimate.summary}</div></div>
-    <table><thead><tr><th>Наименование</th><th>Ед.</th><th>Кол-во</th><th>Цена (₽)</th><th>Сумма (₽)</th></tr></thead>
-    <tbody>${editableItems.map(item => `<tr><td>${item.name}</td><td>${item.unit}</td><td>${item.qty}</td><td>${item.price.toLocaleString('ru-RU')}</td><td>${(item.qty * item.price).toLocaleString('ru-RU')}</td></tr>`).join('')}</tbody></table>
-    <div class="total"><div class="total-label">Итого</div><div class="total-amount">${totalRub.toLocaleString('ru-RU')} ₽</div></div>
-    ${estimate.notes ? `<div class="notes"><div class="notes-label">Замечания</div>${estimate.notes}</div>` : ''}
-    </body></html>`
+    const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Смета Kern</title><style>* { margin:0; padding:0; box-sizing:border-box; } body { font-family: Arial, sans-serif; font-size: 12px; color: #1C1A14; padding: 32px; } .header { display: flex; justify-content: space-between; margin-bottom: 24px; border-bottom: 2px solid #C09070; padding-bottom: 16px; } .logo { font-size: 24px; font-weight: 900; } .logo span { color: #C09070; } table { width: 100%; border-collapse: collapse; margin-bottom: 20px; } th { background: #C09070; color: #13120F; padding: 8px 10px; text-align: left; font-size: 10px; text-transform: uppercase; } td { padding: 8px 10px; border-bottom: 1px solid #E4E0D4; font-size: 11px; } tr:nth-child(even) td { background: #F5F2EA; } td:last-child, th:last-child { text-align: right; } td:nth-child(3), td:nth-child(4) { text-align: right; } .total { display: flex; justify-content: space-between; background: #13120F; color: #EAE6DC; padding: 16px 20px; border-radius: 6px; margin-bottom: 16px; } .total-amount { font-size: 22px; font-weight: 900; color: #C09070; } .notes { background: #F5F2EA; padding: 14px; border-radius: 6px; font-size: 10px; color: #6E6A5E; }</style></head><body><div class="header"><div class="logo">Kern<span>.</span></div><div style="font-size:11px;color:#6E6A5E;text-align:right"><div>kern-eight.vercel.app</div><div>${new Date().toLocaleDateString('ru-RU')}</div><div>${region}</div></div></div><div style="background:#F5F2EA;padding:16px;border-radius:6px;margin-bottom:20px"><div style="font-size:10px;text-transform:uppercase;color:#6E6A5E;margin-bottom:6px">Объект</div><div style="font-size:13px;font-weight:600">${estimate.summary}</div></div><table><thead><tr><th>Наименование</th><th>Ед.</th><th>Кол-во</th><th>Цена (₽)</th><th>Сумма (₽)</th></tr></thead><tbody>${editableItems.map(item => `<tr><td>${item.name}</td><td>${item.unit}</td><td>${item.qty}</td><td>${item.price.toLocaleString('ru-RU')}</td><td>${(item.qty * item.price).toLocaleString('ru-RU')}</td></tr>`).join('')}</tbody></table><div class="total"><div style="font-size:14px;font-weight:600">Итого</div><div class="total-amount">${totalRub.toLocaleString('ru-RU')} ₽</div></div>${estimate.notes ? `<div class="notes"><div style="font-size:9px;text-transform:uppercase;margin-bottom:6px">Замечания</div>${estimate.notes}</div>` : ''}</body></html>`
     printWindow.document.write(html)
     printWindow.document.close()
     printWindow.focus()
@@ -201,375 +176,283 @@ export default function EstimatePage() {
 
   const downloadExcel = () => {
     if (!estimate || editableItems.length === 0) return
-    
     const rows = [
       ['KERN — AI-платформа для строительства'],
-      ['kern-eight.vercel.app'],
+      [`Регион: ${region}`],
       [`Дата: ${new Date().toLocaleDateString('ru-RU')}`],
       [],
       ['Объект:', estimate.summary],
       [],
       ['Наименование', 'Ед. изм.', 'Кол-во', 'Цена (₽)', 'Сумма (₽)'],
-      ...editableItems.map(item => [
-        item.name,
-        item.unit,
-        item.qty,
-        item.price,
-        item.qty * item.price,
-      ]),
+      ...editableItems.map(item => [item.name, item.unit, item.qty, item.price, item.qty * item.price]),
       [],
       ['', '', '', 'ИТОГО:', totalRub],
       [],
       ['Замечания:', estimate.notes || ''],
     ]
-
-    const csvContent = rows.map(row =>
-      row.map(cell => {
-        const str = String(cell ?? '')
-        return str.includes(',') || str.includes('"') || str.includes('\n')
-          ? `"${str.replace(/"/g, '""')}"` 
-          : str
-      }).join(';')
-    ).join('\n')
-
-    const BOM = '\uFEFF'
-    const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' })
+    const csv = rows.map(row => row.map(cell => { const s = String(cell ?? ''); return s.includes(';') ? `"${s}"` : s }).join(';')).join('\n')
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' })
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
-    link.download = `kern-smeta-${Date.now()}.csv` 
+    link.download = `kern-smeta-${Date.now()}.csv`
     link.click()
     URL.revokeObjectURL(url)
   }
 
   if (!mounted) return null
 
+  const selectStyle = { background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '4px', padding: '9px 12px', color: 'var(--text)', fontFamily: "'DM Sans',sans-serif", fontSize: '14px', outline: 'none', width: '100%' }
+  const labelStyle = { fontSize: '11px', letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: 'var(--muted)', display: 'block', marginBottom: '6px' }
+
   return (
     <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
-        @keyframes spin { to { transform: rotate(360deg); } }
-        @media (max-width: 600px) {
-          .params-grid { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap'); @keyframes spin { to { transform: rotate(360deg); } } @media (max-width:768px) { .est-layout { flex-direction: column !important; } .est-sidebar { width: 100% !important; } }`}</style>
 
-      <nav style={{position:'fixed',top:0,left:0,right:0,zIndex:100,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'16px 20px',background:'var(--bg)',borderBottom:'1px solid var(--border)'}}>
-        <a href="/" style={{fontFamily:"'Syne',sans-serif",fontSize:'20px',fontWeight:800,color:'var(--text)',textDecoration:'none',letterSpacing:'-0.5px'}}>
-          Kern<span style={{color:'var(--accent)'}}>.</span>
-        </a>
+      <nav style={{position:'fixed',top:0,left:0,right:0,zIndex:100,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'16px 40px',background:'var(--bg)',borderBottom:'1px solid var(--border)'}}>
+        <a href="/" style={{fontFamily:"'Syne',sans-serif",fontSize:'20px',fontWeight:800,color:'var(--text)',textDecoration:'none',letterSpacing:'-0.5px'}}>Kern<span style={{color:'var(--accent)'}}>.</span></a>
         <div style={{display:'flex',alignItems:'center',gap:'12px'}}>
-          <a href="/dashboard" className="nav-cabinet-inverted">Кабинет</a>
+          <a href="/dashboard" style={{display:'flex',alignItems:'center',gap:'6px',color:'var(--text)',fontSize:'13px',textDecoration:'none',border:'1px solid var(--border2)',borderRadius:'4px',padding:'6px 14px',fontFamily:"'Syne',sans-serif",fontWeight:600,transition:'all 0.2s'}} onMouseOver={e=>{e.currentTarget.style.borderColor='var(--accent)';e.currentTarget.style.color='var(--accent)'}} onMouseOut={e=>{e.currentTarget.style.borderColor='var(--border2)';e.currentTarget.style.color='var(--text)'}}>
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" strokeWidth="1.5"/><path d="M2 14c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+            Кабинет
+          </a>
           <button onClick={toggleTheme} style={{width:'42px',height:'23px',background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'12px',cursor:'pointer',position:'relative',display:'flex',alignItems:'center',padding:'0 3px',flexShrink:0}}>
+            <span style={{fontSize:'10px',position:'absolute',left:'5px',pointerEvents:'none'}}>🌙</span>
             <div style={{width:'17px',height:'17px',borderRadius:'50%',background:'var(--accent)',transition:'transform 0.3s',flexShrink:0,transform:theme==='light'?'translateX(19px)':'translateX(0)'}}></div>
+            <span style={{fontSize:'10px',position:'absolute',right:'4px',pointerEvents:'none'}}>☀️</span>
           </button>
         </div>
       </nav>
 
-      <div style={{minHeight:'100vh',background:'var(--bg)',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",padding:'120px 52px 80px'}}>
-        <div style={{maxWidth:'900px',margin:'0 auto'}}>
+      <div style={{minHeight:'100vh',background:'var(--bg)',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",paddingTop:'64px'}}>
+        <div style={{maxWidth:'1100px',margin:'0 auto',padding:'48px 40px 80px'}}>
 
-          <a href="/" style={{color:'var(--muted)',fontSize:'14px',textDecoration:'none',display:'inline-flex',alignItems:'center',gap:'6px',marginBottom:'48px'}}>← Назад</a>
+          <a href="/" style={{color:'var(--muted)',fontSize:'13px',textDecoration:'none',display:'inline-flex',alignItems:'center',gap:'5px',marginBottom:'40px'}}>
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            Назад
+          </a>
 
-          <span style={{fontSize:'11px',letterSpacing:'0.16em',textTransform:'uppercase',color:'var(--accent)',marginBottom:'14px',display:'block'}}>Модуль 01</span>
-          <h1 style={{fontFamily:"'Syne',sans-serif",fontSize:'clamp(36px,5vw,64px)',fontWeight:800,letterSpacing:'-0.03em',lineHeight:1,marginBottom:'16px'}}>AI-сметчик</h1>
-          <p style={{color:'var(--muted)',fontSize:'17px',fontWeight:300,marginBottom:'52px',maxWidth:'500px'}}>Загрузите чертёж или фото объекта — получите готовую смету в рублях за 30 секунд.</p>
+          <div style={{marginBottom:'40px'}}>
+            <div style={{fontSize:'11px',letterSpacing:'0.14em',textTransform:'uppercase',color:'var(--accent)',marginBottom:'10px'}}>Модуль 01</div>
+            <h1 style={{fontFamily:"'Syne',sans-serif",fontSize:'clamp(28px,4vw,44px)',fontWeight:700,letterSpacing:'-0.02em',marginBottom:'10px',lineHeight:1.1}}>AI-сметчик</h1>
+            <p style={{color:'var(--muted)',fontSize:'15px',fontWeight:300,maxWidth:'480px',lineHeight:1.6}}>Загрузите чертёж или фото объекта — получите готовую смету в рублях с учётом региональных цен.</p>
+          </div>
 
-          <div
-            style={{border:'1px dashed var(--border2)',borderRadius:'8px',padding:'48px',textAlign:'center',marginBottom:'16px',background:'var(--card-bg)',cursor:'pointer'}}
-            onClick={() => document.getElementById('fileInput')?.click()}
-          >
-            <input id="fileInput" type="file" accept="image/*,.pdf" style={{display:'none'}} value="" onChange={e => { setFile(e.target.files?.[0] || null); }} />
-            {file ? (
-              <div>
-                {file.type.startsWith('image/') ? (
-                  <img src={URL.createObjectURL(file)} alt="preview" style={{maxHeight:'200px',maxWidth:'100%',borderRadius:'6px',objectFit:'contain',marginBottom:'12px'}} />
+          <div className="est-layout" style={{display:'flex',gap:'24px',alignItems:'flex-start'}}>
+
+            {/* LEFT — форма */}
+            <div style={{flex:'0 0 380px',display:'flex',flexDirection:'column',gap:'12px'}}>
+
+              {/* Upload zone */}
+              <div
+                onClick={() => document.getElementById('fileInput')?.click()}
+                style={{border:'1px solid var(--border)',borderRadius:'8px',padding:'32px 24px',textAlign:'center',background:'var(--bg2)',cursor:'pointer',transition:'border-color 0.2s'}}
+                onMouseOver={e => e.currentTarget.style.borderColor = 'var(--accent)'}
+                onMouseOut={e => e.currentTarget.style.borderColor = 'var(--border)'}
+              >
+                <input id="fileInput" type="file" accept="image/*,.pdf" style={{display:'none'}} onChange={e => setFile(e.target.files?.[0] || null)} />
+                {file ? (
+                  <div>
+                    {file.type.startsWith('image/') && <img src={URL.createObjectURL(file)} alt="preview" style={{maxHeight:'160px',maxWidth:'100%',borderRadius:'4px',objectFit:'contain',marginBottom:'10px'}} />}
+                    <div style={{fontFamily:"'Syne',sans-serif",fontWeight:600,fontSize:'13px',marginBottom:'4px'}}>{file.name}</div>
+                    <div style={{color:'var(--muted)',fontSize:'12px',marginBottom:'10px'}}>{(file.size / 1024).toFixed(0)} KB</div>
+                    <button onClick={e => { e.stopPropagation(); setFile(null); const inp = document.getElementById('fileInput') as HTMLInputElement; if(inp) inp.value='' }} style={{fontSize:'12px',color:'var(--muted)',background:'none',border:'1px solid var(--border2)',borderRadius:'3px',padding:'3px 10px',cursor:'pointer'}}>Удалить</button>
+                  </div>
                 ) : (
-                  <div style={{fontSize:'32px',marginBottom:'12px'}}>📄</div>
+                  <div>
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" style={{margin:'0 auto 12px',display:'block',color:'var(--muted)'}}>
+                      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                    <div style={{fontFamily:"'Syne',sans-serif",fontWeight:600,fontSize:'14px',marginBottom:'4px'}}>Загрузить чертёж или фото</div>
+                    <div style={{color:'var(--muted)',fontSize:'12px'}}>PNG, JPG, PDF — до 10 МБ</div>
+                  </div>
                 )}
-                <div style={{fontFamily:"'Syne',sans-serif",fontWeight:700,marginBottom:'4px'}}>{file.name}</div>
-                <div style={{color:'var(--muted)',fontSize:'13px',marginBottom:'8px'}}>{(file.size / 1024).toFixed(0)} KB</div>
-                <button onClick={e => { 
-  e.stopPropagation(); 
-  setFile(null);
-  const input = document.getElementById('fileInput') as HTMLInputElement;
-  if (input) input.value = '';
-}} style={{fontSize:'12px',color:'var(--muted)',background:'none',border:'1px solid var(--border2)',borderRadius:'4px',padding:'4px 12px',cursor:'pointer'}}>Удалить</button>
-              </div>
-            ) : (
-              <div>
-                <div style={{fontSize:'32px',marginBottom:'12px'}}>📐</div>
-                <div style={{fontFamily:"'Syne',sans-serif",fontWeight:700,marginBottom:'8px'}}>Загрузите чертёж или фото</div>
-                <div style={{color:'var(--muted)',fontSize:'13px'}}>PNG, JPG, PDF — до 10 МБ</div>
-              </div>
-            )}
-          </div>
-
-          <div style={{display:'flex',flexDirection:'column',gap:'7px',marginBottom:'16px',position:'relative'}}>
-            <label style={{fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase',color:'var(--muted)'}}>Город</label>
-            <input
-              type="text"
-              value={cityQuery}
-              onChange={e => { setCityQuery(e.target.value); setRegion(e.target.value); setShowCityList(true) }}
-              onFocus={() => setShowCityList(true)}
-              onBlur={() => setTimeout(() => setShowCityList(false), 200)}
-              placeholder="Начните вводить город..."
-              style={{background:'var(--bg)',border:'1px solid var(--border)',borderRadius:'4px',padding:'11px 14px',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",fontSize:'15px',outline:'none',width:'100%'}}
-            />
-            {showCityList && filteredCities.length > 0 && (
-              <div style={{position:'absolute',top:'100%',left:0,right:0,background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'4px',zIndex:50,maxHeight:'200px',overflowY:'auto',marginTop:'4px'}}>
-                {filteredCities.map(city => (
-                  <div key={city.name} onMouseDown={() => selectCity(city)}
-                    style={{padding:'10px 14px',cursor:'pointer',fontSize:'14px',color:'var(--text)',borderBottom:'1px solid var(--border)',transition:'background 0.15s'}}
-                    onMouseOver={e => e.currentTarget.style.background = 'var(--card-hover)'}
-                    onMouseOut={e => e.currentTarget.style.background = 'transparent'}
-                  >
-                    {city.name}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <div style={{marginBottom:'16px'}}>
-            <button
-              onClick={() => setShowParams(!showParams)}
-              style={{width:'100%',display:'flex',alignItems:'center',justifyContent:'space-between',background:'var(--bg2)',border:'1px solid var(--border)',borderRadius: showParams ? '8px 8px 0 0' : '8px',padding:'16px 20px',cursor:'pointer',fontFamily:"'Syne',sans-serif",fontSize:'14px',fontWeight:700,color:'var(--text)',transition:'all 0.2s'}}
-            >
-              <span>Параметры сметы</span>
-              <span style={{color:'var(--muted)',fontSize:'12px',display:'flex',alignItems:'center',gap:'8px'}}>
-                <span style={{color:'var(--muted)',fontSize:'12px',fontWeight:400}}>необязательно</span>
-                {showParams ? '▲' : '▼'}
-              </span>
-            </button>
-            {showParams && (
-              <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderTop:'none',borderRadius:'0 0 8px 8px',padding:'20px'}}>
-                <div className="params-grid" style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(240px, 1fr))',gap:'16px'}}>
-                  
-                  <div style={{display:'flex',flexDirection:'column',gap:'7px'}}>
-                    <label style={{fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase',color:'var(--muted)'}}>Группа грунтов</label>
-                    <select value={soilGroup} onChange={e => setSoilGroup(e.target.value)} style={{background:'var(--bg)',border:'1px solid var(--border)',borderRadius:'4px',padding:'10px 14px',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',outline:'none'}}>
-                      <option value="">Не указано</option>
-                      <option value="I">Песок, супесь</option>
-                      <option value="II">Суглинок лёгкий</option>
-                      <option value="III">Суглинок тяжёлый, глина</option>
-                      <option value="IV">Тяжёлая глина, сланцы</option>
-                      <option value="V">Скальный грунт</option>
-                    </select>
-                  </div>
-
-                  <div style={{display:'flex',flexDirection:'column',gap:'7px'}}>
-                    <label style={{fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase',color:'var(--muted)'}}>Климатический район</label>
-                    <select value={climateZone} onChange={e => setClimateZone(e.target.value)} style={{background:'var(--bg)',border:'1px solid var(--border)',borderRadius:'4px',padding:'10px 14px',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',outline:'none'}}>
-                      <option value="">Не указано</option>
-                      <option value="I">Крайний Север</option>
-                      <option value="II">Умеренный</option>
-                      <option value="III">Тёплый</option>
-                      <option value="IV">Жаркий</option>
-                    </select>
-                  </div>
-
-                  <div style={{display:'flex',flexDirection:'column',gap:'7px'}}>
-                    <label style={{fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase',color:'var(--muted)'}}>Условия производства работ</label>
-                    <select value={workConditions} onChange={e => setWorkConditions(e.target.value)} style={{background:'var(--bg)',border:'1px solid var(--border)',borderRadius:'4px',padding:'10px 14px',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',outline:'none'}}>
-                      <option value="">Не указано</option>
-                      <option value="normal">Нормальные</option>
-                      <option value="cramped">Стеснённые</option>
-                      <option value="height">На высоте более 15м</option>
-                      <option value="wet">Мокрый грунт</option>
-                      <option value="aggressive">Агрессивная среда</option>
-                    </select>
-                  </div>
-
-                  <div style={{display:'flex',flexDirection:'column',gap:'7px'}}>
-                    <label style={{fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase',color:'var(--muted)'}}>Метод составления сметы</label>
-                    <select value={estimateMethod} onChange={e => setEstimateMethod(e.target.value)} style={{background:'var(--bg)',border:'1px solid var(--border)',borderRadius:'4px',padding:'10px 14px',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',outline:'none'}}>
-                      <option value="">Не указано</option>
-                      <option value="resource">Ресурсный</option>
-                      <option value="base-index">Базисно-индексный</option>
-                      <option value="analogues">По аналогам</option>
-                      <option value="market">По рыночным ценам</option>
-                    </select>
-                  </div>
-
-                  <div style={{display:'flex',flexDirection:'column',gap:'7px'}}>
-                    <label style={{fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase',color:'var(--muted)'}}>Тип объекта</label>
-                    <select value={objectType} onChange={e => setObjectType(e.target.value)} style={{background:'var(--bg)',border:'1px solid var(--border)',borderRadius:'4px',padding:'10px 14px',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',outline:'none'}}>
-                      <option value="">Не указано</option>
-                      <option value="cottage">Жилой коттедж</option>
-                      <option value="apartment">Многоквартирный дом</option>
-                      <option value="commercial">Общественное здание</option>
-                      <option value="industrial">Промышленный объект</option>
-                      <option value="renovation">Реконструкция/ремонт</option>
-                      <option value="infrastructure">Инфраструктура</option>
-                    </select>
-                  </div>
-
-                  <div style={{display:'flex',flexDirection:'column',gap:'7px'}}>
-                    <label style={{fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase',color:'var(--muted)'}}>Период выполнения работ</label>
-                    <select value={workPeriod} onChange={e => setWorkPeriod(e.target.value)} style={{background:'var(--bg)',border:'1px solid var(--border)',borderRadius:'4px',padding:'10px 14px',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',outline:'none'}}>
-                      <option value="">Не указано</option>
-                      <option value="summer">Лето (апрель–октябрь)</option>
-                      <option value="winter">Зима (ноябрь–март)</option>
-                      <option value="year">Круглогодично</option>
-                    </select>
-                  </div>
-
-                </div>
-
-                <div style={{marginTop:'20px',display:'flex',flexDirection:'column',gap:'12px'}}>
-                  
-                  {[
-                    { key: 'includeWinter', value: includeWinter, setter: setIncludeWinter, label: 'Зимнее удорожание', desc: 'Доп. затраты на производство работ в зимнее время' },
-                    { key: 'includeTempBuildings', value: includeTempBuildings, setter: setIncludeTempBuildings, label: 'Временные здания и сооружения', desc: 'Для сводного сметного расчёта' },
-                    { key: 'hasLandscaping', value: hasLandscaping, setter: setHasLandscaping, label: 'Озеленение и благоустройство', desc: 'Газоны, цветники, посадка деревьев' },
-                  ].map(({ key, value, setter, label, desc }) => (
-                    <div key={key} style={{display:'flex',alignItems:'flex-start',gap:'12px',cursor:'pointer'}} onClick={() => setter(!value)}>
-                      <div style={{width:'20px',height:'20px',borderRadius:'4px',border:`2px solid ${value ? 'var(--accent)' : 'var(--border2)'}`,background:value ? 'var(--accent)' : 'transparent',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:'2px',transition:'all 0.2s'}}>
-                        {value && <span style={{color:'var(--btn-text)',fontSize:'12px',fontWeight:700}}>✓</span>}
-                      </div>
-                      <div>
-                        <div style={{fontSize:'14px',fontWeight:500}}>{label}</div>
-                        <div style={{fontSize:'12px',color:'var(--muted)',marginTop:'2px'}}>{desc}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-
-          <div style={{display:'flex',alignItems:'center',gap:'12px',marginBottom:'24px',padding:'20px 24px',background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',cursor:'pointer'}} onClick={() => setWithMaterials(!withMaterials)}>
-            <div style={{width:'20px',height:'20px',borderRadius:'4px',border:`2px solid ${withMaterials ? 'var(--accent)' : 'var(--border2)'}`,background:withMaterials ? 'var(--accent)' : 'transparent',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,transition:'all 0.2s'}}>
-              {withMaterials && <span style={{color:'var(--btn-text)',fontSize:'12px',fontWeight:700}}>✓</span>}
-            </div>
-            <div>
-              <div style={{fontFamily:"'Syne',sans-serif",fontWeight:700,fontSize:'15px',marginBottom:'2px'}}>Подбор материалов</div>
-              <div style={{color:'var(--muted)',fontSize:'13px',fontWeight:300}}>AI подберёт конкретные материалы и включит их стоимость в смету</div>
-            </div>
-          </div>
-
-          <button onClick={handleSubmit} disabled={!file || loading} style={{width:'100%',padding:'16px',borderRadius:'4px',background:file && !loading ? 'var(--accent)' : 'var(--border2)',color:file && !loading ? 'var(--btn-text)' : 'var(--muted)',border:'none',fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:700,cursor:file && !loading ? 'pointer' : 'not-allowed',transition:'all 0.2s',marginBottom:'48px'}}>
-            {loading ? (
-              <span style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'10px'}}>
-                <span style={{width:'18px',height:'18px',border:'2px solid var(--btn-text)',borderTopColor:'transparent',borderRadius:'50%',display:'inline-block',animation:'spin 0.8s linear infinite'}}></span>
-                Анализируем чертёж...
-              </span>
-            ) : 'Составить смету'}
-          </button>
-
-          {error && (
-            <div style={{background:'rgba(255,80,80,0.1)',border:'1px solid rgba(255,80,80,0.3)',borderRadius:'6px',padding:'16px',color:'#ff8080',marginBottom:'32px'}}>
-              {error}
-            </div>
-          )}
-
-          {estimate && (
-            <div>
-              <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'32px',marginBottom:'24px'}}>
-                <div style={{fontSize:'11px',letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)',marginBottom:'8px'}}>Объект</div>
-                <div style={{fontFamily:"'Syne',sans-serif",fontSize:'18px',fontWeight:700}}>{estimate.summary}</div>
               </div>
 
-              <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'12px'}}>
-                <span style={{fontSize:'11px',letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)'}}>Позиции сметы</span>
-                <button
-                  onClick={() => setEditMode(!editMode)}
-                  style={{display:'flex',alignItems:'center',gap:'6px',background:editMode ? 'var(--accent)' : 'transparent',color:editMode ? 'var(--btn-text)' : 'var(--muted)',border:'1px solid',borderColor:editMode ? 'var(--accent)' : 'var(--border2)',borderRadius:'4px',padding:'6px 14px',cursor:'pointer',fontSize:'13px',fontFamily:"'Syne',sans-serif",fontWeight:600,transition:'all 0.2s'}}
-                >
-                  {editMode ? '✓ Готово' : '✏ Редактировать'}
-                </button>
-              </div>
-
-              <div style={{border:'1px solid var(--border)',borderRadius:'8px',overflow:'auto',marginBottom:'24px'}}>
-                <table style={{width:'100%',borderCollapse:'collapse',fontSize:'14px',minWidth:'600px'}}>
-                  <thead>
-                    <tr style={{background:'var(--bg2)',borderBottom:'1px solid var(--border)'}}>
-                      <th style={{padding:'14px 20px',textAlign:'left',color:'var(--muted)',fontWeight:500,fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase'}}>Наименование</th>
-                      <th style={{padding:'14px 20px',textAlign:'center',color:'var(--muted)',fontWeight:500,fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase'}}>Ед.</th>
-                      <th style={{padding:'14px 20px',textAlign:'right',color:'var(--muted)',fontWeight:500,fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase',whiteSpace:'nowrap'}}>Кол-во</th>
-                      <th style={{padding:'14px 20px',textAlign:'right',color:'var(--muted)',fontWeight:500,fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase'}}>Цена</th>
-                      <th style={{padding:'14px 20px',textAlign:'right',color:'var(--muted)',fontWeight:500,fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase'}}>Сумма</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {editableItems.map((item, i) => (
-                      <tr key={i} style={{borderBottom:'1px solid var(--border)',background:i%2===0?'var(--bg)':'var(--bg2)'}}>
-                        <td style={{padding:'12px 20px'}}>
-                          {editMode
-                            ? <input value={item.name} onChange={e => updateItem(i, 'name', e.target.value)} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--text)',width:'100%',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',padding:'4px 8px',outline:'none'}} />
-                            : <span style={{color:'var(--text)'}}>{item.name}</span>
-                          }
-                        </td>
-                        <td style={{padding:'12px 20px',textAlign:'center'}}>
-                          {editMode
-                            ? <input value={item.unit} onChange={e => updateItem(i, 'unit', e.target.value)} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',width:'52px',textAlign:'center',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',padding:'4px 6px',outline:'none'}} />
-                            : <span style={{color:'var(--muted)'}}>{item.unit}</span>
-                          }
-                        </td>
-                        <td style={{padding:'12px 20px',textAlign:'right'}}>
-                          {editMode
-                            ? <input type="number" value={item.qty} onChange={e => updateItem(i, 'qty', Number(e.target.value))} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',width:'70px',textAlign:'right',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',padding:'4px 8px',outline:'none'}} />
-                            : <span style={{color:'var(--muted)'}}>{item.qty}</span>
-                          }
-                        </td>
-                        <td style={{padding:'12px 20px',textAlign:'right'}}>
-                          {editMode
-                            ? <input type="number" value={item.price} onChange={e => updateItem(i, 'price', Number(e.target.value))} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',width:'100px',textAlign:'right',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',padding:'4px 8px',outline:'none'}} />
-                            : <span style={{color:'var(--muted)'}}>{item.price.toLocaleString('ru-RU')} ₽</span>
-                          }
-                        </td>
-                        <td style={{padding:'12px 20px',textAlign:'right'}}>
-                          <div style={{display:'flex',alignItems:'center',justifyContent:'flex-end',gap:'10px'}}>
-                            <span style={{color:'var(--text)',fontWeight:500,whiteSpace:'nowrap'}}>{(item.qty*item.price).toLocaleString('ru-RU')} ₽</span>
-                            {editMode && (
-                              <button onClick={() => removeItem(i)} style={{background:'none',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',cursor:'pointer',fontSize:'12px',padding:'3px 8px',fontFamily:"'Syne',sans-serif",transition:'all 0.2s',whiteSpace:'nowrap'}}
-                                onMouseOver={e => { e.currentTarget.style.borderColor='#ff8080'; e.currentTarget.style.color='#ff8080' }}
-                                onMouseOut={e => { e.currentTarget.style.borderColor='var(--border2)'; e.currentTarget.style.color='var(--muted)' }}
-                              >Удалить</button>
-                            )}
-                          </div>
-                        </td>
-                      </tr>
+              {/* City */}
+              <div style={{position:'relative'}}>
+                <label style={labelStyle}>Город</label>
+                <input type="text" value={cityQuery} onChange={e => { setCityQuery(e.target.value); setRegion(e.target.value); setShowCityList(true) }} onFocus={() => setShowCityList(true)} onBlur={() => setTimeout(() => setShowCityList(false), 150)} placeholder="Начните вводить..." style={{...selectStyle}} />
+                {showCityList && filteredCities.length > 0 && (
+                  <div style={{position:'absolute',top:'100%',left:0,right:0,background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'4px',zIndex:50,maxHeight:'180px',overflowY:'auto',marginTop:'2px'}}>
+                    {filteredCities.map(city => (
+                      <div key={city.name} onMouseDown={() => selectCity(city)} style={{padding:'9px 12px',cursor:'pointer',fontSize:'13px',color:'var(--text)',borderBottom:'1px solid var(--border)',transition:'background 0.1s'}} onMouseOver={e => e.currentTarget.style.background='var(--card-hover)'} onMouseOut={e => e.currentTarget.style.background='transparent'}>{city.name}</div>
                     ))}
-                  </tbody>
-                </table>
-                {editMode && (
-                  <div style={{padding:'12px 20px',borderTop:'1px solid var(--border)'}}>
-                    <button onClick={addItem} style={{background:'none',border:'1px dashed var(--border2)',borderRadius:'4px',color:'var(--muted)',padding:'8px 16px',cursor:'pointer',fontSize:'13px',fontFamily:"'Syne',sans-serif",fontWeight:600,width:'100%'}}>
-                      + Добавить позицию
-                    </button>
                   </div>
                 )}
               </div>
 
-              <div style={{background:'var(--bg2)',borderTop:'2px solid var(--border)',padding:'16px 20px',display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'32px'}}>
-                <span style={{color:'var(--muted)',fontSize:'13px'}}>Позиций: {editableItems.length}</span>
-                <span style={{fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:700}}>
-                  Итого: {totalRub.toLocaleString('ru-RU')} ₽
-                </span>
+              {/* Params collapsible */}
+              <div>
+                <button onClick={() => setShowParams(!showParams)} style={{width:'100%',display:'flex',alignItems:'center',justifyContent:'space-between',background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:showParams?'6px 6px 0 0':'6px',padding:'12px 16px',cursor:'pointer',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:600,color:'var(--text)'}}>
+                  <span>Параметры сметы</span>
+                  <span style={{color:'var(--muted)',fontSize:'12px',fontWeight:400,display:'flex',alignItems:'center',gap:'6px'}}>необязательно <span>{showParams ? '▲' : '▼'}</span></span>
+                </button>
+                {showParams && (
+                  <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderTop:'none',borderRadius:'0 0 6px 6px',padding:'16px'}}>
+                    <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'12px',marginBottom:'14px'}}>
+                      {[
+                        { label: 'Группа грунтов', value: soilGroup, setter: setSoilGroup, options: [['','— Не указано'],['I','I — Песок'],['II','II — Суглинок'],['III','III — Глина'],['IV','IV — Тяжёлая глина'],['V','V — Скала']] },
+                        { label: 'Климатический район', value: climateZone, setter: setClimateZone, options: [['','— Не указано'],['I','I — Крайний Север'],['II','II — Умеренный'],['III','III — Тёплый'],['IV','IV — Жаркий']] },
+                        { label: 'Условия работ', value: workConditions, setter: setWorkConditions, options: [['','— Не указано'],['normal','Нормальные'],['cramped','Стеснённые'],['height','На высоте >15м'],['wet','Мокрый грунт'],['aggressive','Агрессивная среда']] },
+                        { label: 'Метод составления', value: estimateMethod, setter: setEstimateMethod, options: [['','— Не указано'],['resource','Ресурсный'],['base-index','Базисно-индексный'],['analogues','По аналогам'],['market','По рыночным ценам']] },
+                        { label: 'Тип объекта', value: objectType, setter: setObjectType, options: [['','— Не указано'],['cottage','Жилой коттедж'],['apartment','Многоквартирный дом'],['commercial','Общественное здание'],['industrial','Промышленный объект'],['renovation','Реконструкция']] },
+                        { label: 'Период работ', value: workPeriod, setter: setWorkPeriod, options: [['','— Не указано'],['summer','Лето'],['winter','Зима'],['year','Круглогодично']] },
+                      ].map(({ label, value, setter, options }) => (
+                        <div key={label}>
+                          <label style={{...labelStyle,fontSize:'10px'}}>{label}</label>
+                          <select value={value} onChange={e => setter(e.target.value)} style={selectStyle}>
+                            {options.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+                          </select>
+                        </div>
+                      ))}
+                    </div>
+                    {[
+                      { key: 'winter', value: includeWinter, setter: setIncludeWinter, label: 'Зимнее удорожание' },
+                      { key: 'temp', value: includeTempBuildings, setter: setIncludeTempBuildings, label: 'Временные здания и сооружения' },
+                      { key: 'land', value: hasLandscaping, setter: setHasLandscaping, label: 'Озеленение и благоустройство' },
+                    ].map(({ key, value, setter, label }) => (
+                      <div key={key} style={{display:'flex',alignItems:'center',gap:'10px',cursor:'pointer',marginBottom:'8px'}} onClick={() => setter(!value)}>
+                        <div style={{width:'16px',height:'16px',borderRadius:'3px',border:`1.5px solid ${value ? 'var(--accent)' : 'var(--border2)'}`,background:value ? 'var(--accent)' : 'transparent',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,transition:'all 0.15s'}}>
+                          {value && <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="var(--btn-text)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                        </div>
+                        <span style={{fontSize:'13px'}}>{label}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
-              <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'24px 32px',marginBottom:'24px'}}>
-                <span style={{fontFamily:"'Syne',sans-serif",fontSize:'16px',fontWeight:700}}>Итого</span>
-                <span style={{fontFamily:"'Syne',sans-serif",fontSize:'clamp(18px,4vw,28px)',fontWeight:800,color:'var(--accent)',whiteSpace:'nowrap'}}>{totalRub.toLocaleString('ru-RU')} ₽</span>
+              {/* Materials */}
+              <div style={{display:'flex',alignItems:'center',gap:'12px',padding:'14px 16px',background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'6px',cursor:'pointer'}} onClick={() => setWithMaterials(!withMaterials)}>
+                <div style={{width:'16px',height:'16px',borderRadius:'3px',border:`1.5px solid ${withMaterials ? 'var(--accent)' : 'var(--border2)'}`,background:withMaterials ? 'var(--accent)' : 'transparent',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,transition:'all 0.15s'}}>
+                  {withMaterials && <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="var(--btn-text)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                </div>
+                <div>
+                  <div style={{fontFamily:"'Syne',sans-serif",fontWeight:600,fontSize:'13px',marginBottom:'2px'}}>Подбор материалов</div>
+                  <div style={{color:'var(--muted)',fontSize:'12px'}}>AI включит стоимость материалов в смету</div>
+                </div>
               </div>
 
-              {estimate.notes && (
-                <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'24px 32px',marginBottom:'24px'}}>
-                  <div style={{fontSize:'11px',letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)',marginBottom:'8px'}}>Замечания</div>
-                  <div style={{color:'var(--muted)',fontSize:'14px',lineHeight:1.6,fontWeight:300}}>{estimate.notes}</div>
+              {/* Submit */}
+              <button onClick={handleSubmit} disabled={!file || loading} style={{width:'100%',padding:'14px',borderRadius:'6px',background:file && !loading ? 'var(--accent)' : 'var(--border2)',color:file && !loading ? 'var(--btn-text)' : 'var(--muted)',border:'none',fontFamily:"'Syne',sans-serif",fontSize:'14px',fontWeight:700,cursor:file && !loading ? 'pointer' : 'not-allowed',transition:'all 0.2s'}}>
+                {loading ? (
+                  <span style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'8px'}}>
+                    <span style={{width:'16px',height:'16px',border:'2px solid var(--btn-text)',borderTopColor:'transparent',borderRadius:'50%',display:'inline-block',animation:'spin 0.8s linear infinite'}}></span>
+                    Анализируем...
+                  </span>
+                ) : 'Составить смету'}
+              </button>
+
+              {error && <div style={{background:'rgba(255,80,80,0.08)',border:'1px solid rgba(255,80,80,0.25)',borderRadius:'6px',padding:'12px',color:'#ff8080',fontSize:'13px'}}>{error}</div>}
+            </div>
+
+            {/* RIGHT — результат или подсказка */}
+            <div style={{flex:1,minWidth:0}}>
+              {!estimate && !loading && (
+                <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'32px',height:'100%',minHeight:'300px',display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center',textAlign:'center',gap:'16px'}}>
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" style={{color:'var(--border2)'}}>
+                    <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M9 12h6M9 16h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                  </svg>
+                  <div>
+                    <div style={{fontFamily:"'Syne',sans-serif",fontWeight:600,fontSize:'15px',marginBottom:'6px'}}>Здесь появится смета</div>
+                    <div style={{color:'var(--muted)',fontSize:'13px',lineHeight:1.5}}>Загрузите чертёж или фото объекта<br />и нажмите «Составить смету»</div>
+                  </div>
+                  <div style={{display:'flex',flexDirection:'column',gap:'8px',width:'100%',maxWidth:'240px',marginTop:'8px'}}>
+                    {['Загрузите файл','Укажите город','Нажмите кнопку'].map((step, i) => (
+                      <div key={i} style={{display:'flex',alignItems:'center',gap:'10px',textAlign:'left'}}>
+                        <div style={{width:'20px',height:'20px',borderRadius:'50%',background:'var(--border)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'11px',fontWeight:600,color:'var(--muted)',flexShrink:0}}>{i+1}</div>
+                        <span style={{fontSize:'13px',color:'var(--muted)'}}>{step}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
 
-              <button onClick={downloadPDF} style={{width:'100%',padding:'14px',borderRadius:'4px',background:'transparent',color:'var(--accent)',border:'1px solid var(--accent)',fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:600,cursor:'pointer',transition:'all 0.2s'}}>
-                Скачать PDF
-              </button>
-              <button onClick={downloadExcel} style={{width:'100%',padding:'14px',borderRadius:'4px',background:'transparent',color:'var(--muted)',border:'1px solid var(--border2)',fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:600,cursor:'pointer',transition:'all 0.2s',marginTop:'12px'}}>
-                Скачать Excel (CSV)
-              </button>
+              {estimate && (
+                <div style={{display:'flex',flexDirection:'column',gap:'16px'}}>
+                  <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'20px 24px'}}>
+                    <div style={{fontSize:'10px',letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)',marginBottom:'6px'}}>Объект</div>
+                    <div style={{fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:700}}>{estimate.summary}</div>
+                  </div>
+
+                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                    <span style={{fontSize:'11px',letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)'}}>Позиции сметы</span>
+                    <button onClick={() => setEditMode(!editMode)} style={{display:'flex',alignItems:'center',gap:'5px',background:editMode?'var(--accent)':'transparent',color:editMode?'var(--btn-text)':'var(--muted)',border:'1px solid',borderColor:editMode?'var(--accent)':'var(--border2)',borderRadius:'4px',padding:'5px 12px',cursor:'pointer',fontSize:'12px',fontFamily:"'Syne',sans-serif",fontWeight:600,transition:'all 0.2s'}}>
+                      {editMode ? (
+                        <><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l2.5 2.5L10 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>Готово</>
+                      ) : (
+                        <><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8.5 1.5a1.414 1.414 0 012 2L4 10H2v-2L8.5 1.5z" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>Редактировать</>
+                      )}
+                    </button>
+                  </div>
+
+                  <div style={{border:'1px solid var(--border)',borderRadius:'8px',overflow:'auto'}}>
+                    <table style={{width:'100%',borderCollapse:'collapse',fontSize:'13px',minWidth:'520px'}}>
+                      <thead>
+                        <tr style={{background:'var(--bg2)',borderBottom:'1px solid var(--border)'}}>
+                          {['Наименование','Ед.','Кол-во','Цена','Сумма'].map(h => (
+                            <th key={h} style={{padding:'11px 16px',textAlign:h==='Наименование'?'left':'right',color:'var(--muted)',fontWeight:500,fontSize:'10px',letterSpacing:'0.08em',textTransform:'uppercase',whiteSpace:'nowrap'}}>{h}</th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {editableItems.map((item, i) => (
+                          <tr key={i} style={{borderBottom:'1px solid var(--border)',background:i%2===0?'var(--bg)':'var(--bg2)'}}>
+                            <td style={{padding:'10px 16px'}}>
+                              {editMode ? <input value={item.name} onChange={e => updateItem(i,'name',e.target.value)} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'3px',color:'var(--text)',width:'100%',fontFamily:"'DM Sans',sans-serif",fontSize:'13px',padding:'3px 7px',outline:'none'}} /> : <span style={{color:'var(--text)'}}>{item.name}</span>}
+                            </td>
+                            <td style={{padding:'10px 16px',textAlign:'right'}}>
+                              {editMode ? <input value={item.unit} onChange={e => updateItem(i,'unit',e.target.value)} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'3px',color:'var(--muted)',width:'44px',textAlign:'center',fontFamily:"'DM Sans',sans-serif",fontSize:'13px',padding:'3px 4px',outline:'none'}} /> : <span style={{color:'var(--muted)'}}>{item.unit}</span>}
+                            </td>
+                            <td style={{padding:'10px 16px',textAlign:'right'}}>
+                              {editMode ? <input type="number" value={item.qty} onChange={e => updateItem(i,'qty',Number(e.target.value))} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'3px',color:'var(--muted)',width:'60px',textAlign:'right',fontFamily:"'DM Sans',sans-serif",fontSize:'13px',padding:'3px 7px',outline:'none'}} /> : <span style={{color:'var(--muted)'}}>{item.qty}</span>}
+                            </td>
+                            <td style={{padding:'10px 16px',textAlign:'right'}}>
+                              {editMode ? <input type="number" value={item.price} onChange={e => updateItem(i,'price',Number(e.target.value))} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'3px',color:'var(--muted)',width:'90px',textAlign:'right',fontFamily:"'DM Sans',sans-serif",fontSize:'13px',padding:'3px 7px',outline:'none'}} /> : <span style={{color:'var(--muted)'}}>{item.price.toLocaleString('ru-RU')} ₽</span>}
+                            </td>
+                            <td style={{padding:'10px 16px',textAlign:'right'}}>
+                              <div style={{display:'flex',alignItems:'center',justifyContent:'flex-end',gap:'8px'}}>
+                                <span style={{color:'var(--text)',fontWeight:500,whiteSpace:'nowrap'}}>{(item.qty*item.price).toLocaleString('ru-RU')} ₽</span>
+                                {editMode && <button onClick={() => removeItem(i)} style={{background:'none',border:'1px solid var(--border2)',borderRadius:'3px',color:'var(--muted)',cursor:'pointer',fontSize:'12px',padding:'2px 7px',lineHeight:1,transition:'all 0.15s'}} onMouseOver={e=>{e.currentTarget.style.borderColor='#ff8080';e.currentTarget.style.color='#ff8080'}} onMouseOut={e=>{e.currentTarget.style.borderColor='var(--border2)';e.currentTarget.style.color='var(--muted)'}}>×</button>}
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    {editMode && (
+                      <div style={{padding:'10px 16px',borderTop:'1px solid var(--border)'}}>
+                        <button onClick={addItem} style={{background:'none',border:'1px dashed var(--border2)',borderRadius:'4px',color:'var(--muted)',padding:'7px 14px',cursor:'pointer',fontSize:'12px',fontFamily:"'Syne',sans-serif",fontWeight:600,width:'100%'}}>+ Добавить позицию</button>
+                      </div>
+                    )}
+                    <div style={{background:'var(--bg2)',borderTop:'1px solid var(--border)',padding:'12px 16px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                      <span style={{color:'var(--muted)',fontSize:'12px'}}>Позиций: {editableItems.length}</span>
+                      <span style={{fontFamily:"'Syne',sans-serif",fontSize:'14px',fontWeight:700}}>Итого: {totalRub.toLocaleString('ru-RU')} ₽</span>
+                    </div>
+                  </div>
+
+                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'20px 24px'}}>
+                    <span style={{fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:700}}>Итоговая стоимость</span>
+                    <span style={{fontFamily:"'Syne',sans-serif",fontSize:'26px',fontWeight:800,color:'var(--accent)'}}>{totalRub.toLocaleString('ru-RU')} ₽</span>
+                  </div>
+
+                  {estimate.notes && (
+                    <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'20px 24px'}}>
+                      <div style={{fontSize:'10px',letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)',marginBottom:'8px'}}>Замечания</div>
+                      <div style={{color:'var(--muted)',fontSize:'13px',lineHeight:1.6}}>{estimate.notes}</div>
+                    </div>
+                  )}
+
+                  <div style={{display:'flex',gap:'8px'}}>
+                    <button onClick={downloadPDF} style={{flex:1,padding:'12px',borderRadius:'4px',background:'var(--accent)',color:'var(--btn-text)',border:'none',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:700,cursor:'pointer'}}>Скачать PDF</button>
+                    <button onClick={downloadExcel} style={{flex:1,padding:'12px',borderRadius:'4px',background:'transparent',color:'var(--muted)',border:'1px solid var(--border2)',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:600,cursor:'pointer',transition:'all 0.2s'}} onMouseOver={e=>{e.currentTarget.style.borderColor='var(--accent)';e.currentTarget.style.color='var(--accent)'}} onMouseOut={e=>{e.currentTarget.style.borderColor='var(--border2)';e.currentTarget.style.color='var(--muted)'}}>Скачать Excel</button>
+                  </div>
+                </div>
+              )}
             </div>
-          )}
+          </div>
         </div>
       </div>
     </>
