@@ -213,20 +213,9 @@ footer { padding:44px 52px; border-top:1px solid var(--border); display:flex; al
   .hero-stats .stat-num { font-size:22px; }
   .cta-section h2 { font-size:28px; }
   .nav-cabinet {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  color: var(--text);
-  font-size: 14px;
-  text-decoration: none;
-  border: 1px solid var(--border2);
-  border-radius: 4px;
-  padding: 9px 22px;
-  font-family: 'Syne', sans-serif;
-  font-weight: 500;
-  transition: all 0.2s;
-  white-space: nowrap;
-}
+    padding: 7px 12px !important;
+    font-size: 12px !important;
+  }
 .nav-cabinet:hover {
   border-color: var(--accent);
   color: var(--accent);
@@ -237,6 +226,44 @@ footer {
   background: var(--bg2);
   transition: background 0.35s;
 }
+}
+
+@media (max-width: 600px) {
+  nav { padding: 12px 16px !important; }
+  
+  .nav-right { gap: 8px !important; }
+  
+  .nav-cabinet {
+    padding: 7px 12px !important;
+    font-size: 12px !important;
+  }
+  
+  .nav-cta {
+    padding: 7px 12px !important;
+    font-size: 12px !important;
+  }
+  
+  .nav-cta {
+    display: none !important;
+  }
+  
+  .hero { padding: 90px 20px 60px !important; }
+  
+  .hero-actions { flex-direction: column !important; align-items: stretch !important; gap: 10px !important; }
+  
+  .btn-primary { text-align: center !important; justify-content: center !important; }
+  
+  .btn-ghost { justify-content: center !important; height: 48px !important; border: 1px solid var(--border2) !important; border-radius: 4px !important; }
+  
+  footer { padding: 48px 20px !important; }
+  
+  footer .container > div:first-child { flex-direction: column !important; align-items: center !important; text-align: center !important; }
+  
+  footer .container > div:first-child > div:first-child { display: flex !important; flex-direction: column !important; align-items: center !important; }
+  
+  footer .container > div:first-child > div:last-child { flex-direction: column !important; align-items: center !important; gap: 32px !important; }
+  
+  footer .container > div:last-child { flex-direction: column !important; align-items: center !important; gap: 8px !important; text-align: center !important; }
 }
 
 /*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\

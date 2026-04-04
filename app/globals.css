@@ -240,6 +240,10 @@ footer {
     font-size: 12px !important;
   }
   
+  .nav-cta {
+    display: none !important;
+  }
+  
   .hero { padding: 90px 20px 60px !important; }
   
   .hero-actions { flex-direction: column !important; align-items: stretch !important; gap: 10px !important; }
