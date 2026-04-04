@@ -134,7 +134,7 @@ export default function DocumentsPage() {
 
   return (
     <>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap'); @keyframes spin { to { transform: rotate(360deg); } } @media (max-width:768px) { .docs-layout { flex-direction: column !important; } } @media (max-width: 600px) { .docs-layout { padding: 0 !important; } .docs-layout > div:first-child { width: 100% !important; flex: none !important; } }`}</style>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap'); @keyframes spin { to { transform: rotate(360deg); } } @media (max-width:768px) { .docs-layout { flex-direction: column !important; } } @media (max-width: 600px) { .docs-layout { padding: 0 !important; } .docs-layout > div:first-child { width: 100% !important; flex: none !important; } .docs-placeholder { padding: 20px !important; min-height: auto !important; } .docs-placeholder .placeholder-icon { width: 32px !important; height: 32px !important; } .docs-placeholder .placeholder-title { font-size: 13px !important; margin-bottom: 4px !important; } .docs-placeholder .placeholder-text { font-size: 12px !important; } }`}</style>
 
       <nav style={{position:'fixed',top:0,left:0,right:0,zIndex:100,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'clamp(12px, 2vw, 16px) clamp(16px, 4vw, 40px)',background:'var(--bg)',borderBottom:'1px solid var(--border)'}}>
         <a href="/" style={{fontFamily:"'Syne',sans-serif",fontSize:'20px',fontWeight:800,color:'var(--text)',textDecoration:'none',letterSpacing:'-0.5px'}}>Kern<span style={{color:'var(--accent)'}}>.</span></a>
@@ -218,14 +218,14 @@ export default function DocumentsPage() {
             {/* RIGHT */}
             <div style={{flex:1,minWidth:0}}>
               {!result && !loading && (
-                <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'32px',minHeight:'400px',display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center',textAlign:'center',gap:'16px'}}>
-                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" style={{color:'var(--border2)'}}>
+                <div className="docs-placeholder" style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'32px',minHeight:'400px',display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center',textAlign:'center',gap:'16px'}}>
+                  <svg className="placeholder-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" style={{color:'var(--border2)'}}>
                     <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                     <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                   <div>
-                    <div style={{fontFamily:"'Syne',sans-serif",fontWeight:600,fontSize:'15px',marginBottom:'6px'}}>Выберите тип документа</div>
-                    <div style={{color:'var(--muted)',fontSize:'13px',lineHeight:1.5}}>Заполните данные слева и нажмите<br />«Сгенерировать»</div>
+                    <div className="placeholder-title" style={{fontFamily:"'Syne',sans-serif",fontWeight:600,fontSize:'15px',marginBottom:'6px'}}>Выберите тип документа</div>
+                    <div className="placeholder-text" style={{color:'var(--muted)',fontSize:'13px',lineHeight:1.5}}>Заполните данные слева и нажмите<br />«Сгенерировать»</div>
                   </div>
                 </div>
               )}
