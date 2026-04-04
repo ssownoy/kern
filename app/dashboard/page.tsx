@@ -129,9 +129,9 @@ export default function DashboardPage() {
             <a href="/documents" style={{color:'var(--muted)',fontSize:'13px',textDecoration:'none',padding:'6px 12px',borderRadius:'4px',transition:'all 0.15s'}} onMouseOver={e=>e.currentTarget.style.color='var(--text)'} onMouseOut={e=>e.currentTarget.style.color='var(--muted)'}>Документы</a>
           </div>
           <button onClick={toggleTheme} style={{width:'42px',height:'23px',background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'12px',cursor:'pointer',position:'relative',display:'flex',alignItems:'center',padding:'0 3px',flexShrink:0}}>
-            <span style={{fontSize:'10px',position:'absolute',left:'5px',pointerEvents:'none'}}>🌙</span>
+            <span style={{fontSize:'10px',position:'absolute',left:'5px',pointerEvents:'none'}}></span>
             <div style={{width:'17px',height:'17px',borderRadius:'50%',background:'var(--accent)',transition:'transform 0.3s',flexShrink:0,transform:theme==='light'?'translateX(19px)':'translateX(0)'}}></div>
-            <span style={{fontSize:'10px',position:'absolute',right:'4px',pointerEvents:'none'}}>☀️</span>
+            <span style={{fontSize:'10px',position:'absolute',right:'4px',pointerEvents:'none'}}></span>
           </button>
         </div>
       </nav>
