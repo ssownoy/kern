@@ -4,10 +4,10 @@ import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 
 const docTypes = [
-  { id: 'contract', label: 'Договор подряда', icon: '📄', desc: 'Договор строительного подряда по ГК РФ' },
-  { id: 'act', label: 'Акт КС-2', icon: '✅', desc: 'Акт о приёмке выполненных работ' },
-  { id: 'defect', label: 'Дефектная ведомость', icon: '🔍', desc: 'Ведомость дефектов и недостатков' },
-  { id: 'tz', label: 'Техническое задание', icon: '📋', desc: 'ТЗ на строительство объекта' },
+  { id: 'contract', label: 'Договор подряда', desc: 'По ГК РФ, глава 37' },
+  { id: 'act', label: 'Акт КС-2', desc: 'Приёмка выполненных работ' },
+  { id: 'defect', label: 'Дефектная ведомость', desc: 'Ведомость дефектов' },
+  { id: 'tz', label: 'Техническое задание', desc: 'ТЗ на строительство' },
 ]
 
 const docFields: Record<string, { key: string; label: string; placeholder: string; type?: string }[]> = {
@@ -17,8 +17,8 @@ const docFields: Record<string, { key: string; label: string; placeholder: strin
     { key: 'object', label: 'Объект строительства', placeholder: 'Жилой дом по адресу...' },
     { key: 'scope', label: 'Виды работ', placeholder: 'Возведение фундамента, кладка стен...' },
     { key: 'price', label: 'Стоимость работ', placeholder: '5 000 000 рублей' },
-    { key: 'start_date', label: 'Дата начала работ', placeholder: '01.05.2026', type: 'date' },
-    { key: 'end_date', label: 'Дата окончания работ', placeholder: '01.11.2026', type: 'date' },
+    { key: 'start_date', label: 'Дата начала', placeholder: '01.05.2026', type: 'date' },
+    { key: 'end_date', label: 'Дата окончания', placeholder: '01.11.2026', type: 'date' },
     { key: 'warranty', label: 'Гарантийный срок', placeholder: '24 месяца' },
   ],
   act: [
@@ -27,25 +27,25 @@ const docFields: Record<string, { key: string; label: string; placeholder: strin
     { key: 'object', label: 'Объект', placeholder: 'Жилой дом...' },
     { key: 'contract_number', label: 'Номер договора', placeholder: '№ 123 от 01.01.2026' },
     { key: 'period', label: 'Отчётный период', placeholder: 'Апрель 2026' },
-    { key: 'works', label: 'Выполненные работы', placeholder: 'Кладка кирпича — 120 м³ по 5500 ₽...' },
+    { key: 'works', label: 'Выполненные работы', placeholder: 'Кладка кирпича — 120 м³...' },
     { key: 'total', label: 'Общая стоимость', placeholder: '660 000 рублей' },
   ],
   defect: [
     { key: 'object', label: 'Объект', placeholder: 'Жилой дом по адресу...' },
     { key: 'date', label: 'Дата осмотра', placeholder: '01.04.2026', type: 'date' },
-    { key: 'commission', label: 'Члены комиссии', placeholder: 'Иванов И.И. — прораб, Петров П.П. — инженер' },
-    { key: 'defects', label: 'Выявленные дефекты', placeholder: 'Трещины в стенах, отслоение штукатурки...' },
+    { key: 'commission', label: 'Члены комиссии', placeholder: 'Иванов И.И. — прораб' },
+    { key: 'defects', label: 'Выявленные дефекты', placeholder: 'Трещины в стенах...' },
     { key: 'deadline', label: 'Срок устранения', placeholder: '30 дней' },
     { key: 'responsible', label: 'Ответственный', placeholder: 'Подрядчик ООО "Строй"' },
   ],
   tz: [
     { key: 'customer', label: 'Заказчик', placeholder: 'ООО "Заказчик"' },
-    { key: 'object', label: 'Объект строительства', placeholder: 'Жилой дом 2 этажа' },
-    { key: 'location', label: 'Адрес объекта', placeholder: 'Московская область, д. Иваново' },
-    { key: 'purpose', label: 'Назначение объекта', placeholder: 'Жилой дом для постоянного проживания' },
-    { key: 'area', label: 'Площадь объекта', placeholder: '250 кв.м.' },
-    { key: 'materials', label: 'Основные материалы', placeholder: 'Кирпич, железобетон, металлочерепица' },
-    { key: 'requirements', label: 'Особые требования', placeholder: 'Тёплый пол, панорамные окна...' },
+    { key: 'object', label: 'Объект', placeholder: 'Жилой дом 2 этажа' },
+    { key: 'location', label: 'Адрес', placeholder: 'Московская область' },
+    { key: 'purpose', label: 'Назначение', placeholder: 'Постоянное проживание' },
+    { key: 'area', label: 'Площадь', placeholder: '250 кв.м.' },
+    { key: 'materials', label: 'Материалы', placeholder: 'Кирпич, железобетон' },
+    { key: 'requirements', label: 'Особые требования', placeholder: 'Тёплый пол...' },
     { key: 'deadline', label: 'Срок выполнения', placeholder: '12 месяцев' },
   ],
 }
@@ -87,7 +87,6 @@ export default function DocumentsPage() {
       const data = await res.json()
       if (data.error) throw new Error(data.error)
       setResult(data.text)
-      
       const { data: { session } } = await supabase.auth.getSession()
       if (session?.user) {
         await supabase.from('documents').insert({
@@ -95,7 +94,7 @@ export default function DocumentsPage() {
           doc_type: selectedDoc,
           doc_label: docTypes.find(d => d.id === selectedDoc)?.label || '',
           content: data.text,
-          fields: fields,
+          fields,
         })
       }
     } catch (e: any) {
@@ -130,101 +129,123 @@ export default function DocumentsPage() {
 
   if (!mounted) return null
 
+  const inputStyle = { background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '4px', padding: '9px 12px', color: 'var(--text)', fontFamily: "'DM Sans',sans-serif", fontSize: '13px', outline: 'none', width: '100%' }
+  const labelStyle = { fontSize: '10px', letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: 'var(--muted)', display: 'block', marginBottom: '5px' }
+
   return (
     <>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap'); @keyframes spin { to { transform: rotate(360deg); } } @media (max-width: 600px) { .docs-nav { padding: 14px 16px !important; } .docs-container { padding: 90px 16px 60px !important; } .doc-types-grid { grid-template-columns: 1fr 1fr !important; } .fields-grid { grid-template-columns: 1fr !important; } }`}</style>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap'); @keyframes spin { to { transform: rotate(360deg); } } @media (max-width:768px) { .docs-layout { flex-direction: column !important; } }`}</style>
 
-      <nav className="docs-nav" style={{position:'fixed',top:0,left:0,right:0,zIndex:100,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'20px 52px',background:'var(--bg)',borderBottom:'1px solid var(--border)'}}>
-        <a href="/" style={{fontFamily:"'Syne',sans-serif",fontSize:'22px',fontWeight:800,color:'var(--text)',textDecoration:'none',letterSpacing:'-0.5px'}}>
-          Kern<span style={{color:'var(--accent)'}}>.</span>
-        </a>
+      <nav style={{position:'fixed',top:0,left:0,right:0,zIndex:100,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'16px 40px',background:'var(--bg)',borderBottom:'1px solid var(--border)'}}>
+        <a href="/" style={{fontFamily:"'Syne',sans-serif",fontSize:'20px',fontWeight:800,color:'var(--text)',textDecoration:'none',letterSpacing:'-0.5px'}}>Kern<span style={{color:'var(--accent)'}}>.</span></a>
         <div style={{display:'flex',alignItems:'center',gap:'12px'}}>
-          <a href="/dashboard" style={{display:'flex',alignItems:'center',gap:'7px',color:'var(--text)',fontSize:'13px',textDecoration:'none',border:'1px solid var(--border2)',borderRadius:'4px',padding:'6px 14px',fontFamily:"'Syne',sans-serif",fontWeight:600,transition:'all 0.2s'}} onMouseOver={e=>{e.currentTarget.style.borderColor='var(--accent)';e.currentTarget.style.color='var(--accent)'}} onMouseOut={e=>{e.currentTarget.style.borderColor='var(--border2)';e.currentTarget.style.color='var(--text)'}}>
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" strokeWidth="1.5"/><path d="M2 14c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+          <a href="/dashboard" style={{display:'flex',alignItems:'center',gap:'6px',color:'var(--text)',fontSize:'13px',textDecoration:'none',border:'1px solid var(--border2)',borderRadius:'4px',padding:'6px 14px',fontFamily:"'Syne',sans-serif",fontWeight:600,transition:'all 0.2s'}} onMouseOver={e=>{e.currentTarget.style.borderColor='var(--accent)';e.currentTarget.style.color='var(--accent)'}} onMouseOut={e=>{e.currentTarget.style.borderColor='var(--border2)';e.currentTarget.style.color='var(--text)'}}>
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" strokeWidth="1.5"/><path d="M2 14c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
             Кабинет
           </a>
           <button onClick={toggleTheme} style={{width:'42px',height:'23px',background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'12px',cursor:'pointer',position:'relative',display:'flex',alignItems:'center',padding:'0 3px',flexShrink:0}}>
-            <span style={{fontSize:'10px',position:'absolute',pointerEvents:'none',left:'5px'}}>🌙</span>
+            <span style={{fontSize:'10px',position:'absolute',left:'5px',pointerEvents:'none'}}>🌙</span>
             <div style={{width:'17px',height:'17px',borderRadius:'50%',background:'var(--accent)',transition:'transform 0.3s',flexShrink:0,transform:theme==='light'?'translateX(19px)':'translateX(0)'}}></div>
-            <span style={{fontSize:'10px',position:'absolute',pointerEvents:'none',right:'4px'}}>☀️</span>
+            <span style={{fontSize:'10px',position:'absolute',right:'4px',pointerEvents:'none'}}>☀️</span>
           </button>
         </div>
       </nav>
 
-      <div className="docs-container" style={{minHeight:'100vh',background:'var(--bg)',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",padding:'120px 52px 80px'}}>
-        <div style={{maxWidth:'900px',margin:'0 auto'}}>
+      <div style={{minHeight:'100vh',background:'var(--bg)',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",paddingTop:'64px'}}>
+        <div style={{maxWidth:'1100px',margin:'0 auto',padding:'48px 40px 80px'}}>
 
-          <a href="/" style={{color:'var(--muted)',fontSize:'14px',textDecoration:'none',display:'inline-flex',alignItems:'center',gap:'6px',marginBottom:'48px'}}>← Назад</a>
+          <a href="/" style={{color:'var(--muted)',fontSize:'13px',textDecoration:'none',display:'inline-flex',alignItems:'center',gap:'5px',marginBottom:'40px'}}>
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            Назад
+          </a>
 
-          <span style={{fontSize:'11px',letterSpacing:'0.16em',textTransform:'uppercase',color:'var(--accent)',marginBottom:'14px',display:'block'}}>Модуль 03</span>
-          <h1 style={{fontFamily:"'Syne',sans-serif",fontSize:'clamp(36px,5vw,64px)',fontWeight:800,letterSpacing:'-0.03em',lineHeight:1,marginBottom:'16px'}}>Генератор документов</h1>
-          <p style={{color:'var(--muted)',fontSize:'17px',fontWeight:300,marginBottom:'52px',maxWidth:'500px'}}>Выберите тип документа, заполните данные — AI сгенерирует готовый документ по российским стандартам.</p>
-
-          <div className="doc-types-grid" style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'12px',marginBottom:'40px'}}>
-            {docTypes.map(doc => (
-              <div key={doc.id} onClick={() => { setSelectedDoc(doc.id); setResult(null); setFields({}) }}
-                style={{padding:'20px',borderRadius:'8px',border:`1px solid ${selectedDoc===doc.id ? 'var(--accent)' : 'var(--border)'}`,background:selectedDoc===doc.id ? 'var(--tag-bg)' : 'var(--card-bg)',cursor:'pointer',transition:'all 0.2s',textAlign:'center'}}>
-                <div style={{fontSize:'28px',marginBottom:'8px'}}>{doc.icon}</div>
-                <div style={{fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:700,marginBottom:'4px',color:selectedDoc===doc.id ? 'var(--accent)' : 'var(--text)'}}>{doc.label}</div>
-                <div style={{fontSize:'11px',color:'var(--muted)',lineHeight:1.4}}>{doc.desc}</div>
-              </div>
-            ))}
+          <div style={{marginBottom:'40px'}}>
+            <div style={{fontSize:'11px',letterSpacing:'0.14em',textTransform:'uppercase',color:'var(--accent)',marginBottom:'10px'}}>Модуль 03</div>
+            <h1 style={{fontFamily:"'Syne',sans-serif",fontSize:'clamp(28px,4vw,44px)',fontWeight:700,letterSpacing:'-0.02em',marginBottom:'10px',lineHeight:1.1}}>Генератор документов</h1>
+            <p style={{color:'var(--muted)',fontSize:'15px',fontWeight:300,maxWidth:'480px',lineHeight:1.6}}>Заполните данные — AI сгенерирует готовый документ по российским стандартам.</p>
           </div>
 
-          {selectedDoc && (
-            <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'32px',marginBottom:'24px'}}>
-              <div style={{fontFamily:"'Syne',sans-serif",fontSize:'16px',fontWeight:700,marginBottom:'24px'}}>
-                {docTypes.find(d => d.id === selectedDoc)?.label} — заполните данные
-              </div>
-              <div className="fields-grid" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'16px'}}>
-                {docFields[selectedDoc]?.map(field => (
-                  <div key={field.key} style={{display:'flex',flexDirection:'column',gap:'7px'}}>
-                    <label style={{fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase',color:'var(--muted)'}}>{field.label}</label>
-                    <input
-                      type={field.type || 'text'}
-                      value={fields[field.key] || ''}
-                      onChange={e => setFields(prev => ({...prev, [field.key]: e.target.value}))}
-                      placeholder={field.placeholder}
-                      style={{background:'var(--bg)',border:'1px solid var(--border)',borderRadius:'4px',padding:'10px 14px',color:'var(--text)',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',outline:'none',width:'100%'}}
-                    />
+          <div className="docs-layout" style={{display:'flex',gap:'24px',alignItems:'flex-start'}}>
+
+            {/* LEFT */}
+            <div style={{flex:'0 0 380px',display:'flex',flexDirection:'column',gap:'12px'}}>
+
+              {/* Doc type selector */}
+              <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',overflow:'hidden'}}>
+                {docTypes.map((doc, i) => (
+                  <div key={doc.id} onClick={() => { setSelectedDoc(doc.id); setResult(null); setFields({}) }}
+                    style={{padding:'14px 18px',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'space-between',background:selectedDoc===doc.id ? 'var(--tag-bg)' : 'transparent',borderBottom:i < docTypes.length-1 ? '1px solid var(--border)' : 'none',transition:'background 0.15s'}}
+                    onMouseOver={e => { if(selectedDoc!==doc.id) e.currentTarget.style.background='var(--card-hover)' }}
+                    onMouseOut={e => { if(selectedDoc!==doc.id) e.currentTarget.style.background='transparent' }}
+                  >
+                    <div>
+                      <div style={{fontFamily:"'Syne',sans-serif",fontWeight:600,fontSize:'13px',color:selectedDoc===doc.id ? 'var(--accent)' : 'var(--text)',marginBottom:'2px'}}>{doc.label}</div>
+                      <div style={{fontSize:'11px',color:'var(--muted)'}}>{doc.desc}</div>
+                    </div>
+                    {selectedDoc === doc.id && (
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="var(--accent)" strokeWidth="1.2"/><path d="M5 8l2 2 4-4" stroke="var(--accent)" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    )}
                   </div>
                 ))}
               </div>
-              <button onClick={handleGenerate} disabled={loading} style={{width:'100%',padding:'16px',borderRadius:'4px',background:'var(--accent)',color:'var(--btn-text)',border:'none',fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:700,cursor:loading?'not-allowed':'pointer',opacity:loading?0.7:1,transition:'all 0.2s',marginTop:'24px'}}>
-                {loading ? (
-                  <span style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'10px'}}>
-                    <span style={{width:'18px',height:'18px',border:'2px solid var(--btn-text)',borderTopColor:'transparent',borderRadius:'50%',display:'inline-block',animation:'spin 0.8s linear infinite'}}></span>
-                    Генерируем документ...
-                  </span>
-                ) : 'Сгенерировать документ →'}
-              </button>
-            </div>
-          )}
 
-          {error && (
-            <div style={{background:'rgba(255,80,80,0.1)',border:'1px solid rgba(255,80,80,0.3)',borderRadius:'6px',padding:'16px',color:'#ff8080',marginBottom:'32px'}}>
-              {error}
-            </div>
-          )}
-
-          {result && (
-            <div>
-              <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px'}}>
-                <span style={{fontSize:'11px',letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)'}}>Готовый документ</span>
-                <div style={{display:'flex',gap:'8px'}}>
-                  <button onClick={downloadTXT} style={{background:'none',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',padding:'6px 16px',cursor:'pointer',fontSize:'13px',fontFamily:"'Syne',sans-serif",fontWeight:600,transition:'all 0.2s'}} onMouseOver={e=>{e.currentTarget.style.borderColor='var(--accent)';e.currentTarget.style.color='var(--accent)'}} onMouseOut={e=>{e.currentTarget.style.borderColor='var(--border2)';e.currentTarget.style.color='var(--muted)'}}>
-                    Скачать TXT
-                  </button>
-                  <button onClick={downloadPDF} style={{background:'var(--accent)',border:'none',borderRadius:'4px',color:'var(--btn-text)',padding:'6px 16px',cursor:'pointer',fontSize:'13px',fontFamily:"'Syne',sans-serif",fontWeight:600}}>
-                    Скачать PDF
+              {/* Fields */}
+              {selectedDoc && (
+                <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'20px'}}>
+                  <div style={{fontFamily:"'Syne',sans-serif",fontWeight:600,fontSize:'13px',marginBottom:'16px'}}>{docTypes.find(d => d.id === selectedDoc)?.label}</div>
+                  <div style={{display:'flex',flexDirection:'column',gap:'12px'}}>
+                    {docFields[selectedDoc]?.map(field => (
+                      <div key={field.key}>
+                        <label style={labelStyle}>{field.label}</label>
+                        <input type={field.type || 'text'} value={fields[field.key] || ''} onChange={e => setFields(prev => ({...prev, [field.key]: e.target.value}))} placeholder={field.placeholder} style={inputStyle} />
+                      </div>
+                    ))}
+                  </div>
+                  <button onClick={handleGenerate} disabled={loading} style={{width:'100%',padding:'13px',borderRadius:'6px',background:'var(--accent)',color:'var(--btn-text)',border:'none',fontFamily:"'Syne',sans-serif",fontSize:'14px',fontWeight:700,cursor:loading?'not-allowed':'pointer',opacity:loading?0.7:1,transition:'all 0.2s',marginTop:'16px'}}>
+                    {loading ? (
+                      <span style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'8px'}}>
+                        <span style={{width:'16px',height:'16px',border:'2px solid var(--btn-text)',borderTopColor:'transparent',borderRadius:'50%',display:'inline-block',animation:'spin 0.8s linear infinite'}}></span>
+                        Генерируем...
+                      </span>
+                    ) : 'Сгенерировать →'}
                   </button>
                 </div>
-              </div>
-              <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'32px',whiteSpace:'pre-wrap',fontSize:'14px',lineHeight:1.8,color:'var(--text)',fontFamily:'Arial, sans-serif',maxHeight:'600px',overflowY:'auto'}}>
-                {result}
-              </div>
+              )}
+
+              {error && <div style={{background:'rgba(255,80,80,0.08)',border:'1px solid rgba(255,80,80,0.25)',borderRadius:'6px',padding:'12px',color:'#ff8080',fontSize:'13px'}}>{error}</div>}
             </div>
-          )}
+
+            {/* RIGHT */}
+            <div style={{flex:1,minWidth:0}}>
+              {!result && !loading && (
+                <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'32px',minHeight:'400px',display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center',textAlign:'center',gap:'16px'}}>
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" style={{color:'var(--border2)'}}>
+                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  <div>
+                    <div style={{fontFamily:"'Syne',sans-serif",fontWeight:600,fontSize:'15px',marginBottom:'6px'}}>Выберите тип документа</div>
+                    <div style={{color:'var(--muted)',fontSize:'13px',lineHeight:1.5}}>Заполните данные слева и нажмите<br />«Сгенерировать»</div>
+                  </div>
+                </div>
+              )}
+
+              {result && (
+                <div style={{display:'flex',flexDirection:'column',gap:'16px'}}>
+                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                    <span style={{fontSize:'11px',letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)'}}>Готовый документ</span>
+                    <div style={{display:'flex',gap:'8px'}}>
+                      <button onClick={downloadTXT} style={{background:'none',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',padding:'6px 14px',cursor:'pointer',fontSize:'12px',fontFamily:"'Syne',sans-serif",fontWeight:600,transition:'all 0.2s'}} onMouseOver={e=>{e.currentTarget.style.borderColor='var(--accent)';e.currentTarget.style.color='var(--accent)'}} onMouseOut={e=>{e.currentTarget.style.borderColor='var(--border2)';e.currentTarget.style.color='var(--muted)'}}>TXT</button>
+                      <button onClick={downloadPDF} style={{background:'var(--accent)',border:'none',borderRadius:'4px',color:'var(--btn-text)',padding:'6px 14px',cursor:'pointer',fontSize:'12px',fontFamily:"'Syne',sans-serif",fontWeight:600}}>PDF</button>
+                    </div>
+                  </div>
+                  <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'28px',whiteSpace:'pre-wrap',fontSize:'13px',lineHeight:1.8,color:'var(--text)',fontFamily:'Arial, sans-serif',maxHeight:'640px',overflowY:'auto'}}>
+                    {result}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </>
