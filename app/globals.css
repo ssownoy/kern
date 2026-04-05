@@ -262,3 +262,50 @@ footer {
   
   footer .container > div:last-child { flex-direction: column !important; align-items: center !important; gap: 8px !important; text-align: center !important; }
 }
+
+@media (max-width: 768px) {
+
+  /* All module pages - fix layout */
+  .est-layout, .qual-layout, .docs-layout {
+    flex-direction: column !important;
+  }
+  
+  .est-layout > div:first-child,
+  .qual-layout > div:first-child,
+  .docs-layout > div:first-child {
+    flex: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Fix date inputs overflowing */
+  input[type="date"] {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    max-width: 100% !important;
+  }
+
+  /* Dashboard tabs - scrollable */
+  .dash-tabs {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  
+  .dash-tabs button {
+    min-width: 100px !important;
+    flex-shrink: 0 !important;
+    font-size: 12px !important;
+    padding: 10px 6px !important;
+  }
+
+  /* Dashboard rows - fix layout */
+  .dash-row-inner {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  /* Profile - fix font sizes */
+  .profile-title {
+    font-size: 22px !important;
+  }
+}

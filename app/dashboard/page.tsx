@@ -107,7 +107,7 @@ export default function DashboardPage() {
   )
 
   const RowItem = ({ children, onClick }: any) => (
-    <div onClick={onClick} style={{background:'var(--bg)',padding:'18px 24px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:'16px',cursor:onClick?'pointer':'default',transition:'background 0.15s',borderBottom:'1px solid var(--border)'}} onMouseOver={e => { if(onClick) e.currentTarget.style.background='var(--card-hover)' }} onMouseOut={e => e.currentTarget.style.background='var(--bg)'}>
+    <div onClick={onClick} style={{background:'var(--bg)',padding:'14px 16px',display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:'12px',cursor:onClick?'pointer':'default',transition:'background 0.15s',borderBottom:'1px solid var(--border)',overflow:'hidden'}} onMouseOver={e => { if(onClick) e.currentTarget.style.background='var(--card-hover)' }} onMouseOut={e => e.currentTarget.style.background='var(--bg)'}>
       {children}
     </div>
   )
@@ -145,8 +145,8 @@ export default function DashboardPage() {
               {(profile.full_name?.[0] || user?.email?.[0] || '?').toUpperCase()}
             </div>
             <div style={{flex:1,minWidth:0}}>
-              <div style={{fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:700,marginBottom:'2px'}}>{profile.full_name || user?.email}</div>
-              <div style={{color:'var(--muted)',fontSize:'12px'}}>{estimates.length} смет · {qualityChecks.length} проверок · {documents.length} документов</div>
+              <div style={{fontFamily:"'Syne',sans-serif",fontSize:'14px',fontWeight:700,marginBottom:'2px',wordBreak:'break-word'}}>{profile.full_name || user?.email}</div>
+              <div style={{color:'var(--muted)',fontSize:'11px',lineHeight:1.5}}>{estimates.length} смет · {qualityChecks.length} проверок · {documents.length} документов</div>
             </div>
             <button onClick={handleSignOut} style={{color:'var(--muted)',fontSize:'12px',background:'none',border:'1px solid var(--border2)',borderRadius:'4px',padding:'5px 12px',cursor:'pointer',fontFamily:"'Syne',sans-serif",fontWeight:600,whiteSpace:'nowrap',transition:'all 0.15s'}} onMouseOver={e=>e.currentTarget.style.borderColor='var(--accent)'} onMouseOut={e=>e.currentTarget.style.borderColor='var(--border2)'}>Выйти</button>
           </div>
@@ -169,15 +169,13 @@ export default function DashboardPage() {
               <div style={{border:'1px solid var(--border)',borderRadius:'8px',overflow:'hidden'}}>
                 {estimates.map(est => (
                   <RowItem key={est.id} onClick={() => router.push(`/dashboard/${est.id}`)}>
-                    <div style={{flex:1,minWidth:0}}>
-                      <div style={{fontFamily:"'Syne',sans-serif",fontSize:'14px',fontWeight:700,marginBottom:'4px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{est.summary || 'Без описания'}</div>
-                      <div style={{display:'flex',gap:'10px',alignItems:'center',flexWrap:'wrap'}}>
-                        <span style={{color:'var(--muted)',fontSize:'12px'}}>{new Date(est.created_at).toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'})}</span>
-                        {est.with_materials && <span style={{fontSize:'10px',color:'var(--accent)',border:'1px solid var(--tag-border)',background:'var(--tag-bg)',padding:'1px 7px',borderRadius:'2px',letterSpacing:'0.05em'}}>С материалами</span>}
-                      </div>
+                    <div style={{flex:1,minWidth:0,overflow:'hidden'}}>
+                      <div style={{fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:700,marginBottom:'4px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:'100%'}}>{est.summary || 'Без описания'}</div>
+                      <div style={{color:'var(--muted)',fontSize:'11px'}}>{new Date(est.created_at).toLocaleDateString('ru-RU',{day:'numeric',month:'short',year:'numeric'})}</div>
+                      {est.with_materials && <span style={{fontSize:'10px',color:'var(--accent)',border:'1px solid var(--tag-border)',background:'var(--tag-bg)',padding:'1px 6px',borderRadius:'2px',display:'inline-block',marginTop:'4px'}}>С материалами</span>}
                     </div>
-                    <div style={{display:'flex',alignItems:'center',gap:'12px',flexShrink:0}}>
-                      <span style={{fontFamily:"'Syne',sans-serif",fontSize:'16px',fontWeight:800,color:'var(--accent)',whiteSpace:'nowrap'}}>{est.total_rub?.toLocaleString('ru-RU')} ₽</span>
+                    <div style={{display:'flex',flexDirection:'column',alignItems:'flex-end',gap:'6px',flexShrink:0,minWidth:'0'}}>
+                      <span style={{fontFamily:"'Syne',sans-serif",fontSize:'14px',fontWeight:800,color:'var(--accent)',whiteSpace:'nowrap'}}>{est.total_rub?.toLocaleString('ru-RU')} ₽</span>
                       <DeleteBtn onClick={(e: any) => deleteEstimate(est.id, e)} />
                     </div>
                   </RowItem>
@@ -271,11 +269,11 @@ export default function DashboardPage() {
 
               <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'24px'}}>
                 <div style={{fontFamily:"'Syne',sans-serif",fontSize:'16px',fontWeight:700,marginBottom:'16px'}}>Статистика</div>
-                <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'12px'}}>
+                <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'8px'}}>
                   {[{label:'Смет',value:estimates.length},{label:'Проверок',value:qualityChecks.length},{label:'Документов',value:documents.length}].map(s => (
-                    <div key={s.label} style={{textAlign:'center',padding:'16px',background:'var(--bg)',borderRadius:'6px',border:'1px solid var(--border)'}}>
-                      <div style={{fontFamily:"'Syne',sans-serif",fontSize:'24px',fontWeight:800,color:'var(--accent)',marginBottom:'3px'}}>{s.value}</div>
-                      <div style={{color:'var(--muted)',fontSize:'12px'}}>{s.label}</div>
+                    <div key={s.label} style={{textAlign:'center',padding:'12px 8px',background:'var(--bg)',borderRadius:'6px',border:'1px solid var(--border)'}}>
+                      <div style={{fontFamily:"'Syne',sans-serif",fontSize:'20px',fontWeight:800,color:'var(--accent)',marginBottom:'2px'}}>{s.value}</div>
+                      <div style={{color:'var(--muted)',fontSize:'11px'}}>{s.label}</div>
                     </div>
                   ))}
                 </div>

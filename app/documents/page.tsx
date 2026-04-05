@@ -197,7 +197,11 @@ export default function DocumentsPage() {
                     {docFields[selectedDoc]?.map(field => (
                       <div key={field.key}>
                         <label style={labelStyle}>{field.label}</label>
-                        <input type={field.type || 'text'} value={fields[field.key] || ''} onChange={e => setFields(prev => ({...prev, [field.key]: e.target.value}))} placeholder={field.placeholder} style={inputStyle} />
+                        {field.type === 'date' ? (
+                          <input type="date" value={fields[field.key] || ''} onChange={e => setFields(prev => ({...prev, [field.key]: e.target.value}))} style={{...inputStyle, boxSizing:'border-box', maxWidth:'100%'}} />
+                        ) : (
+                          <input type="text" value={fields[field.key] || ''} onChange={e => setFields(prev => ({...prev, [field.key]: e.target.value}))} placeholder={field.placeholder} style={inputStyle} />
+                        )}
                       </div>
                     ))}
                   </div>
