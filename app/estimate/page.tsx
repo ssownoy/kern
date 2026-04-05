@@ -290,7 +290,7 @@ export default function EstimatePage() {
                 </button>
                 {showParams && (
                   <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderTop:'none',borderRadius:'0 0 6px 6px',padding:'16px'}}>
-                    <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'12px',marginBottom:'14px'}}>
+                    <div className="params-grid" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'12px',marginBottom:'14px'}}>
                       {[
                         { label: 'Группа грунтов', value: soilGroup, setter: setSoilGroup, options: [['','— Не указано'],['I','I — Песок'],['II','II — Суглинок'],['III','III — Глина'],['IV','IV — Тяжёлая глина'],['V','V — Скала']] },
                         { label: 'Климатический район', value: climateZone, setter: setClimateZone, options: [['','— Не указано'],['I','I — Крайний Север'],['II','II — Умеренный'],['III','III — Тёплый'],['IV','IV — Жаркий']] },

@@ -308,6 +308,25 @@ footer {
   .profile-title {
     font-size: 22px !important;
   }
+
+  /* Fix right column width to match left column */
+  .est-layout > div:last-child,
+  .qual-layout > div:last-child,
+  .docs-layout > div:last-child {
+    width: 100% !important;
+    flex: none !important;
+    min-width: 0 !important;
+  }
+
+  /* Fix params grid - single column on mobile */
+  .params-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Fix select labels not breaking */
+  .params-grid label {
+    white-space: normal !important;
+  }
 }
 
 .desktop-tabs { display: flex !important; }
