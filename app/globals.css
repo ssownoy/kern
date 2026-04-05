@@ -309,3 +309,11 @@ footer {
     font-size: 22px !important;
   }
 }
+
+.desktop-tabs { display: flex !important; }
+.mobile-tabs { display: none !important; }
+
+@media (max-width: 600px) {
+  .desktop-tabs { display: none !important; }
+  .mobile-tabs { display: block !important; }
+}

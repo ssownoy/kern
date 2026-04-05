@@ -24,6 +24,7 @@ export default function DashboardPage() {
   const [theme, setTheme] = useState('dark')
   const [mounted, setMounted] = useState(false)
   const [activeTab, setActiveTab] = useState<Tab>('estimates')
+  const [showTabMenu, setShowTabMenu] = useState(false)
   const [editingProfile, setEditingProfile] = useState(false)
   const [profileLoading, setProfileLoading] = useState(false)
   const router = useRouter()
@@ -152,13 +153,45 @@ export default function DashboardPage() {
           </div>
 
           {/* Tabs */}
-          <div className="dash-tabs" style={{display:'flex',gap:'1px',background:'var(--border)',border:'1px solid var(--border)',borderRadius:'6px',overflow:'hidden',marginBottom:'28px'}}>
-            {tabs.map(tab => (
-              <button key={tab.key} onClick={() => setActiveTab(tab.key)} style={{flex:1,padding:'11px 8px',background:activeTab===tab.key?'var(--accent)':'var(--bg)',color:activeTab===tab.key?'var(--btn-text)':'var(--muted)',border:'none',cursor:'pointer',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:600,transition:'all 0.15s',whiteSpace:'nowrap',display:'flex',alignItems:'center',justifyContent:'center',gap:'6px'}}>
-                {tab.label}
-                {tab.count > 0 && <span style={{fontSize:'11px',opacity:0.7}}>({tab.count})</span>}
+          <div style={{marginBottom:'24px'}}>
+            {/* Desktop tabs */}
+            <div style={{display:'flex',gap:'1px',background:'var(--border)',border:'1px solid var(--border)',borderRadius:'6px',overflow:'hidden'}} className="desktop-tabs">
+              {tabs.map(tab => (
+                  <button key={tab.key} onClick={() => setActiveTab(tab.key)} style={{flex:1,padding:'11px 8px',background:activeTab===tab.key?'var(--accent)':'var(--bg)',color:activeTab===tab.key?'var(--btn-text)':'var(--muted)',border:'none',cursor:'pointer',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:600,transition:'all 0.15s',whiteSpace:'nowrap',display:'flex',alignItems:'center',justifyContent:'center',gap:'4px'}}>
+                  {tab.label}
+                  {tab.count > 0 && <span style={{fontSize:'11px',opacity:0.7}}>({tab.count})</span>}
+                </button>
+              ))}
+            </div>
+            
+            {/* Mobile tabs - dropdown */}
+            <div style={{position:'relative'}} className="mobile-tabs">
+              <button
+                onClick={() => setShowTabMenu(!showTabMenu)}
+                style={{width:'100%',padding:'12px 16px',background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'6px',display:'flex',alignItems:'center',justifyContent:'space-between',cursor:'pointer',fontFamily:"'Syne',sans-serif",fontSize:'14px',fontWeight:700,color:'var(--text)'}}
+              >
+                <span style={{display:'flex',alignItems:'center',gap:'8px'}}>
+                  <span style={{width:'8px',height:'8px',borderRadius:'50%',background:'var(--accent)',flexShrink:0}}></span>
+                  {tabs.find(t => t.key === activeTab)?.label}
+                  {(tabs.find(t => t.key === activeTab)?.count || 0) > 0 && <span style={{color:'var(--muted)',fontSize:'12px',fontWeight:400}}>({tabs.find(t => t.key === activeTab)?.count})</span>}
+                </span>
+                <span style={{color:'var(--muted)',fontSize:'12px'}}>{showTabMenu ? '▲' : '▼'}</span>
               </button>
-            ))}
+              {showTabMenu && (
+                <div style={{position:'absolute',top:'100%',left:0,right:0,background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'0 0 6px 6px',zIndex:50,overflow:'hidden',marginTop:'-1px'}}>
+                  {tabs.map(tab => (
+                    <div key={tab.key} onClick={() => { setActiveTab(tab.key); setShowTabMenu(false) }}
+                      style={{padding:'13px 16px',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'space-between',borderBottom:'1px solid var(--border)',background:activeTab===tab.key?'var(--tag-bg)':'transparent',transition:'background 0.15s'}}
+                      onMouseOver={e => e.currentTarget.style.background='var(--card-hover)'}
+                      onMouseOut={e => e.currentTarget.style.background=activeTab===tab.key?'var(--tag-bg)':'transparent'}
+                    >
+                      <span style={{fontFamily:"'Syne',sans-serif",fontSize:'14px',fontWeight:600,color:activeTab===tab.key?'var(--accent)':'var(--text)'}}>{tab.label}</span>
+                      {tab.count > 0 && <span style={{fontSize:'12px',color:'var(--muted)'}}>{tab.count}</span>}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* ESTIMATES */}
@@ -170,12 +203,14 @@ export default function DashboardPage() {
                 {estimates.map(est => (
                   <RowItem key={est.id} onClick={() => router.push(`/dashboard/${est.id}`)}>
                     <div style={{flex:1,minWidth:0,overflow:'hidden'}}>
-                      <div style={{fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:700,marginBottom:'4px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:'100%'}}>{est.summary || 'Без описания'}</div>
-                      <div style={{color:'var(--muted)',fontSize:'11px'}}>{new Date(est.created_at).toLocaleDateString('ru-RU',{day:'numeric',month:'short',year:'numeric'})}</div>
-                      {est.with_materials && <span style={{fontSize:'10px',color:'var(--accent)',border:'1px solid var(--tag-border)',background:'var(--tag-bg)',padding:'1px 6px',borderRadius:'2px',display:'inline-block',marginTop:'4px'}}>С материалами</span>}
+                      <div style={{fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:700,marginBottom:'3px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{est.summary || 'Без описания'}</div>
+                      <div style={{display:'flex',gap:'8px',alignItems:'center',flexWrap:'wrap'}}>
+                        <span style={{color:'var(--muted)',fontSize:'11px'}}>{new Date(est.created_at).toLocaleDateString('ru-RU',{day:'numeric',month:'short'})}</span>
+                        {est.with_materials && <span style={{fontSize:'10px',color:'var(--accent)',border:'1px solid var(--tag-border)',background:'var(--tag-bg)',padding:'1px 6px',borderRadius:'2px'}}>С материалами</span>}
+                      </div>
                     </div>
-                    <div style={{display:'flex',flexDirection:'column',alignItems:'flex-end',gap:'6px',flexShrink:0,minWidth:'0'}}>
-                      <span style={{fontFamily:"'Syne',sans-serif",fontSize:'14px',fontWeight:800,color:'var(--accent)',whiteSpace:'nowrap'}}>{est.total_rub?.toLocaleString('ru-RU')} ₽</span>
+                    <div style={{display:'flex',flexDirection:'column',alignItems:'flex-end',gap:'6px',flexShrink:0}}>
+                      <span style={{fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:800,color:'var(--accent)',whiteSpace:'nowrap'}}>{est.total_rub?.toLocaleString('ru-RU')} ₽</span>
                       <DeleteBtn onClick={(e: any) => deleteEstimate(est.id, e)} />
                     </div>
                   </RowItem>
