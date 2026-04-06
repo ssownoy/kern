@@ -375,6 +375,7 @@ export default function Home() {
                 <div style={{fontFamily:"'Syne',sans-serif",fontSize:'12px',fontWeight:700,letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)',marginBottom:'16px'}}>Компания</div>
                 <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
                   <a href="/privacy" style={{color:'var(--text)',textDecoration:'none',fontSize:'14px'}}>Конфиденциальность</a>
+                  <a href="/about" style={{color:'var(--text)',textDecoration:'none',fontSize:'14px'}}>О проекте</a>
                   <a href="/terms" style={{color:'var(--text)',textDecoration:'none',fontSize:'14px'}}>Соглашение</a>
                   <a onClick={() => goTo('contact')} style={{color:'var(--text)',textDecoration:'none',fontSize:'14px',cursor:'pointer'}}>Контакты</a>
                 </div>
