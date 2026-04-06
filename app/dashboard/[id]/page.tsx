@@ -9,6 +9,9 @@ export default function EstimateDetailPage() {
   const [editableItems, setEditableItems] = useState<any[]>([])
   const [editMode, setEditMode] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [isPublic, setIsPublic] = useState(false)
+  const [shareUrl, setShareUrl] = useState('')
+  const [copying, setCopying] = useState(false)
   const [theme, setTheme] = useState('dark')
   const [mounted, setMounted] = useState(false)
   const router = useRouter()
@@ -36,6 +39,8 @@ export default function EstimateDetailPage() {
       setEstimate(data)
       const items = typeof data.items === 'string' ? JSON.parse(data.items) : data.items
       setEditableItems(items || [])
+      setIsPublic(data.is_public || false)
+      if (data.public_token) setShareUrl(`https://kern-eight.vercel.app/share/${data.public_token}`)
     }
     setLoading(false)
   }
@@ -67,6 +72,18 @@ export default function EstimateDetailPage() {
     }).eq('id', params.id as string)
     setEstimate({ ...estimate, items: editableItems, total_rub: newTotal })
     setEditMode(false)
+  }
+
+  const toggleShare = async () => {
+    const newVal = !isPublic
+    await supabase.from('estimates').update({ is_public: newVal }).eq('id', params.id as string)
+    setIsPublic(newVal)
+  }
+
+  const copyLink = async () => {
+    await navigator.clipboard.writeText(shareUrl)
+    setCopying(true)
+    setTimeout(() => setCopying(false), 2000)
   }
   
   const totalRub = editableItems.reduce((sum, item) => sum + item.qty * item.price, 0)
@@ -186,6 +203,26 @@ export default function EstimateDetailPage() {
               <div style={{color:'var(--muted)',fontSize:'14px',lineHeight:1.6,fontWeight:300}}>{estimate.notes}</div>
             </div>
           )}
+
+          <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'20px 24px',marginBottom:'16px'}}>
+            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom: isPublic ? '14px' : '0'}}>
+              <div>
+                <div style={{fontFamily:"'Syne',sans-serif",fontSize:'14px',fontWeight:700,marginBottom:'2px'}}>Публичная ссылка</div>
+                <div style={{color:'var(--muted)',fontSize:'12px'}}>Клиент откроет смету без регистрации</div>
+              </div>
+              <div onClick={toggleShare} style={{width:'40px',height:'22px',borderRadius:'11px',background:isPublic?'var(--accent)':'var(--border2)',cursor:'pointer',position:'relative',transition:'background 0.2s',flexShrink:0}}>
+                <div style={{width:'18px',height:'18px',borderRadius:'50%',background:'white',position:'absolute',top:'2px',left:isPublic?'20px':'2px',transition:'left 0.2s'}}></div>
+              </div>
+            </div>
+            {isPublic && shareUrl && (
+              <div style={{display:'flex',gap:'8px',alignItems:'center'}}>
+                <div style={{flex:1,background:'var(--bg)',border:'1px solid var(--border)',borderRadius:'4px',padding:'8px 12px',fontSize:'12px',color:'var(--muted)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{shareUrl}</div>
+                <button onClick={copyLink} style={{background:copying?'#5E9E6E':'var(--accent)',color:'var(--btn-text)',border:'none',borderRadius:'4px',padding:'8px 16px',cursor:'pointer',fontSize:'12px',fontFamily:"'Syne',sans-serif",fontWeight:600,whiteSpace:'nowrap',transition:'background 0.2s',flexShrink:0}}>
+                  {copying ? '✓ Скопировано' : 'Копировать'}
+                </button>
+              </div>
+            )}
+          </div>
 
           <button onClick={downloadPDF} style={{width:'100%',padding:'14px',borderRadius:'4px',background:'transparent',color:'var(--accent)',border:'1px solid var(--accent)',fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:600,cursor:'pointer',transition:'all 0.2s'}}>
             Скачать PDF
