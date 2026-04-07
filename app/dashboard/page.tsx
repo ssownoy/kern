@@ -199,23 +199,33 @@ export default function DashboardPage() {
             estimates.length === 0 ? (
               <EmptyState icon={<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>} title="Смет пока нет" desc="Загрузите чертёж и получите смету за 30 секунд" href="/estimate" linkLabel="Создать смету" />
             ) : (
-              <div style={{border:'1px solid var(--border)',borderRadius:'8px',overflow:'hidden'}}>
-                {estimates.map(est => (
-                  <RowItem key={est.id} onClick={() => router.push(`/dashboard/${est.id}`)}>
-                    <div style={{flex:1,minWidth:0,overflow:'hidden'}}>
-                      <div style={{fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:700,marginBottom:'3px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{est.summary || 'Без описания'}</div>
-                      <div style={{display:'flex',gap:'8px',alignItems:'center',flexWrap:'wrap'}}>
-                        <span style={{color:'var(--muted)',fontSize:'11px'}}>{new Date(est.created_at).toLocaleDateString('ru-RU',{day:'numeric',month:'short'})}</span>
-                        {est.with_materials && <span style={{fontSize:'10px',color:'var(--accent)',border:'1px solid var(--tag-border)',background:'var(--tag-bg)',padding:'1px 6px',borderRadius:'2px'}}>С материалами</span>}
+              <>
+                {estimates.length >= 2 && (
+                  <div style={{display:'flex',justifyContent:'flex-end',marginBottom:'12px'}}>
+                    <a href="/compare" style={{display:'flex',alignItems:'center',gap:'6px',color:'var(--muted)',fontSize:'12px',textDecoration:'none',border:'1px solid var(--border2)',borderRadius:'4px',padding:'5px 12px',fontFamily:"'Syne',sans-serif",fontWeight:600,transition:'all 0.2s'}} onMouseOver={e=>{e.currentTarget.style.borderColor='var(--accent)';e.currentTarget.style.color='var(--accent)'}} onMouseOut={e=>{e.currentTarget.style.borderColor='var(--border2)';e.currentTarget.style.color='var(--muted)'}}>
+                      <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M4 8h8M10 5l3 3-3 3M6 5l-3 3 3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      Сравнить сметы
+                    </a>
+                  </div>
+                )}
+                <div style={{border:'1px solid var(--border)',borderRadius:'8px',overflow:'hidden'}}>
+                  {estimates.map(est => (
+                    <RowItem key={est.id} onClick={() => router.push(`/dashboard/${est.id}`)}>
+                      <div style={{flex:1,minWidth:0,overflow:'hidden'}}>
+                        <div style={{fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:700,marginBottom:'3px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{est.summary || 'Без описания'}</div>
+                        <div style={{display:'flex',gap:'8px',alignItems:'center',flexWrap:'wrap'}}>
+                          <span style={{color:'var(--muted)',fontSize:'11px'}}>{new Date(est.created_at).toLocaleDateString('ru-RU',{day:'numeric',month:'short'})}</span>
+                          {est.with_materials && <span style={{fontSize:'10px',color:'var(--accent)',border:'1px solid var(--tag-border)',background:'var(--tag-bg)',padding:'1px 6px',borderRadius:'2px'}}>С материалами</span>}
+                        </div>
                       </div>
-                    </div>
-                    <div style={{display:'flex',flexDirection:'column',alignItems:'flex-end',gap:'6px',flexShrink:0}}>
-                      <span style={{fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:800,color:'var(--accent)',whiteSpace:'nowrap'}}>{est.total_rub?.toLocaleString('ru-RU')} ₽</span>
-                      <DeleteBtn onClick={(e: any) => deleteEstimate(est.id, e)} />
-                    </div>
-                  </RowItem>
-                ))}
-              </div>
+                      <div style={{display:'flex',flexDirection:'column',alignItems:'flex-end',gap:'6px',flexShrink:0}}>
+                        <span style={{fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:800,color:'var(--accent)',whiteSpace:'nowrap'}}>{est.total_rub?.toLocaleString('ru-RU')} ₽</span>
+                        <DeleteBtn onClick={(e: any) => deleteEstimate(est.id, e)} />
+                      </div>
+                    </RowItem>
+                  ))}
+                </div>
+              </>
             )
           )}
 
