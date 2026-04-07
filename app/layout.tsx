@@ -6,16 +6,27 @@ import Script from 'next/script'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Kern — AI-сметчик для строительства | Смета по чертежу онлайн',
-  description: 'Загрузите чертёж или фото объекта — получите готовую смету в рублях за 30 секунд. AI-платформа для строительных компаний России.',
-  keywords: 'сметчик онлайн, смета по чертежу, AI смета строительство, автоматическая смета, сметный расчёт онлайн',
+  title: 'Kern — AI-платформа для строительной индустрии России',
+  description: 'Автоматизация смет, контроль качества по фото и генерация документов для строительных компаний. AI-сметчик по чертежу за 30 секунд. Бесплатно.',
+  keywords: 'строительная смета, AI для строительства, контроль качества строительства, строительные документы, ГЭСН, ФЕР, ТЕР',
+  authors: [{ name: 'Kern' }],
+  creator: 'Kern',
+  metadataBase: new URL('https://kern-eight.vercel.app'),
   openGraph: {
-    title: 'Kern — AI-сметчик для строительства',
-    description: 'Смета по чертежу за 30 секунд. Бесплатно.',
+    title: 'Kern — AI-платформа для строительной индустрии',
+    description: 'Сметы, контроль качества и документы для строительных компаний России.',
     url: 'https://kern-eight.vercel.app',
     siteName: 'Kern',
     locale: 'ru_RU',
     type: 'website',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true },
+  },
+  alternates: {
+    canonical: 'https://kern-eight.vercel.app',
   },
   icons: {
     icon: '/logo-avatar.svg',
