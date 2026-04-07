@@ -64,8 +64,12 @@ export default function ComparePage() {
   if (!mounted) return null
 
   return (
-    <>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap'); @media (max-width:600px) { .compare-selectors { flex-direction: column !important; } .compare-totals { flex-direction: column !important; } .compare-container { padding: 80px 16px 60px !important; } }`}</style>
+    <div lang="ru">
+      <style>{`
+  @charset "UTF-8";
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+  @media (max-width:600px) { .compare-selectors { flex-direction: column !important; } .compare-totals { flex-direction: column !important; } .compare-container { padding: 80px 16px 60px !important; } }
+`}</style>
 
       <nav style={{position:'fixed',top:0,left:0,right:0,zIndex:100,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'16px 40px',background:'var(--bg)',borderBottom:'1px solid var(--border)'}}>
         <a href="/" style={{fontFamily:"'Syne',sans-serif",fontSize:'20px',fontWeight:800,color:'var(--text)',textDecoration:'none',letterSpacing:'-0.5px'}}>Kern<span style={{color:'var(--accent)'}}>.</span></a>
@@ -225,6 +229,6 @@ export default function ComparePage() {
           )}
         </div>
       </div>
-    </>
+    </div>
   )
 }
