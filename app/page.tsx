@@ -90,7 +90,7 @@ export default function Home() {
           </div>
           <div className="hero-stats">
             <div className="stat"><span className="stat-num">5×</span><div className="stat-label">Быстрее составление смет</div></div>
-            <div className="stat"><span className="stat-num">2</span><div className="stat-label">Модуля доступно</div></div>
+            <div className="stat"><span className="stat-num">3</span><div className="stat-label">Модуля доступно</div></div>
             <div className="stat"><span className="stat-num">0 ₽</span><div className="stat-label">Для старта</div></div>
           </div>
         </div>
