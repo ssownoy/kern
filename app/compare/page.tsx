@@ -54,7 +54,7 @@ export default function ComparePage() {
   return (
     <div>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
         @media (max-width: 700px) {
           .cmp-sel { flex-direction: column !important; }
           .cmp-totals { flex-direction: column !important; }
@@ -64,7 +64,7 @@ export default function ComparePage() {
       `}</style>
 
       <nav style={{position:'fixed',top:0,left:0,right:0,zIndex:100,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'16px 40px',background:'var(--bg)',borderBottom:'1px solid var(--border)'}}>
-        <a href="/" style={{fontFamily:"'Syne',sans-serif",fontSize:'20px',fontWeight:800,color:'var(--text)',textDecoration:'none',letterSpacing:'-0.5px'}}>
+        <a href="/" style={{fontFamily:"'Unbounded',sans-serif",fontSize:'20px',fontWeight:800,color:'var(--text)',textDecoration:'none',letterSpacing:'-0.5px'}}>
           {'Kern'}<span style={{color:'var(--accent)'}}>{'.'}</span>
         </a>
         <div style={{display:'flex',alignItems:'center',gap:'12px'}}>
@@ -116,7 +116,7 @@ export default function ComparePage() {
                     ))}
                   </select>
                 </div>
-                <div style={{padding:'0 8px',color:'var(--muted)',fontFamily:"'Syne',sans-serif",fontWeight:700,fontSize:'18px',paddingBottom:'10px',flexShrink:0}}>vs</div>
+                <div style={{padding:'0 8px',color:'var(--muted)',fontFamily:"'Unbounded',sans-serif",fontWeight:700,fontSize:'18px',paddingBottom:'10px',flexShrink:0}}>vs</div>
                 <div style={{flex:1}}>
                   <label style={{fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase',color:'var(--muted)',display:'block',marginBottom:'6px'}}>{'Ñìåòà Á'}</label>
                   <select value={rightId} onChange={e => setRightId(e.target.value)} style={selectStyle}>
@@ -136,13 +136,13 @@ export default function ComparePage() {
                     <div style={{flex:1,minWidth:0,background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'20px 24px'}}>
                       <div style={{fontSize:'10px',letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)',marginBottom:'6px'}}>{'Ñìåòà À'}</div>
                       <div style={{fontFamily:"'DM Sans',sans-serif",fontSize:'13px',fontWeight:600,marginBottom:'8px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{left.summary}</div>
-                      <div style={{fontFamily:"'Syne',sans-serif",fontSize:'22px',fontWeight:800,color:'var(--accent)'}}>{leftTotal.toLocaleString('ru-RU')} â</div>
+                      <div style={{fontFamily:"'Unbounded',sans-serif",fontSize:'22px',fontWeight:800,color:'var(--accent)'}}>{leftTotal.toLocaleString('ru-RU')} â</div>
                       <div style={{color:'var(--muted)',fontSize:'12px',marginTop:'4px'}}>{leftItems.length} {'ïîçèöèé'}</div>
                     </div>
 
                     <div className="cmp-diff" style={{flexShrink:0,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'16px 20px',background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',minWidth:'130px'}}>
                       <div style={{fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase',color:'var(--muted)',marginBottom:'6px',fontFamily:"'DM Sans',sans-serif"}}>{'Ðàçíèöà'}</div>
-                      <div style={{fontFamily:"'Syne',sans-serif",fontSize:'18px',fontWeight:800,color:diff > 0 ? '#E85050' : diff < 0 ? '#5E9E6E' : 'var(--muted)',whiteSpace:'nowrap'}}>
+                      <div style={{fontFamily:"'Unbounded',sans-serif",fontSize:'18px',fontWeight:800,color:diff > 0 ? '#E85050' : diff < 0 ? '#5E9E6E' : 'var(--muted)',whiteSpace:'nowrap'}}>
                         {diff > 0 ? '+' : ''}{diff.toLocaleString('ru-RU')} â
                       </div>
                       <div style={{fontSize:'12px',color:'var(--muted)',marginTop:'2px'}}>{diff > 0 ? '+' : ''}{diffPct}%</div>
@@ -151,7 +151,7 @@ export default function ComparePage() {
                     <div style={{flex:1,minWidth:0,background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'20px 24px'}}>
                       <div style={{fontSize:'10px',letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)',marginBottom:'6px'}}>{'Ñìåòà Á'}</div>
                       <div style={{fontFamily:"'DM Sans',sans-serif",fontSize:'13px',fontWeight:600,marginBottom:'8px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{right.summary}</div>
-                      <div style={{fontFamily:"'Syne',sans-serif",fontSize:'22px',fontWeight:800,color:'var(--accent)'}}>{rightTotal.toLocaleString('ru-RU')} â</div>
+                      <div style={{fontFamily:"'Unbounded',sans-serif",fontSize:'22px',fontWeight:800,color:'var(--accent)'}}>{rightTotal.toLocaleString('ru-RU')} â</div>
                       <div style={{color:'var(--muted)',fontSize:'12px',marginTop:'4px'}}>{rightItems.length} {'ïîçèöèé'}</div>
                     </div>
                   </div>
@@ -187,9 +187,9 @@ export default function ComparePage() {
                       <tfoot>
                         <tr style={{background:'var(--bg2)',borderTop:'2px solid var(--border)'}}>
                           <td style={{padding:'12px 16px',fontFamily:"'DM Sans',sans-serif",fontWeight:700,fontSize:'13px'}}>{'Èòîãî'}</td>
-                          <td style={{padding:'12px 16px',textAlign:'right',fontFamily:"'Syne',sans-serif",fontWeight:700,whiteSpace:'nowrap'}}>{leftTotal.toLocaleString('ru-RU')} â</td>
-                          <td style={{padding:'12px 16px',textAlign:'right',fontFamily:"'Syne',sans-serif",fontWeight:700,whiteSpace:'nowrap'}}>{rightTotal.toLocaleString('ru-RU')} â</td>
-                          <td style={{padding:'12px 16px',textAlign:'right',fontFamily:"'Syne',sans-serif",fontWeight:700,whiteSpace:'nowrap',color:diff > 0 ? '#E85050' : diff < 0 ? '#5E9E6E' : 'var(--muted)'}}>
+                          <td style={{padding:'12px 16px',textAlign:'right',fontFamily:"'Unbounded',sans-serif",fontWeight:700,whiteSpace:'nowrap'}}>{leftTotal.toLocaleString('ru-RU')} â</td>
+                          <td style={{padding:'12px 16px',textAlign:'right',fontFamily:"'Unbounded',sans-serif",fontWeight:700,whiteSpace:'nowrap'}}>{rightTotal.toLocaleString('ru-RU')} â</td>
+                          <td style={{padding:'12px 16px',textAlign:'right',fontFamily:"'Unbounded',sans-serif",fontWeight:700,whiteSpace:'nowrap',color:diff > 0 ? '#E85050' : diff < 0 ? '#5E9E6E' : 'var(--muted)'}}>
                             {diff === 0 ? '=' : `${diff > 0 ? '+' : ''}${diff.toLocaleString('ru-RU')} â`}
                           </td>
                         </tr>

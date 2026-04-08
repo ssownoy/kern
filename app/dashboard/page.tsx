@@ -100,10 +100,10 @@ export default function DashboardPage() {
         {icon}
       </div>
       <div>
-        <div style={{fontFamily:"'Syne',sans-serif",fontSize:'18px',fontWeight:700,marginBottom:'6px'}}>{title}</div>
+        <div style={{fontFamily:"'Unbounded',sans-serif",fontSize:'18px',fontWeight:700,marginBottom:'6px'}}>{title}</div>
         <div style={{color:'var(--muted)',fontSize:'14px'}}>{desc}</div>
       </div>
-      {href && <a href={href} style={{background:'var(--accent)',color:'var(--btn-text)',padding:'12px 28px',borderRadius:'4px',textDecoration:'none',fontFamily:"'Syne',sans-serif",fontWeight:600,fontSize:'14px'}}>{linkLabel}</a>}
+      {href && <a href={href} style={{background:'var(--accent)',color:'var(--btn-text)',padding:'12px 28px',borderRadius:'4px',textDecoration:'none',fontFamily:"'Unbounded',sans-serif",fontWeight:600,fontSize:'14px'}}>{linkLabel}</a>}
     </div>
   )
 
@@ -114,15 +114,15 @@ export default function DashboardPage() {
   )
 
   const DeleteBtn = ({ onClick }: any) => (
-    <button onClick={onClick} style={{background:'none',border:'1px solid var(--border2)',borderRadius:'3px',color:'var(--muted)',cursor:'pointer',fontSize:'12px',padding:'3px 10px',fontFamily:"'Syne',sans-serif",transition:'all 0.15s',whiteSpace:'nowrap',flexShrink:0}} onMouseOver={e=>{e.currentTarget.style.borderColor='#ff8080';e.currentTarget.style.color='#ff8080'}} onMouseOut={e=>{e.currentTarget.style.borderColor='var(--border2)';e.currentTarget.style.color='var(--muted)'}}>Удалить</button>
+    <button onClick={onClick} style={{background:'none',border:'1px solid var(--border2)',borderRadius:'3px',color:'var(--muted)',cursor:'pointer',fontSize:'12px',padding:'3px 10px',fontFamily:"'Unbounded',sans-serif",transition:'all 0.15s',whiteSpace:'nowrap',flexShrink:0}} onMouseOver={e=>{e.currentTarget.style.borderColor='#ff8080';e.currentTarget.style.color='#ff8080'}} onMouseOut={e=>{e.currentTarget.style.borderColor='var(--border2)';e.currentTarget.style.color='var(--muted)'}}>Удалить</button>
   )
 
   return (
     <>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap'); @media (max-width:600px) { .dash-nav-items { display:none!important; } .dash-tabs { overflow-x:auto; } }`}</style>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap'); @media (max-width:600px) { .dash-nav-items { display:none!important; } .dash-tabs { overflow-x:auto; } }`}</style>
 
       <nav style={{position:'fixed',top:0,left:0,right:0,zIndex:100,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'16px 40px',background:'var(--bg)',borderBottom:'1px solid var(--border)'}}>
-        <a href="/" style={{fontFamily:"'Syne',sans-serif",fontSize:'20px',fontWeight:800,color:'var(--text)',textDecoration:'none',letterSpacing:'-0.5px'}}>Kern<span style={{color:'var(--accent)'}}>.</span></a>
+        <a href="/" style={{fontFamily:"'Unbounded',sans-serif",fontSize:'20px',fontWeight:800,color:'var(--text)',textDecoration:'none',letterSpacing:'-0.5px'}}>Kern<span style={{color:'var(--accent)'}}>.</span></a>
         <div style={{display:'flex',alignItems:'center',gap:'12px'}}>
           <div className="dash-nav-items" style={{display:'flex',gap:'8px'}}>
             <a href="/estimate" style={{color:'var(--muted)',fontSize:'13px',textDecoration:'none',padding:'6px 12px',borderRadius:'4px',transition:'all 0.15s'}} onMouseOver={e=>e.currentTarget.style.color='var(--text)'} onMouseOut={e=>e.currentTarget.style.color='var(--muted)'}>Сметчик</a>
@@ -142,14 +142,14 @@ export default function DashboardPage() {
 
           {/* User card */}
           <div style={{display:'flex',alignItems:'center',gap:'16px',marginBottom:'40px',padding:'20px 24px',background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'10px'}}>
-            <div style={{width:'44px',height:'44px',borderRadius:'10px',background:'var(--tag-bg)',border:'1px solid var(--tag-border)',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:"'Syne',sans-serif",fontSize:'16px',fontWeight:700,color:'var(--accent)',flexShrink:0}}>
+            <div style={{width:'44px',height:'44px',borderRadius:'10px',background:'var(--tag-bg)',border:'1px solid var(--tag-border)',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:"'Unbounded',sans-serif",fontSize:'16px',fontWeight:700,color:'var(--accent)',flexShrink:0}}>
               {(profile.full_name?.[0] || user?.email?.[0] || '?').toUpperCase()}
             </div>
             <div style={{flex:1,minWidth:0}}>
-              <div style={{fontFamily:"'Syne',sans-serif",fontSize:'14px',fontWeight:700,marginBottom:'2px',wordBreak:'break-word'}}>{profile.full_name || user?.email}</div>
+              <div style={{fontFamily:"'Unbounded',sans-serif",fontSize:'14px',fontWeight:700,marginBottom:'2px',wordBreak:'break-word'}}>{profile.full_name || user?.email}</div>
               <div style={{color:'var(--muted)',fontSize:'11px',lineHeight:1.5}}>{estimates.length} смет · {qualityChecks.length} проверок · {documents.length} документов</div>
             </div>
-            <button onClick={handleSignOut} style={{color:'var(--muted)',fontSize:'12px',background:'none',border:'1px solid var(--border2)',borderRadius:'4px',padding:'5px 12px',cursor:'pointer',fontFamily:"'Syne',sans-serif",fontWeight:600,whiteSpace:'nowrap',transition:'all 0.15s'}} onMouseOver={e=>e.currentTarget.style.borderColor='var(--accent)'} onMouseOut={e=>e.currentTarget.style.borderColor='var(--border2)'}>Выйти</button>
+            <button onClick={handleSignOut} style={{color:'var(--muted)',fontSize:'12px',background:'none',border:'1px solid var(--border2)',borderRadius:'4px',padding:'5px 12px',cursor:'pointer',fontFamily:"'Unbounded',sans-serif",fontWeight:600,whiteSpace:'nowrap',transition:'all 0.15s'}} onMouseOver={e=>e.currentTarget.style.borderColor='var(--accent)'} onMouseOut={e=>e.currentTarget.style.borderColor='var(--border2)'}>Выйти</button>
           </div>
 
           {/* Tabs */}
@@ -157,7 +157,7 @@ export default function DashboardPage() {
             {/* Desktop tabs */}
             <div style={{display:'flex',gap:'1px',background:'var(--border)',border:'1px solid var(--border)',borderRadius:'6px',overflow:'hidden'}} className="desktop-tabs">
               {tabs.map(tab => (
-                  <button key={tab.key} onClick={() => setActiveTab(tab.key)} style={{flex:1,padding:'11px 8px',background:activeTab===tab.key?'var(--accent)':'var(--bg)',color:activeTab===tab.key?'var(--btn-text)':'var(--muted)',border:'none',cursor:'pointer',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:600,transition:'all 0.15s',whiteSpace:'nowrap',display:'flex',alignItems:'center',justifyContent:'center',gap:'4px'}}>
+                  <button key={tab.key} onClick={() => setActiveTab(tab.key)} style={{flex:1,padding:'11px 8px',background:activeTab===tab.key?'var(--accent)':'var(--bg)',color:activeTab===tab.key?'var(--btn-text)':'var(--muted)',border:'none',cursor:'pointer',fontFamily:"'Unbounded',sans-serif",fontSize:'13px',fontWeight:600,transition:'all 0.15s',whiteSpace:'nowrap',display:'flex',alignItems:'center',justifyContent:'center',gap:'4px'}}>
                   {tab.label}
                   {tab.count > 0 && <span style={{fontSize:'11px',opacity:0.7}}>({tab.count})</span>}
                 </button>
@@ -168,7 +168,7 @@ export default function DashboardPage() {
             <div style={{position:'relative'}} className="mobile-tabs">
               <button
                 onClick={() => setShowTabMenu(!showTabMenu)}
-                style={{width:'100%',padding:'12px 16px',background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'6px',display:'flex',alignItems:'center',justifyContent:'space-between',cursor:'pointer',fontFamily:"'Syne',sans-serif",fontSize:'14px',fontWeight:700,color:'var(--text)'}}
+                style={{width:'100%',padding:'12px 16px',background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'6px',display:'flex',alignItems:'center',justifyContent:'space-between',cursor:'pointer',fontFamily:"'Unbounded',sans-serif",fontSize:'14px',fontWeight:700,color:'var(--text)'}}
               >
                 <span style={{display:'flex',alignItems:'center',gap:'8px'}}>
                   <span style={{width:'8px',height:'8px',borderRadius:'50%',background:'var(--accent)',flexShrink:0}}></span>
@@ -185,7 +185,7 @@ export default function DashboardPage() {
                       onMouseOver={e => e.currentTarget.style.background='var(--card-hover)'}
                       onMouseOut={e => e.currentTarget.style.background=activeTab===tab.key?'var(--tag-bg)':'transparent'}
                     >
-                      <span style={{fontFamily:"'Syne',sans-serif",fontSize:'14px',fontWeight:600,color:activeTab===tab.key?'var(--accent)':'var(--text)'}}>{tab.label}</span>
+                      <span style={{fontFamily:"'Unbounded',sans-serif",fontSize:'14px',fontWeight:600,color:activeTab===tab.key?'var(--accent)':'var(--text)'}}>{tab.label}</span>
                       {tab.count > 0 && <span style={{fontSize:'12px',color:'var(--muted)'}}>{tab.count}</span>}
                     </div>
                   ))}
@@ -202,7 +202,7 @@ export default function DashboardPage() {
               <>
                 {estimates.length >= 2 && (
                   <div style={{display:'flex',justifyContent:'flex-end',marginBottom:'12px'}}>
-                    <a href="/compare" style={{display:'flex',alignItems:'center',gap:'6px',color:'var(--muted)',fontSize:'12px',textDecoration:'none',border:'1px solid var(--border2)',borderRadius:'4px',padding:'5px 12px',fontFamily:"'Syne',sans-serif",fontWeight:600,transition:'all 0.2s'}} onMouseOver={e=>{e.currentTarget.style.borderColor='var(--accent)';e.currentTarget.style.color='var(--accent)'}} onMouseOut={e=>{e.currentTarget.style.borderColor='var(--border2)';e.currentTarget.style.color='var(--muted)'}}>
+                    <a href="/compare" style={{display:'flex',alignItems:'center',gap:'6px',color:'var(--muted)',fontSize:'12px',textDecoration:'none',border:'1px solid var(--border2)',borderRadius:'4px',padding:'5px 12px',fontFamily:"'Unbounded',sans-serif",fontWeight:600,transition:'all 0.2s'}} onMouseOver={e=>{e.currentTarget.style.borderColor='var(--accent)';e.currentTarget.style.color='var(--accent)'}} onMouseOut={e=>{e.currentTarget.style.borderColor='var(--border2)';e.currentTarget.style.color='var(--muted)'}}>
                       <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M4 8h8M10 5l3 3-3 3M6 5l-3 3 3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                       Сравнить сметы
                     </a>
@@ -212,14 +212,14 @@ export default function DashboardPage() {
                   {estimates.map(est => (
                     <RowItem key={est.id} onClick={() => router.push(`/dashboard/${est.id}`)}>
                       <div style={{flex:1,minWidth:0,overflow:'hidden'}}>
-                        <div style={{fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:700,marginBottom:'3px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{est.summary || 'Без описания'}</div>
+                        <div style={{fontFamily:"'Unbounded',sans-serif",fontSize:'13px',fontWeight:700,marginBottom:'3px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{est.summary || 'Без описания'}</div>
                         <div style={{display:'flex',gap:'8px',alignItems:'center',flexWrap:'wrap'}}>
                           <span style={{color:'var(--muted)',fontSize:'11px'}}>{new Date(est.created_at).toLocaleDateString('ru-RU',{day:'numeric',month:'short'})}</span>
                           {est.with_materials && <span style={{fontSize:'10px',color:'var(--accent)',border:'1px solid var(--tag-border)',background:'var(--tag-bg)',padding:'1px 6px',borderRadius:'2px'}}>С материалами</span>}
                         </div>
                       </div>
                       <div style={{display:'flex',flexDirection:'column',alignItems:'flex-end',gap:'6px',flexShrink:0}}>
-                        <span style={{fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:800,color:'var(--accent)',whiteSpace:'nowrap'}}>{est.total_rub?.toLocaleString('ru-RU')} ₽</span>
+                        <span style={{fontFamily:"'Unbounded',sans-serif",fontSize:'13px',fontWeight:800,color:'var(--accent)',whiteSpace:'nowrap'}}>{est.total_rub?.toLocaleString('ru-RU')} ₽</span>
                         <DeleteBtn onClick={(e: any) => deleteEstimate(est.id, e)} />
                       </div>
                     </RowItem>
@@ -241,7 +241,7 @@ export default function DashboardPage() {
                   return (
                     <RowItem key={check.id}>
                       <div style={{flex:1,minWidth:0}}>
-                        <div style={{fontFamily:"'Syne',sans-serif",fontSize:'14px',fontWeight:700,marginBottom:'4px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{check.object_description || 'Без описания'}</div>
+                        <div style={{fontFamily:"'Unbounded',sans-serif",fontSize:'14px',fontWeight:700,marginBottom:'4px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{check.object_description || 'Без описания'}</div>
                         <div style={{display:'flex',gap:'10px',alignItems:'center'}}>
                           <span style={{color:'var(--muted)',fontSize:'12px'}}>{new Date(check.created_at).toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'})}</span>
                           <span style={{fontSize:'10px',color:statusColor,border:`1px solid ${statusColor}`,padding:'1px 7px',borderRadius:'2px',opacity:0.85}}>{statusLabel}</span>
@@ -270,7 +270,7 @@ export default function DashboardPage() {
                 {documents.map(doc => (
                   <RowItem key={doc.id}>
                     <div style={{flex:1,minWidth:0}}>
-                      <div style={{fontFamily:"'Syne',sans-serif",fontSize:'14px',fontWeight:700,marginBottom:'4px'}}>{doc.doc_label}</div>
+                      <div style={{fontFamily:"'Unbounded',sans-serif",fontSize:'14px',fontWeight:700,marginBottom:'4px'}}>{doc.doc_label}</div>
                       <span style={{color:'var(--muted)',fontSize:'12px'}}>{new Date(doc.created_at).toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'})}</span>
                     </div>
                     <DeleteBtn onClick={async (e: any) => {
@@ -290,8 +290,8 @@ export default function DashboardPage() {
             <div style={{maxWidth:'520px',display:'flex',flexDirection:'column',gap:'16px'}}>
               <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'28px'}}>
                 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'24px'}}>
-                  <div style={{fontFamily:"'Syne',sans-serif",fontSize:'16px',fontWeight:700}}>Личные данные</div>
-                  <button onClick={() => editingProfile ? saveProfile() : setEditingProfile(true)} style={{background:editingProfile?'var(--accent)':'transparent',color:editingProfile?'var(--btn-text)':'var(--muted)',border:'1px solid',borderColor:editingProfile?'var(--accent)':'var(--border2)',borderRadius:'4px',padding:'5px 14px',cursor:'pointer',fontSize:'12px',fontFamily:"'Syne',sans-serif",fontWeight:600,transition:'all 0.2s'}}>
+                  <div style={{fontFamily:"'Unbounded',sans-serif",fontSize:'16px',fontWeight:700}}>Личные данные</div>
+                  <button onClick={() => editingProfile ? saveProfile() : setEditingProfile(true)} style={{background:editingProfile?'var(--accent)':'transparent',color:editingProfile?'var(--btn-text)':'var(--muted)',border:'1px solid',borderColor:editingProfile?'var(--accent)':'var(--border2)',borderRadius:'4px',padding:'5px 14px',cursor:'pointer',fontSize:'12px',fontFamily:"'Unbounded',sans-serif",fontWeight:600,transition:'all 0.2s'}}>
                     {profileLoading ? 'Сохраняем...' : editingProfile ? '✓ Сохранить' : '✏ Изменить'}
                   </button>
                 </div>
@@ -313,11 +313,11 @@ export default function DashboardPage() {
               </div>
 
               <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'24px'}}>
-                <div style={{fontFamily:"'Syne',sans-serif",fontSize:'16px',fontWeight:700,marginBottom:'16px'}}>Статистика</div>
+                <div style={{fontFamily:"'Unbounded',sans-serif",fontSize:'16px',fontWeight:700,marginBottom:'16px'}}>Статистика</div>
                 <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'8px'}}>
                   {[{label:'Смет',value:estimates.length},{label:'Проверок',value:qualityChecks.length},{label:'Документов',value:documents.length}].map(s => (
                     <div key={s.label} style={{textAlign:'center',padding:'12px 8px',background:'var(--bg)',borderRadius:'6px',border:'1px solid var(--border)'}}>
-                      <div style={{fontFamily:"'Syne',sans-serif",fontSize:'20px',fontWeight:800,color:'var(--accent)',marginBottom:'2px'}}>{s.value}</div>
+                      <div style={{fontFamily:"'Unbounded',sans-serif",fontSize:'20px',fontWeight:800,color:'var(--accent)',marginBottom:'2px'}}>{s.value}</div>
                       <div style={{color:'var(--muted)',fontSize:'11px'}}>{s.label}</div>
                     </div>
                   ))}
