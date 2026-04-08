@@ -22,7 +22,7 @@
 }
 html { scroll-behavior:smooth; }
 body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; font-size:16px; line-height:1.6; overflow-x:hidden; transition:background 0.35s,color 0.35s; }
-h1,h2,h3,h4 { font-family:'Syne',sans-serif; }
+h1,h2,h3,h4 { font-family:'DM Sans',sans-serif; }
 nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:20px 52px; transition:all 0.4s; }
 nav.scrolled { background:var(--bg); border-bottom:1px solid var(--border); }
 .logo { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; letter-spacing:-0.5px; color:var(--text); text-decoration:none; }
