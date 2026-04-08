@@ -6,18 +6,17 @@ import Script from 'next/script'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Kern â AI-ïëàòôîðìà äëÿ ñòðîèòåëüíîé èíäóñòðèè Ðîññèè',
-  description: 'Àâòîìàòèçàöèÿ ñìåò, êîíòðîëü êà÷åñòâà ïî ôîòî è ãåíåðàöèÿ äîêóìåíòîâ äëÿ ñòðîèòåëüíûõ êîìïàíèé. AI-ñìåò÷èê ïî ÷åðòåæó çà 30 ñåêóíä. Áåñïëàòíî.',
-  keywords: 'ñòðîèòåëüíàÿ ñìåòà, AI äëÿ ñòðîèòåëüñòâà, êîíòðîëü êà÷åñòâà ñòðîèòåëüñòâà, ñòðîèòåëüíûå äîêóìåíòû, ÃÑÍ, ÔÅÐ, ÒÅÐ',
+  title: {
+    default: 'Kern — AI для строительства',
+    template: '%s | Kern',
+  },
+  description: 'AI-платформа для строительных компаний России. Сметы, контроль качества, документы.',
+  metadataBase: new URL('https://kern-eight.vercel.app'),
   authors: [{ name: 'Kern' }],
   creator: 'Kern',
-  metadataBase: new URL('https://kern-eight.vercel.app'),
-  other: {
-    charset: 'utf-8',
-  },
   openGraph: {
-    title: 'Kern â AI-ïëàòôîðìà äëÿ ñòðîèòåëüíîé èíäóñòðèè',
-    description: 'Ñìåòû, êîíòðîëü êà÷åñòâà è äîêóìåíòû äëÿ ñòðîèòåëüíûõ êîìïàíèé Ðîññèè.',
+    title: 'Kern — AI для строительства',
+    description: 'Сметы, контроль качества и документы для строительных компаний России.',
     url: 'https://kern-eight.vercel.app',
     siteName: 'Kern',
     locale: 'ru_RU',
@@ -26,7 +25,6 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true },
   },
   alternates: {
     canonical: 'https://kern-eight.vercel.app',
