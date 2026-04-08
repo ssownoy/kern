@@ -207,12 +207,12 @@ export default function EstimatePage() {
 
   return (
     <>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap'); @keyframes spin { to { transform: rotate(360deg); } } @media (max-width:768px) { .est-layout { flex-direction: column !important; } .est-sidebar { width: 100% !important; } }`}</style>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap'); @keyframes spin { to { transform: rotate(360deg); } } @media (max-width:768px) { .est-layout { flex-direction: column !important; } .est-sidebar { width: 100% !important; } }`}</style>
 
       <nav style={{position:'fixed',top:0,left:0,right:0,zIndex:100,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'clamp(12px, 2vw, 16px) clamp(16px, 4vw, 40px)',background:'var(--bg)',borderBottom:'1px solid var(--border)'}}>
-        <a href="/" style={{fontFamily:"'Unbounded',sans-serif",fontSize:'20px',fontWeight:800,color:'var(--text)',textDecoration:'none',letterSpacing:'-0.5px'}}>Kern<span style={{color:'var(--accent)'}}>.</span></a>
+        <a href="/" style={{fontFamily:"'Syne',sans-serif",fontSize:'20px',fontWeight:800,color:'var(--text)',textDecoration:'none',letterSpacing:'-0.5px'}}>Kern<span style={{color:'var(--accent)'}}>.</span></a>
         <div style={{display:'flex',alignItems:'center',gap:'8px'}}>
-          <a href="/dashboard" style={{display:'flex',alignItems:'center',gap:'6px',color:'var(--text)',fontSize:'13px',textDecoration:'none',border:'1px solid var(--border2)',borderRadius:'4px',padding:'6px 14px',fontFamily:"'Unbounded',sans-serif",fontWeight:600,transition:'all 0.2s'}} onMouseOver={e=>{e.currentTarget.style.borderColor='var(--accent)';e.currentTarget.style.color='var(--accent)'}} onMouseOut={e=>{e.currentTarget.style.borderColor='var(--border2)';e.currentTarget.style.color='var(--text)'}}>
+          <a href="/dashboard" style={{display:'flex',alignItems:'center',gap:'6px',color:'var(--text)',fontSize:'13px',textDecoration:'none',border:'1px solid var(--border2)',borderRadius:'4px',padding:'6px 14px',fontFamily:"'Syne',sans-serif",fontWeight:600,transition:'all 0.2s'}} onMouseOver={e=>{e.currentTarget.style.borderColor='var(--accent)';e.currentTarget.style.color='var(--accent)'}} onMouseOut={e=>{e.currentTarget.style.borderColor='var(--border2)';e.currentTarget.style.color='var(--text)'}}>
             <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" strokeWidth="1.5"/><path d="M2 14c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
             Кабинет
           </a>
@@ -234,7 +234,7 @@ export default function EstimatePage() {
 
           <div style={{marginBottom:'40px'}}>
             <div style={{fontSize:'11px',letterSpacing:'0.14em',textTransform:'uppercase',color:'var(--accent)',marginBottom:'10px'}}>Модуль 01</div>
-            <h1 style={{fontFamily:"'Unbounded',sans-serif",fontSize:'clamp(28px,4vw,44px)',fontWeight:700,letterSpacing:'-0.02em',marginBottom:'10px',lineHeight:1.1}}>AI-сметчик</h1>
+            <h1 style={{fontFamily:"'Syne',sans-serif",fontSize:'clamp(28px,4vw,44px)',fontWeight:700,letterSpacing:'-0.02em',marginBottom:'10px',lineHeight:1.1}}>AI-сметчик</h1>
             <p style={{color:'var(--muted)',fontSize:'15px',fontWeight:300,maxWidth:'480px',lineHeight:1.6}}>Загрузите чертёж или фото объекта — получите готовую смету в рублях с учётом региональных цен.</p>
           </div>
 
@@ -254,7 +254,7 @@ export default function EstimatePage() {
                 {file ? (
                   <div>
                     {file.type.startsWith('image/') && <img src={URL.createObjectURL(file)} alt="preview" style={{maxHeight:'160px',maxWidth:'100%',borderRadius:'4px',objectFit:'contain',marginBottom:'10px'}} />}
-                    <div style={{fontFamily:"'Unbounded',sans-serif",fontWeight:600,fontSize:'13px',marginBottom:'4px'}}>{file.name}</div>
+                    <div style={{fontFamily:"'Syne',sans-serif",fontWeight:600,fontSize:'13px',marginBottom:'4px'}}>{file.name}</div>
                     <div style={{color:'var(--muted)',fontSize:'12px',marginBottom:'10px'}}>{(file.size / 1024).toFixed(0)} KB</div>
                     <button onClick={e => { e.stopPropagation(); setFile(null); const inp = document.getElementById('fileInput') as HTMLInputElement; if(inp) inp.value='' }} style={{fontSize:'12px',color:'var(--muted)',background:'none',border:'1px solid var(--border2)',borderRadius:'3px',padding:'3px 10px',cursor:'pointer'}}>Удалить</button>
                   </div>
@@ -263,7 +263,7 @@ export default function EstimatePage() {
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" style={{margin:'0 auto 12px',display:'block',color:'var(--muted)'}}>
                       <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
-                    <div style={{fontFamily:"'Unbounded',sans-serif",fontWeight:600,fontSize:'14px',marginBottom:'4px'}}>Загрузить чертёж или фото</div>
+                    <div style={{fontFamily:"'Syne',sans-serif",fontWeight:600,fontSize:'14px',marginBottom:'4px'}}>Загрузить чертёж или фото</div>
                     <div style={{color:'var(--muted)',fontSize:'12px'}}>PNG, JPG, PDF — до 10 МБ</div>
                   </div>
                 )}
@@ -284,7 +284,7 @@ export default function EstimatePage() {
 
               {/* Params collapsible */}
               <div>
-                <button onClick={() => setShowParams(!showParams)} style={{width:'100%',display:'flex',alignItems:'center',justifyContent:'space-between',background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:showParams?'6px 6px 0 0':'6px',padding:'12px 16px',cursor:'pointer',fontFamily:"'Unbounded',sans-serif",fontSize:'13px',fontWeight:600,color:'var(--text)'}}>
+                <button onClick={() => setShowParams(!showParams)} style={{width:'100%',display:'flex',alignItems:'center',justifyContent:'space-between',background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:showParams?'6px 6px 0 0':'6px',padding:'12px 16px',cursor:'pointer',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:600,color:'var(--text)'}}>
                   <span>Параметры сметы</span>
                   <span style={{color:'var(--muted)',fontSize:'12px',fontWeight:400,display:'flex',alignItems:'center',gap:'6px'}}>необязательно <span>{showParams ? '▲' : '▼'}</span></span>
                 </button>
@@ -329,13 +329,13 @@ export default function EstimatePage() {
                   {withMaterials && <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="var(--btn-text)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
                 </div>
                 <div>
-                  <div style={{fontFamily:"'Unbounded',sans-serif",fontWeight:600,fontSize:'13px',marginBottom:'2px'}}>Подбор материалов</div>
+                  <div style={{fontFamily:"'Syne',sans-serif",fontWeight:600,fontSize:'13px',marginBottom:'2px'}}>Подбор материалов</div>
                   <div style={{color:'var(--muted)',fontSize:'12px'}}>AI включит стоимость материалов в смету</div>
                 </div>
               </div>
 
               {/* Submit */}
-              <button onClick={handleSubmit} disabled={!file || loading} style={{width:'100%',padding:'14px',borderRadius:'6px',background:file && !loading ? 'var(--accent)' : 'var(--border2)',color:file && !loading ? 'var(--btn-text)' : 'var(--muted)',border:'none',fontFamily:"'Unbounded',sans-serif",fontSize:'14px',fontWeight:700,cursor:file && !loading ? 'pointer' : 'not-allowed',transition:'all 0.2s'}}>
+              <button onClick={handleSubmit} disabled={!file || loading} style={{width:'100%',padding:'14px',borderRadius:'6px',background:file && !loading ? 'var(--accent)' : 'var(--border2)',color:file && !loading ? 'var(--btn-text)' : 'var(--muted)',border:'none',fontFamily:"'Syne',sans-serif",fontSize:'14px',fontWeight:700,cursor:file && !loading ? 'pointer' : 'not-allowed',transition:'all 0.2s'}}>
                 {loading ? (
                   <span style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'8px'}}>
                     <span style={{width:'16px',height:'16px',border:'2px solid var(--btn-text)',borderTopColor:'transparent',borderRadius:'50%',display:'inline-block',animation:'spin 0.8s linear infinite'}}></span>
@@ -356,7 +356,7 @@ export default function EstimatePage() {
                     <path d="M9 12h6M9 16h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
                   </svg>
                   <div>
-                    <div style={{fontFamily:"'Unbounded',sans-serif",fontWeight:600,fontSize:'15px',marginBottom:'6px'}}>Здесь появится смета</div>
+                    <div style={{fontFamily:"'Syne',sans-serif",fontWeight:600,fontSize:'15px',marginBottom:'6px'}}>Здесь появится смета</div>
                     <div style={{color:'var(--muted)',fontSize:'13px',lineHeight:1.5}}>Загрузите чертёж или фото объекта<br />и нажмите «Составить смету»</div>
                   </div>
                   <div style={{display:'flex',flexDirection:'column',gap:'8px',width:'100%',maxWidth:'240px',marginTop:'8px'}}>
@@ -374,12 +374,12 @@ export default function EstimatePage() {
                 <div style={{display:'flex',flexDirection:'column',gap:'16px'}}>
                   <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'20px 24px'}}>
                     <div style={{fontSize:'10px',letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)',marginBottom:'6px'}}>Объект</div>
-                    <div style={{fontFamily:"'Unbounded',sans-serif",fontSize:'15px',fontWeight:700}}>{estimate.summary}</div>
+                    <div style={{fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:700}}>{estimate.summary}</div>
                   </div>
 
                   <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
                     <span style={{fontSize:'11px',letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)'}}>Позиции сметы</span>
-                    <button onClick={() => setEditMode(!editMode)} style={{display:'flex',alignItems:'center',gap:'5px',background:editMode?'var(--accent)':'transparent',color:editMode?'var(--btn-text)':'var(--muted)',border:'1px solid',borderColor:editMode?'var(--accent)':'var(--border2)',borderRadius:'4px',padding:'5px 12px',cursor:'pointer',fontSize:'12px',fontFamily:"'Unbounded',sans-serif",fontWeight:600,transition:'all 0.2s'}}>
+                    <button onClick={() => setEditMode(!editMode)} style={{display:'flex',alignItems:'center',gap:'5px',background:editMode?'var(--accent)':'transparent',color:editMode?'var(--btn-text)':'var(--muted)',border:'1px solid',borderColor:editMode?'var(--accent)':'var(--border2)',borderRadius:'4px',padding:'5px 12px',cursor:'pointer',fontSize:'12px',fontFamily:"'Syne',sans-serif",fontWeight:600,transition:'all 0.2s'}}>
                       {editMode ? (
                         <><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l2.5 2.5L10 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>Готово</>
                       ) : (
@@ -424,18 +424,18 @@ export default function EstimatePage() {
                     </table>
                     {editMode && (
                       <div style={{padding:'10px 16px',borderTop:'1px solid var(--border)'}}>
-                        <button onClick={addItem} style={{background:'none',border:'1px dashed var(--border2)',borderRadius:'4px',color:'var(--muted)',padding:'7px 14px',cursor:'pointer',fontSize:'12px',fontFamily:"'Unbounded',sans-serif",fontWeight:600,width:'100%'}}>+ Добавить позицию</button>
+                        <button onClick={addItem} style={{background:'none',border:'1px dashed var(--border2)',borderRadius:'4px',color:'var(--muted)',padding:'7px 14px',cursor:'pointer',fontSize:'12px',fontFamily:"'Syne',sans-serif",fontWeight:600,width:'100%'}}>+ Добавить позицию</button>
                       </div>
                     )}
                     <div style={{background:'var(--bg2)',borderTop:'1px solid var(--border)',padding:'12px 16px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
                       <span style={{color:'var(--muted)',fontSize:'12px'}}>Позиций: {editableItems.length}</span>
-                      <span style={{fontFamily:"'Unbounded',sans-serif",fontSize:'14px',fontWeight:700}}>Итого: {totalRub.toLocaleString('ru-RU')} ₽</span>
+                      <span style={{fontFamily:"'Syne',sans-serif",fontSize:'14px',fontWeight:700}}>Итого: {totalRub.toLocaleString('ru-RU')} ₽</span>
                     </div>
                   </div>
 
                   <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'20px 24px'}}>
-                    <span style={{fontFamily:"'Unbounded',sans-serif",fontSize:'15px',fontWeight:700}}>Итоговая стоимость</span>
-                    <span style={{fontFamily:"'Unbounded',sans-serif",fontSize:'26px',fontWeight:800,color:'var(--accent)'}}>{totalRub.toLocaleString('ru-RU')} ₽</span>
+                    <span style={{fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:700}}>Итоговая стоимость</span>
+                    <span style={{fontFamily:"'Syne',sans-serif",fontSize:'26px',fontWeight:800,color:'var(--accent)'}}>{totalRub.toLocaleString('ru-RU')} ₽</span>
                   </div>
 
                   {estimate.notes && (
@@ -446,8 +446,8 @@ export default function EstimatePage() {
                   )}
 
                   <div style={{display:'flex',gap:'8px'}}>
-                    <button onClick={downloadPDF} style={{flex:1,padding:'12px',borderRadius:'4px',background:'var(--accent)',color:'var(--btn-text)',border:'none',fontFamily:"'Unbounded',sans-serif",fontSize:'13px',fontWeight:700,cursor:'pointer'}}>Скачать PDF</button>
-                    <button onClick={downloadExcel} style={{flex:1,padding:'12px',borderRadius:'4px',background:'transparent',color:'var(--muted)',border:'1px solid var(--border2)',fontFamily:"'Unbounded',sans-serif",fontSize:'13px',fontWeight:600,cursor:'pointer',transition:'all 0.2s'}} onMouseOver={e=>{e.currentTarget.style.borderColor='var(--accent)';e.currentTarget.style.color='var(--accent)'}} onMouseOut={e=>{e.currentTarget.style.borderColor='var(--border2)';e.currentTarget.style.color='var(--muted)'}}>Скачать Excel</button>
+                    <button onClick={downloadPDF} style={{flex:1,padding:'12px',borderRadius:'4px',background:'var(--accent)',color:'var(--btn-text)',border:'none',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:700,cursor:'pointer'}}>Скачать PDF</button>
+                    <button onClick={downloadExcel} style={{flex:1,padding:'12px',borderRadius:'4px',background:'transparent',color:'var(--muted)',border:'1px solid var(--border2)',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:600,cursor:'pointer',transition:'all 0.2s'}} onMouseOver={e=>{e.currentTarget.style.borderColor='var(--accent)';e.currentTarget.style.color='var(--accent)'}} onMouseOut={e=>{e.currentTarget.style.borderColor='var(--border2)';e.currentTarget.style.color='var(--muted)'}}>Скачать Excel</button>
                   </div>
                 </div>
               )}

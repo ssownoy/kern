@@ -134,12 +134,12 @@ export default function DocumentsPage() {
 
   return (
     <>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap'); @keyframes spin { to { transform: rotate(360deg); } } @media (max-width:768px) { .docs-layout { flex-direction: column !important; } } @media (max-width: 600px) { .docs-layout { padding: 0 !important; } .docs-layout > div:first-child { width: 100% !important; flex: none !important; } .docs-placeholder { padding: 20px !important; min-height: auto !important; } .docs-placeholder .placeholder-icon { width: 32px !important; height: 32px !important; } .docs-placeholder .placeholder-title { font-size: 13px !important; margin-bottom: 4px !important; } .docs-placeholder .placeholder-text { font-size: 12px !important; } }`}</style>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap'); @keyframes spin { to { transform: rotate(360deg); } } @media (max-width:768px) { .docs-layout { flex-direction: column !important; } } @media (max-width: 600px) { .docs-layout { padding: 0 !important; } .docs-layout > div:first-child { width: 100% !important; flex: none !important; } .docs-placeholder { padding: 20px !important; min-height: auto !important; } .docs-placeholder .placeholder-icon { width: 32px !important; height: 32px !important; } .docs-placeholder .placeholder-title { font-size: 13px !important; margin-bottom: 4px !important; } .docs-placeholder .placeholder-text { font-size: 12px !important; } }`}</style>
 
       <nav style={{position:'fixed',top:0,left:0,right:0,zIndex:100,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'clamp(12px, 2vw, 16px) clamp(16px, 4vw, 40px)',background:'var(--bg)',borderBottom:'1px solid var(--border)'}}>
-        <a href="/" style={{fontFamily:"'Unbounded',sans-serif",fontSize:'20px',fontWeight:800,color:'var(--text)',textDecoration:'none',letterSpacing:'-0.5px'}}>Kern<span style={{color:'var(--accent)'}}>.</span></a>
+        <a href="/" style={{fontFamily:"'Syne',sans-serif",fontSize:'20px',fontWeight:800,color:'var(--text)',textDecoration:'none',letterSpacing:'-0.5px'}}>Kern<span style={{color:'var(--accent)'}}>.</span></a>
         <div style={{display:'flex',alignItems:'center',gap:'8px'}}>
-          <a href="/dashboard" style={{display:'flex',alignItems:'center',gap:'6px',color:'var(--text)',fontSize:'13px',textDecoration:'none',border:'1px solid var(--border2)',borderRadius:'4px',padding:'6px 14px',fontFamily:"'Unbounded',sans-serif",fontWeight:600,transition:'all 0.2s'}} onMouseOver={e=>{e.currentTarget.style.borderColor='var(--accent)';e.currentTarget.style.color='var(--accent)'}} onMouseOut={e=>{e.currentTarget.style.borderColor='var(--border2)';e.currentTarget.style.color='var(--text)'}}>
+          <a href="/dashboard" style={{display:'flex',alignItems:'center',gap:'6px',color:'var(--text)',fontSize:'13px',textDecoration:'none',border:'1px solid var(--border2)',borderRadius:'4px',padding:'6px 14px',fontFamily:"'Syne',sans-serif",fontWeight:600,transition:'all 0.2s'}} onMouseOver={e=>{e.currentTarget.style.borderColor='var(--accent)';e.currentTarget.style.color='var(--accent)'}} onMouseOut={e=>{e.currentTarget.style.borderColor='var(--border2)';e.currentTarget.style.color='var(--text)'}}>
             <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" strokeWidth="1.5"/><path d="M2 14c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
             Кабинет
           </a>
@@ -161,7 +161,7 @@ export default function DocumentsPage() {
 
           <div style={{marginBottom:'40px'}}>
             <div style={{fontSize:'11px',letterSpacing:'0.14em',textTransform:'uppercase',color:'var(--accent)',marginBottom:'10px'}}>Модуль 03</div>
-            <h1 style={{fontFamily:"'Unbounded',sans-serif",fontSize:'clamp(28px,4vw,44px)',fontWeight:700,letterSpacing:'-0.02em',marginBottom:'10px',lineHeight:1.1}}>Генератор документов</h1>
+            <h1 style={{fontFamily:"'Syne',sans-serif",fontSize:'clamp(28px,4vw,44px)',fontWeight:700,letterSpacing:'-0.02em',marginBottom:'10px',lineHeight:1.1}}>Генератор документов</h1>
             <p style={{color:'var(--muted)',fontSize:'15px',fontWeight:300,maxWidth:'480px',lineHeight:1.6}}>Заполните данные — AI сгенерирует готовый документ по российским стандартам.</p>
           </div>
 
@@ -179,7 +179,7 @@ export default function DocumentsPage() {
                     onMouseOut={e => { if(selectedDoc!==doc.id) e.currentTarget.style.background='transparent' }}
                   >
                     <div>
-                      <div style={{fontFamily:"'Unbounded',sans-serif",fontWeight:600,fontSize:'13px',color:selectedDoc===doc.id ? 'var(--accent)' : 'var(--text)',marginBottom:'2px'}}>{doc.label}</div>
+                      <div style={{fontFamily:"'Syne',sans-serif",fontWeight:600,fontSize:'13px',color:selectedDoc===doc.id ? 'var(--accent)' : 'var(--text)',marginBottom:'2px'}}>{doc.label}</div>
                       <div style={{fontSize:'11px',color:'var(--muted)'}}>{doc.desc}</div>
                     </div>
                     {selectedDoc === doc.id && (
@@ -192,7 +192,7 @@ export default function DocumentsPage() {
               {/* Fields */}
               {selectedDoc && (
                 <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'20px'}}>
-                  <div style={{fontFamily:"'Unbounded',sans-serif",fontWeight:600,fontSize:'13px',marginBottom:'16px'}}>{docTypes.find(d => d.id === selectedDoc)?.label}</div>
+                  <div style={{fontFamily:"'Syne',sans-serif",fontWeight:600,fontSize:'13px',marginBottom:'16px'}}>{docTypes.find(d => d.id === selectedDoc)?.label}</div>
                   <div style={{display:'flex',flexDirection:'column',gap:'12px'}}>
                     {docFields[selectedDoc]?.map(field => (
                       <div key={field.key}>
@@ -205,7 +205,7 @@ export default function DocumentsPage() {
                       </div>
                     ))}
                   </div>
-                  <button onClick={handleGenerate} disabled={loading} style={{width:'100%',padding:'13px',borderRadius:'6px',background:'var(--accent)',color:'var(--btn-text)',border:'none',fontFamily:"'Unbounded',sans-serif",fontSize:'14px',fontWeight:700,cursor:loading?'not-allowed':'pointer',opacity:loading?0.7:1,transition:'all 0.2s',marginTop:'16px'}}>
+                  <button onClick={handleGenerate} disabled={loading} style={{width:'100%',padding:'13px',borderRadius:'6px',background:'var(--accent)',color:'var(--btn-text)',border:'none',fontFamily:"'Syne',sans-serif",fontSize:'14px',fontWeight:700,cursor:loading?'not-allowed':'pointer',opacity:loading?0.7:1,transition:'all 0.2s',marginTop:'16px'}}>
                     {loading ? (
                       <span style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'8px'}}>
                         <span style={{width:'16px',height:'16px',border:'2px solid var(--btn-text)',borderTopColor:'transparent',borderRadius:'50%',display:'inline-block',animation:'spin 0.8s linear infinite'}}></span>
@@ -228,7 +228,7 @@ export default function DocumentsPage() {
                     <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                   <div>
-                    <div className="placeholder-title" style={{fontFamily:"'Unbounded',sans-serif",fontWeight:600,fontSize:'15px',marginBottom:'6px'}}>Выберите тип документа</div>
+                    <div className="placeholder-title" style={{fontFamily:"'Syne',sans-serif",fontWeight:600,fontSize:'15px',marginBottom:'6px'}}>Выберите тип документа</div>
                     <div className="placeholder-text" style={{color:'var(--muted)',fontSize:'13px',lineHeight:1.5}}>Заполните данные слева и нажмите<br />«Сгенерировать»</div>
                   </div>
                 </div>
@@ -239,8 +239,8 @@ export default function DocumentsPage() {
                   <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
                     <span style={{fontSize:'11px',letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)'}}>Готовый документ</span>
                     <div style={{display:'flex',gap:'8px'}}>
-                      <button onClick={downloadTXT} style={{background:'none',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',padding:'6px 14px',cursor:'pointer',fontSize:'12px',fontFamily:"'Unbounded',sans-serif",fontWeight:600,transition:'all 0.2s'}} onMouseOver={e=>{e.currentTarget.style.borderColor='var(--accent)';e.currentTarget.style.color='var(--accent)'}} onMouseOut={e=>{e.currentTarget.style.borderColor='var(--border2)';e.currentTarget.style.color='var(--muted)'}}>TXT</button>
-                      <button onClick={downloadPDF} style={{background:'var(--accent)',border:'none',borderRadius:'4px',color:'var(--btn-text)',padding:'6px 14px',cursor:'pointer',fontSize:'12px',fontFamily:"'Unbounded',sans-serif",fontWeight:600}}>PDF</button>
+                      <button onClick={downloadTXT} style={{background:'none',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',padding:'6px 14px',cursor:'pointer',fontSize:'12px',fontFamily:"'Syne',sans-serif",fontWeight:600,transition:'all 0.2s'}} onMouseOver={e=>{e.currentTarget.style.borderColor='var(--accent)';e.currentTarget.style.color='var(--accent)'}} onMouseOut={e=>{e.currentTarget.style.borderColor='var(--border2)';e.currentTarget.style.color='var(--muted)'}}>TXT</button>
+                      <button onClick={downloadPDF} style={{background:'var(--accent)',border:'none',borderRadius:'4px',color:'var(--btn-text)',padding:'6px 14px',cursor:'pointer',fontSize:'12px',fontFamily:"'Syne',sans-serif",fontWeight:600}}>PDF</button>
                     </div>
                   </div>
                   <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'28px',whiteSpace:'pre-wrap',fontSize:'13px',lineHeight:1.8,color:'var(--text)',fontFamily:'Arial, sans-serif',maxHeight:'640px',overflowY:'auto'}}>

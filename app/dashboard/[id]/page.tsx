@@ -112,7 +112,7 @@ export default function EstimateDetailPage() {
 
   return (
     <>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');`}</style>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');`}</style>
       <style>{`
         @media (max-width: 600px) {
           .detail-nav { padding: 14px 16px !important; }
@@ -124,7 +124,7 @@ export default function EstimateDetailPage() {
         }
       `}</style>
       <nav className="detail-nav" style={{position:'fixed',top:0,left:0,right:0,zIndex:100,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'20px 52px',background:'var(--bg)',borderBottom:'1px solid var(--border)'}}>
-        <a href="/" style={{fontFamily:"'Unbounded',sans-serif",fontSize:'22px',fontWeight:800,color:'var(--text)',textDecoration:'none',letterSpacing:'-0.5px'}}>Kern<span style={{color:'var(--accent)'}}>.</span></a>
+        <a href="/" style={{fontFamily:"'Syne',sans-serif",fontSize:'22px',fontWeight:800,color:'var(--text)',textDecoration:'none',letterSpacing:'-0.5px'}}>Kern<span style={{color:'var(--accent)'}}>.</span></a>
         <div style={{display:'flex',alignItems:'center',gap:'16px'}}>
           <a href="/dashboard" style={{color:'var(--muted)',fontSize:'14px',textDecoration:'none',transition:'color 0.2s'}}>← Мои сметы</a>
           <button onClick={toggleTheme} style={{width:'42px',height:'23px',background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'12px',cursor:'pointer',position:'relative',display:'flex',alignItems:'center',padding:'0 3px',flexShrink:0}}>
@@ -142,19 +142,19 @@ export default function EstimateDetailPage() {
             <span style={{fontSize:'11px',letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)'}}>Позиции сметы</span>
             <div style={{display:'flex',gap:'8px'}}>
               {editMode && (
-                <button onClick={addItem} style={{background:'none',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',padding:'6px 14px',cursor:'pointer',fontSize:'13px',fontFamily:"'Unbounded',sans-serif",fontWeight:600}}>
+                <button onClick={addItem} style={{background:'none',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',padding:'6px 14px',cursor:'pointer',fontSize:'13px',fontFamily:"'Syne',sans-serif",fontWeight:600}}>
                   + Позиция
                 </button>
               )}
               <button
                 onClick={() => editMode ? saveChanges() : setEditMode(true)}
-                style={{background:editMode?'var(--accent)':'transparent',color:editMode?'var(--btn-text)':'var(--muted)',border:'1px solid',borderColor:editMode?'var(--accent)':'var(--border2)',borderRadius:'4px',padding:'6px 14px',cursor:'pointer',fontSize:'13px',fontFamily:"'Unbounded',sans-serif",fontWeight:600,transition:'all 0.2s'}}
+                style={{background:editMode?'var(--accent)':'transparent',color:editMode?'var(--btn-text)':'var(--muted)',border:'1px solid',borderColor:editMode?'var(--accent)':'var(--border2)',borderRadius:'4px',padding:'6px 14px',cursor:'pointer',fontSize:'13px',fontFamily:"'Syne',sans-serif",fontWeight:600,transition:'all 0.2s'}}
               >
                 {editMode ? '✓ Сохранить' : '✏ Редактировать'}
               </button>
             </div>
           </div>
-          <h1 className="detail-title" style={{fontFamily:"'Unbounded',sans-serif",fontSize:'clamp(24px,3vw,36px)',fontWeight:800,letterSpacing:'-0.02em',marginBottom:'8px'}}>{estimate.summary}</h1>
+          <h1 className="detail-title" style={{fontFamily:"'Syne',sans-serif",fontSize:'clamp(24px,3vw,36px)',fontWeight:800,letterSpacing:'-0.02em',marginBottom:'8px'}}>{estimate.summary}</h1>
           <p style={{color:'var(--muted)',fontSize:'14px',marginBottom:'48px'}}>{new Date(estimate.created_at).toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'})}</p>
 
           <div className="detail-table-wrap" style={{border:'1px solid var(--border)',borderRadius:'8px',overflow:'auto',marginBottom:'24px'}}>
@@ -179,7 +179,7 @@ export default function EstimateDetailPage() {
                       <div style={{display:'flex',alignItems:'center',justifyContent:'flex-end',gap:'10px'}}>
                         <span style={{color:'var(--text)',fontWeight:500,whiteSpace:'nowrap'}}>{(item.qty*item.price).toLocaleString('ru-RU')} ₽</span>
                         {editMode && (
-                          <button onClick={() => removeItem(i)} style={{background:'none',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',cursor:'pointer',fontSize:'12px',padding:'3px 8px',fontFamily:"'Unbounded',sans-serif",transition:'all 0.2s',whiteSpace:'nowrap'}}
+                          <button onClick={() => removeItem(i)} style={{background:'none',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',cursor:'pointer',fontSize:'12px',padding:'3px 8px',fontFamily:"'Syne',sans-serif",transition:'all 0.2s',whiteSpace:'nowrap'}}
                             onMouseOver={e => { e.currentTarget.style.borderColor='#ff8080'; e.currentTarget.style.color='#ff8080' }}
                             onMouseOut={e => { e.currentTarget.style.borderColor='var(--border2)'; e.currentTarget.style.color='var(--muted)' }}
                           >Удалить</button>
@@ -193,8 +193,8 @@ export default function EstimateDetailPage() {
           </div>
 
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'24px 32px',marginBottom:'24px'}}>
-            <span style={{fontFamily:"'Unbounded',sans-serif",fontSize:'16px',fontWeight:700}}>Итого</span>
-            <span className="detail-total-amount" style={{fontFamily:"'Unbounded',sans-serif",fontSize:'28px',fontWeight:800,color:'var(--accent)'}}>{totalRub.toLocaleString('ru-RU')} ₽</span>
+            <span style={{fontFamily:"'Syne',sans-serif",fontSize:'16px',fontWeight:700}}>Итого</span>
+            <span className="detail-total-amount" style={{fontFamily:"'Syne',sans-serif",fontSize:'28px',fontWeight:800,color:'var(--accent)'}}>{totalRub.toLocaleString('ru-RU')} ₽</span>
           </div>
 
           {estimate.notes && (
@@ -207,7 +207,7 @@ export default function EstimateDetailPage() {
           <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'20px 24px',marginBottom:'16px'}}>
             <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom: isPublic ? '14px' : '0'}}>
               <div>
-                <div style={{fontFamily:"'Unbounded',sans-serif",fontSize:'14px',fontWeight:700,marginBottom:'2px'}}>Публичная ссылка</div>
+                <div style={{fontFamily:"'Syne',sans-serif",fontSize:'14px',fontWeight:700,marginBottom:'2px'}}>Публичная ссылка</div>
                 <div style={{color:'var(--muted)',fontSize:'12px'}}>Клиент откроет смету без регистрации</div>
               </div>
               <div onClick={toggleShare} style={{width:'40px',height:'22px',borderRadius:'11px',background:isPublic?'var(--accent)':'var(--border2)',cursor:'pointer',position:'relative',transition:'background 0.2s',flexShrink:0}}>
@@ -217,14 +217,14 @@ export default function EstimateDetailPage() {
             {isPublic && shareUrl && (
               <div style={{display:'flex',gap:'8px',alignItems:'center'}}>
                 <div style={{flex:1,background:'var(--bg)',border:'1px solid var(--border)',borderRadius:'4px',padding:'8px 12px',fontSize:'12px',color:'var(--muted)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{shareUrl}</div>
-                <button onClick={copyLink} style={{background:copying?'#5E9E6E':'var(--accent)',color:'var(--btn-text)',border:'none',borderRadius:'4px',padding:'8px 16px',cursor:'pointer',fontSize:'12px',fontFamily:"'Unbounded',sans-serif",fontWeight:600,whiteSpace:'nowrap',transition:'background 0.2s',flexShrink:0}}>
+                <button onClick={copyLink} style={{background:copying?'#5E9E6E':'var(--accent)',color:'var(--btn-text)',border:'none',borderRadius:'4px',padding:'8px 16px',cursor:'pointer',fontSize:'12px',fontFamily:"'Syne',sans-serif",fontWeight:600,whiteSpace:'nowrap',transition:'background 0.2s',flexShrink:0}}>
                   {copying ? '✓ Скопировано' : 'Копировать'}
                 </button>
               </div>
             )}
           </div>
 
-          <button onClick={downloadPDF} style={{width:'100%',padding:'14px',borderRadius:'4px',background:'transparent',color:'var(--accent)',border:'1px solid var(--accent)',fontFamily:"'Unbounded',sans-serif",fontSize:'15px',fontWeight:600,cursor:'pointer',transition:'all 0.2s'}}>
+          <button onClick={downloadPDF} style={{width:'100%',padding:'14px',borderRadius:'4px',background:'transparent',color:'var(--accent)',border:'1px solid var(--accent)',fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:600,cursor:'pointer',transition:'all 0.2s'}}>
             Скачать PDF
           </button>
         </div>

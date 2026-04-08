@@ -116,7 +116,7 @@ export default function Home() {
               <div className="module-icon">📐</div>
               <h3>AI-сметчик</h3>
               <p>Загрузите чертёж или фото объекта — получите готовую смету в рублях по актуальным рыночным ценам. Поддержка PDF, DWG, PNG.</p>
-              <div style={{marginTop:'auto',paddingTop:'20px',display:'flex',alignItems:'center',gap:'6px',color:'var(--accent)',fontFamily:"'Unbounded',sans-serif",fontSize:'13px',fontWeight:600}}>Попробовать →</div>
+              <div style={{marginTop:'auto',paddingTop:'20px',display:'flex',alignItems:'center',gap:'6px',color:'var(--accent)',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:600}}>Попробовать →</div>
             </div>
 
             <div className="module-card" style={{cursor:'pointer',display:'flex',flexDirection:'column'}} onClick={() => window.location.href='/quality'}>
@@ -127,7 +127,7 @@ export default function Home() {
               <div className="module-icon">🔍</div>
               <h3>Контроль качества</h3>
               <p>Фото строительного объекта анализируется нейросетью. AI определяет дефекты, отклонения от норм и формирует акт осмотра.</p>
-              <div style={{marginTop:'auto',paddingTop:'20px',display:'flex',alignItems:'center',gap:'6px',color:'var(--accent)',fontFamily:"'Unbounded',sans-serif",fontSize:'13px',fontWeight:600}}>Попробовать →</div>
+              <div style={{marginTop:'auto',paddingTop:'20px',display:'flex',alignItems:'center',gap:'6px',color:'var(--accent)',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:600}}>Попробовать →</div>
             </div>
 
             <div className="module-card" style={{display:'flex',flexDirection:'column',cursor:'pointer'}} onClick={() => window.location.href='/documents'}>
@@ -138,7 +138,7 @@ export default function Home() {
               <div className="module-icon">📋</div>
               <h3>Генератор документов</h3>
               <p>Контракты, разрешения и акты по российским стандартам (ГОСТ, СНиП). Генерация за 30 секунд, готово к подписанию.</p>
-              <div style={{marginTop:'auto',paddingTop:'20px',display:'flex',alignItems:'center',gap:'6px',color:'var(--accent)',fontFamily:"'Unbounded',sans-serif",fontSize:'13px',fontWeight:600}}>Попробовать →</div>
+              <div style={{marginTop:'auto',paddingTop:'20px',display:'flex',alignItems:'center',gap:'6px',color:'var(--accent)',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:600}}>Попробовать →</div>
             </div>
 
             <div className="module-card" style={{display:'flex',flexDirection:'column'}}>
@@ -288,7 +288,7 @@ export default function Home() {
           <p className="cta-lead">Оставьте заявку — свяжемся в течение 24 часов и настроим платформу под ваши задачи.</p>
           <div className="form-wrap reveal">
             <div style={{marginBottom:'28px'}}>
-              <h3 style={{fontFamily:"'Unbounded',sans-serif",fontSize:'20px',fontWeight:700,marginBottom:'6px'}}>Оставьте заявку</h3>
+              <h3 style={{fontFamily:"'Syne',sans-serif",fontSize:'20px',fontWeight:700,marginBottom:'6px'}}>Оставьте заявку</h3>
               <p style={{color:'var(--muted)',fontSize:'14px',fontWeight:300}}>Свяжемся в течение 24 часов</p>
             </div>
             <div className="form-row">
@@ -356,7 +356,7 @@ export default function Home() {
             </div>
             <div style={{display:'flex',gap:'60px',flexWrap:'wrap'}}>
               <div>
-                <div style={{fontFamily:"'Unbounded',sans-serif",fontSize:'12px',fontWeight:700,letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)',marginBottom:'16px'}}>Платформа</div>
+                <div style={{fontFamily:"'Syne',sans-serif",fontSize:'12px',fontWeight:700,letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)',marginBottom:'16px'}}>Платформа</div>
                 <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
                   <a onClick={() => goTo('modules')} style={{color:'var(--text)',textDecoration:'none',fontSize:'14px',cursor:'pointer'}}>Модули</a>
                   <a onClick={() => goTo('advantages')} style={{color:'var(--text)',textDecoration:'none',fontSize:'14px',cursor:'pointer'}}>Преимущества</a>
@@ -364,7 +364,7 @@ export default function Home() {
                 </div>
               </div>
               <div>
-                <div style={{fontFamily:"'Unbounded',sans-serif",fontSize:'12px',fontWeight:700,letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)',marginBottom:'16px'}}>Инструменты</div>
+                <div style={{fontFamily:"'Syne',sans-serif",fontSize:'12px',fontWeight:700,letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)',marginBottom:'16px'}}>Инструменты</div>
                 <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
                   <a href="/estimate" style={{color:'var(--text)',textDecoration:'none',fontSize:'14px'}}>AI-сметчик</a>
                   <a href="/quality" style={{color:'var(--text)',textDecoration:'none',fontSize:'14px'}}>Контроль качества</a>
@@ -372,7 +372,7 @@ export default function Home() {
                 </div>
               </div>
               <div>
-                <div style={{fontFamily:"'Unbounded',sans-serif",fontSize:'12px',fontWeight:700,letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)',marginBottom:'16px'}}>Компания</div>
+                <div style={{fontFamily:"'Syne',sans-serif",fontSize:'12px',fontWeight:700,letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)',marginBottom:'16px'}}>Компания</div>
                 <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
                   <a href="/privacy" style={{color:'var(--text)',textDecoration:'none',fontSize:'14px'}}>Конфиденциальность</a>
                   <a href="/about" style={{color:'var(--text)',textDecoration:'none',fontSize:'14px'}}>О проекте</a>

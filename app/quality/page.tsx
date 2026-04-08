@@ -91,12 +91,12 @@ export default function QualityPage() {
 
   return (
     <>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap'); @keyframes spin { to { transform: rotate(360deg); } } @media (max-width:768px) { .qual-layout { flex-direction: column !important; } }`}</style>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap'); @keyframes spin { to { transform: rotate(360deg); } } @media (max-width:768px) { .qual-layout { flex-direction: column !important; } }`}</style>
 
       <nav style={{position:'fixed',top:0,left:0,right:0,zIndex:100,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'clamp(12px, 2vw, 16px) clamp(16px, 4vw, 40px)',background:'var(--bg)',borderBottom:'1px solid var(--border)'}}>
-        <a href="/" style={{fontFamily:"'Unbounded',sans-serif",fontSize:'20px',fontWeight:800,color:'var(--text)',textDecoration:'none',letterSpacing:'-0.5px'}}>Kern<span style={{color:'var(--accent)'}}>.</span></a>
+        <a href="/" style={{fontFamily:"'Syne',sans-serif",fontSize:'20px',fontWeight:800,color:'var(--text)',textDecoration:'none',letterSpacing:'-0.5px'}}>Kern<span style={{color:'var(--accent)'}}>.</span></a>
         <div style={{display:'flex',alignItems:'center',gap:'8px'}}>
-          <a href="/dashboard" style={{display:'flex',alignItems:'center',gap:'6px',color:'var(--text)',fontSize:'13px',textDecoration:'none',border:'1px solid var(--border2)',borderRadius:'4px',padding:'6px 14px',fontFamily:"'Unbounded',sans-serif",fontWeight:600,transition:'all 0.2s'}} onMouseOver={e=>{e.currentTarget.style.borderColor='var(--accent)';e.currentTarget.style.color='var(--accent)'}} onMouseOut={e=>{e.currentTarget.style.borderColor='var(--border2)';e.currentTarget.style.color='var(--text)'}}>
+          <a href="/dashboard" style={{display:'flex',alignItems:'center',gap:'6px',color:'var(--text)',fontSize:'13px',textDecoration:'none',border:'1px solid var(--border2)',borderRadius:'4px',padding:'6px 14px',fontFamily:"'Syne',sans-serif",fontWeight:600,transition:'all 0.2s'}} onMouseOver={e=>{e.currentTarget.style.borderColor='var(--accent)';e.currentTarget.style.color='var(--accent)'}} onMouseOut={e=>{e.currentTarget.style.borderColor='var(--border2)';e.currentTarget.style.color='var(--text)'}}>
             <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" strokeWidth="1.5"/><path d="M2 14c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
             Кабинет
           </a>
@@ -118,7 +118,7 @@ export default function QualityPage() {
 
           <div style={{marginBottom:'40px'}}>
             <div style={{fontSize:'11px',letterSpacing:'0.14em',textTransform:'uppercase',color:'var(--accent)',marginBottom:'10px'}}>Модуль 02</div>
-            <h1 style={{fontFamily:"'Unbounded',sans-serif",fontSize:'clamp(28px,4vw,44px)',fontWeight:700,letterSpacing:'-0.02em',marginBottom:'10px',lineHeight:1.1}}>Контроль качества</h1>
+            <h1 style={{fontFamily:"'Syne',sans-serif",fontSize:'clamp(28px,4vw,44px)',fontWeight:700,letterSpacing:'-0.02em',marginBottom:'10px',lineHeight:1.1}}>Контроль качества</h1>
             <p style={{color:'var(--muted)',fontSize:'15px',fontWeight:300,maxWidth:'480px',lineHeight:1.6}}>Загрузите фото строительного объекта — AI найдёт дефекты, нарушения норм и даст рекомендации.</p>
           </div>
 
@@ -136,7 +136,7 @@ export default function QualityPage() {
                 {file ? (
                   <div>
                     {file.type.startsWith('image/') && <img src={URL.createObjectURL(file)} alt="preview" style={{maxHeight:'200px',maxWidth:'100%',borderRadius:'4px',objectFit:'contain',marginBottom:'10px'}} />}
-                    <div style={{fontFamily:"'Unbounded',sans-serif",fontWeight:600,fontSize:'13px',marginBottom:'4px'}}>{file.name}</div>
+                    <div style={{fontFamily:"'Syne',sans-serif",fontWeight:600,fontSize:'13px',marginBottom:'4px'}}>{file.name}</div>
                     <div style={{color:'var(--muted)',fontSize:'12px',marginBottom:'10px'}}>{(file.size / 1024).toFixed(0)} KB</div>
                     <button onClick={e => { e.stopPropagation(); setFile(null); const inp = document.getElementById('photoInput') as HTMLInputElement; if(inp) inp.value='' }} style={{fontSize:'12px',color:'var(--muted)',background:'none',border:'1px solid var(--border2)',borderRadius:'3px',padding:'3px 10px',cursor:'pointer'}}>Удалить</button>
                   </div>
@@ -146,13 +146,13 @@ export default function QualityPage() {
                       <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2v11z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                       <circle cx="12" cy="13" r="4" stroke="currentColor" strokeWidth="1.5"/>
                     </svg>
-                    <div style={{fontFamily:"'Unbounded',sans-serif",fontWeight:600,fontSize:'14px',marginBottom:'4px'}}>Загрузить фото объекта</div>
+                    <div style={{fontFamily:"'Syne',sans-serif",fontWeight:600,fontSize:'14px',marginBottom:'4px'}}>Загрузить фото объекта</div>
                     <div style={{color:'var(--muted)',fontSize:'12px'}}>PNG, JPG — фото строительных работ</div>
                   </div>
                 )}
               </div>
 
-              <button onClick={handleSubmit} disabled={!file || loading} style={{width:'100%',padding:'14px',borderRadius:'6px',background:file && !loading ? 'var(--accent)' : 'var(--border2)',color:file && !loading ? 'var(--btn-text)' : 'var(--muted)',border:'none',fontFamily:"'Unbounded',sans-serif",fontSize:'14px',fontWeight:700,cursor:file && !loading ? 'pointer' : 'not-allowed',transition:'all 0.2s'}}>
+              <button onClick={handleSubmit} disabled={!file || loading} style={{width:'100%',padding:'14px',borderRadius:'6px',background:file && !loading ? 'var(--accent)' : 'var(--border2)',color:file && !loading ? 'var(--btn-text)' : 'var(--muted)',border:'none',fontFamily:"'Syne',sans-serif",fontSize:'14px',fontWeight:700,cursor:file && !loading ? 'pointer' : 'not-allowed',transition:'all 0.2s'}}>
                 {loading ? (
                   <span style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'8px'}}>
                     <span style={{width:'16px',height:'16px',border:'2px solid var(--btn-text)',borderTopColor:'transparent',borderRadius:'50%',display:'inline-block',animation:'spin 0.8s linear infinite'}}></span>
@@ -164,7 +164,7 @@ export default function QualityPage() {
               {error && <div style={{background:'rgba(255,80,80,0.08)',border:'1px solid rgba(255,80,80,0.25)',borderRadius:'6px',padding:'12px',color:'#ff8080',fontSize:'13px'}}>{error}</div>}
 
               <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'20px'}}>
-                <div style={{fontFamily:"'Unbounded',sans-serif",fontWeight:600,fontSize:'13px',marginBottom:'12px'}}>Что анализирует AI</div>
+                <div style={{fontFamily:"'Syne',sans-serif",fontWeight:600,fontSize:'13px',marginBottom:'12px'}}>Что анализирует AI</div>
                 {['Трещины и деформации конструкций','Нарушения технологии работ','Отклонения от проекта','Дефекты материалов','Нарушения норм безопасности'].map(item => (
                   <div key={item} style={{display:'flex',alignItems:'flex-start',gap:'8px',marginBottom:'8px'}}>
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{flexShrink:0,marginTop:'1px'}}>
@@ -186,7 +186,7 @@ export default function QualityPage() {
                     <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                   <div>
-                    <div style={{fontFamily:"'Unbounded',sans-serif",fontWeight:600,fontSize:'15px',marginBottom:'6px'}}>Здесь появится отчёт</div>
+                    <div style={{fontFamily:"'Syne',sans-serif",fontWeight:600,fontSize:'15px',marginBottom:'6px'}}>Здесь появится отчёт</div>
                     <div style={{color:'var(--muted)',fontSize:'13px',lineHeight:1.5}}>Загрузите фото строительного объекта<br />и нажмите «Проверить качество»</div>
                   </div>
                 </div>
@@ -196,7 +196,7 @@ export default function QualityPage() {
                 <div style={{display:'flex',flexDirection:'column',gap:'16px'}}>
                   <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'20px 24px'}}>
                     <div style={{fontSize:'10px',letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)',marginBottom:'6px'}}>Объект</div>
-                    <div style={{fontFamily:"'Unbounded',sans-serif",fontSize:'15px',fontWeight:700,marginBottom:'14px'}}>{result.object_description}</div>
+                    <div style={{fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:700,marginBottom:'14px'}}>{result.object_description}</div>
                     <div style={{display:'inline-flex',alignItems:'center',gap:'8px',padding:'7px 14px',borderRadius:'4px',background:statusConfig[result.overall_status].bg,border:`1px solid ${statusConfig[result.overall_status].border}`}}>
                       <div style={{width:'7px',height:'7px',borderRadius:'50%',background:statusConfig[result.overall_status].color,flexShrink:0}}></div>
                       <span style={{color:statusConfig[result.overall_status].color,fontSize:'13px',fontWeight:600}}>{statusConfig[result.overall_status].label}</span>
@@ -209,13 +209,13 @@ export default function QualityPage() {
                         <path d="M9 11l3 3L22 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                         <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
-                      <div style={{fontFamily:"'Unbounded',sans-serif",fontSize:'16px',fontWeight:700}}>Дефектов не обнаружено</div>
+                      <div style={{fontFamily:"'Syne',sans-serif",fontSize:'16px',fontWeight:700}}>Дефектов не обнаружено</div>
                     </div>
                   ) : (
                     <div>
                       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'12px'}}>
                         <span style={{fontSize:'11px',letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)'}}>Дефекты</span>
-                        <span style={{fontFamily:"'Unbounded',sans-serif",fontSize:'13px',fontWeight:700,color:'var(--accent)'}}>{result.defects.length} {result.defects.length === 1 ? 'дефект' : result.defects.length < 5 ? 'дефекта' : 'дефектов'}</span>
+                        <span style={{fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:700,color:'var(--accent)'}}>{result.defects.length} {result.defects.length === 1 ? 'дефект' : result.defects.length < 5 ? 'дефекта' : 'дефектов'}</span>
                       </div>
                       <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
                         {result.defects.map((defect, i) => {
@@ -223,7 +223,7 @@ export default function QualityPage() {
                           return (
                             <div key={i} style={{border:`1px solid ${cfg.border}`,borderRadius:'8px',padding:'18px 20px',background:cfg.bg}}>
                               <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:'12px',marginBottom:'8px'}}>
-                                <div style={{fontFamily:"'Unbounded',sans-serif",fontSize:'14px',fontWeight:700}}>{defect.title}</div>
+                                <div style={{fontFamily:"'Syne',sans-serif",fontSize:'14px',fontWeight:700}}>{defect.title}</div>
                                 <span style={{fontSize:'11px',color:cfg.color,border:`1px solid ${cfg.border}`,padding:'2px 8px',borderRadius:'3px',whiteSpace:'nowrap',letterSpacing:'0.05em',textTransform:'uppercase',flexShrink:0}}>{cfg.label}</span>
                               </div>
                               <p style={{color:'var(--muted)',fontSize:'13px',lineHeight:1.55,marginBottom:'10px'}}>{defect.description}</p>
