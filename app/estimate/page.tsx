@@ -12,9 +12,16 @@ interface EstimateItem {
   total: number
 }
 
+interface Section {
+  title: string
+  items: EstimateItem[]
+  section_total: number
+}
+
 interface Estimate {
   summary: string
-  items: EstimateItem[]
+  sections?: Section[]
+  items?: EstimateItem[]
   total_rub: number
   notes: string
 }
@@ -52,6 +59,7 @@ export default function EstimatePage() {
   const [loading, setLoading] = useState(false)
   const [estimate, setEstimate] = useState<Estimate | null>(null)
   const [editableItems, setEditableItems] = useState<EstimateItem[]>([])
+  const [editableSections, setEditableSections] = useState<Section[]>([])
   const [editMode, setEditMode] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [withMaterials, setWithMaterials] = useState(false)
@@ -134,7 +142,12 @@ export default function EstimatePage() {
       const data = await res.json()
       if (data.error) throw new Error(data.error)
       setEstimate(data)
-      setEditableItems(data.items)
+      if (data.sections) {
+        setEditableSections(data.sections)
+        setEditableItems(data.sections.flatMap((s: Section) => s.items))
+      } else {
+        setEditableItems(data.items || [])
+      }
       if (session?.user) {
         await supabase.from('estimates').insert({
           user_id: session.user.id,
@@ -161,7 +174,9 @@ export default function EstimatePage() {
 
   const removeItem = (i: number) => setEditableItems(editableItems.filter((_, j) => j !== i))
   const addItem = () => setEditableItems([...editableItems, { name: 'Новая позиция', unit: 'шт', qty: 1, price: 0, total: 0 }])
-  const totalRub = editableItems.reduce((sum, item) => sum + item.qty * item.price, 0)
+  const totalRub = editableSections.length > 0
+  ? editableSections.reduce((sum, s) => sum + s.items.reduce((ss, i) => ss + i.qty * i.price, 0), 0)
+  : editableItems.reduce((sum, item) => sum + item.qty * item.price, 0)
 
   const downloadPDF = () => {
     if (!estimate) return
@@ -388,6 +403,41 @@ export default function EstimatePage() {
                     </button>
                   </div>
 
+                  {editableSections.length > 0 ? (
+  <div style={{display:'flex',flexDirection:'column',gap:'0',border:'1px solid var(--border)',borderRadius:'8px',overflow:'auto'}}>
+    {editableSections.map((section, si) => {
+      const sectionTotal = section.items.reduce((s, i) => s + i.qty * i.price, 0)
+      return (
+        <div key={si}>
+          <div style={{background:'var(--bg2)',padding:'10px 16px',borderBottom:'1px solid var(--border)',borderTop: si > 0 ? '2px solid var(--border)' : 'none',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+            <span style={{fontFamily:"'Syne',sans-serif",fontSize:'12px',fontWeight:700,letterSpacing:'0.05em',textTransform:'uppercase',color:'var(--text)'}}>{section.title}</span>
+            <span style={{fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:700,color:'var(--accent)'}}>{sectionTotal.toLocaleString('ru-RU')} ₽</span>
+          </div>
+          <table style={{width:'100%',borderCollapse:'collapse',fontSize:'13px',minWidth:'520px'}}>
+            <tbody>
+              {section.items.map((item, i) => {
+                const globalIndex = editableSections.slice(0, si).reduce((s, sec) => s + sec.items.length, 0) + i
+                return (
+                  <tr key={i} style={{borderBottom:'1px solid var(--border)',background:i%2===0?'var(--bg)':'var(--bg2)'}}>
+                    <td style={{padding:'9px 16px',color:'var(--text)'}}>{editMode ? <input value={item.name} onChange={e => updateItem(globalIndex,'name',e.target.value)} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'3px',color:'var(--text)',width:'100%',fontFamily:"'DM Sans',sans-serif",fontSize:'13px',padding:'3px 7px',outline:'none'}} /> : item.name}</td>
+                    <td style={{padding:'9px 16px',textAlign:'right',color:'var(--muted)'}}>{item.unit}</td>
+                    <td style={{padding:'9px 16px',textAlign:'right',color:'var(--muted)'}}>{item.qty}</td>
+                    <td style={{padding:'9px 16px',textAlign:'right',color:'var(--muted)',whiteSpace:'nowrap'}}>{item.price.toLocaleString('ru-RU')} ₽</td>
+                    <td style={{padding:'9px 16px',textAlign:'right',color:'var(--text)',fontWeight:500,whiteSpace:'nowrap'}}>{(item.qty*item.price).toLocaleString('ru-RU')} ₽</td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+      )
+    })}
+    <div style={{background:'var(--bg2)',borderTop:'2px solid var(--border)',padding:'12px 16px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+      <span style={{color:'var(--muted)',fontSize:'12px'}}>Разделов: {editableSections.length} · Позиций: {editableItems.length}</span>
+      <span style={{fontFamily:"'Syne',sans-serif",fontSize:'14px',fontWeight:700}}>Итого: {totalRub.toLocaleString('ru-RU')} ₽</span>
+    </div>
+  </div>
+) : (
                   <div style={{border:'1px solid var(--border)',borderRadius:'8px',overflow:'auto'}}>
                     <table style={{width:'100%',borderCollapse:'collapse',fontSize:'13px',minWidth:'520px'}}>
                       <thead>
@@ -432,6 +482,7 @@ export default function EstimatePage() {
                       <span style={{fontFamily:"'Syne',sans-serif",fontSize:'14px',fontWeight:700}}>Итого: {totalRub.toLocaleString('ru-RU')} ₽</span>
                     </div>
                   </div>
+)}
 
                   <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'20px 24px'}}>
                     <span style={{fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:700}}>Итоговая стоимость</span>
