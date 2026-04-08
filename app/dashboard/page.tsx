@@ -229,7 +229,7 @@ export default function DashboardPage() {
                   const statusColor = check.overall_status === 'ok' ? '#5E9E6E' : check.overall_status === 'critical' ? '#E85050' : '#C09070'
                   const statusLabel = check.overall_status === 'ok' ? 'Норма' : check.overall_status === 'critical' ? 'Критично' : 'Нарушения'
                   return (
-                    <RowItem key={check.id}>
+                    <RowItem key={check.id} onClick={() => router.push(`/dashboard/quality/${check.id}`)}>
                       <div style={{flex:1,minWidth:0}}>
                         <div style={{fontFamily:"'Syne',sans-serif",fontSize:'14px',fontWeight:700,marginBottom:'4px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{check.object_description || 'Без описания'}</div>
                         <div style={{display:'flex',gap:'10px',alignItems:'center'}}>
