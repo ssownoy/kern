@@ -148,9 +148,12 @@ export default function EstimatePage() {
       } else {
         setEditableItems(data.items || [])
       }
-      if (session?.user) {
+      const currentUser = session?.user
+      console.log('Session user:', currentUser?.id, currentUser?.email)
+
+      if (currentUser) {
         const { error: insertError } = await supabase.from('estimates').insert({
-          user_id: session.user.id,
+          user_id: currentUser.id,
           summary: data.summary,
           total_rub: data.total_rub,
           items: data.sections ? data.sections.flatMap((s: any) => s.items || []) : data.items,
