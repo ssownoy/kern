@@ -162,7 +162,8 @@ ${params}
         user_id: userId,
         summary: estimate.summary,
         total_rub: estimate.total_rub,
-        sections: estimate.sections,
+        items: estimate.sections ? estimate.sections.flatMap((s: any) => s.items || []) : estimate.items,
+        sections: estimate.sections || null,
         notes: estimate.notes,
         with_materials: withMaterials,
       })

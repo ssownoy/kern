@@ -153,7 +153,8 @@ export default function EstimatePage() {
           user_id: session.user.id,
           summary: data.summary,
           total_rub: data.total_rub,
-          items: data.items,
+          items: data.sections ? data.sections.flatMap((s: any) => s.items || []) : data.items,
+          sections: data.sections || null,
           notes: data.notes,
           with_materials: withMaterials,
         })
