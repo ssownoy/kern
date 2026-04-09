@@ -427,7 +427,7 @@ export default function EstimatePage() {
         <div key={si}>
           <div style={{background:'var(--bg2)',padding:'10px 16px',borderBottom:'1px solid var(--border)',borderTop: si > 0 ? '2px solid var(--border)' : 'none',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
             <span style={{fontFamily:"'Syne',sans-serif",fontSize:'12px',fontWeight:700,letterSpacing:'0.05em',textTransform:'uppercase',color:'var(--text)'}}>{section.title}</span>
-            <span style={{fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:700,color:'var(--accent)'}}>{sectionTotal.toLocaleString('ru-RU')} ₽</span>
+            <span style={{fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:700,color:'var(--accent)'}}>{sectionTotal.toLocaleString('ru-RU')}<span style={{fontFamily:'Arial,sans-serif'}}>  &#8381;</span></span>
           </div>
           <table style={{width:'100%',borderCollapse:'collapse',fontSize:'13px',minWidth:'520px'}}>
             <tbody>
@@ -438,8 +438,8 @@ export default function EstimatePage() {
                     <td style={{padding:'9px 16px',color:'var(--text)'}}>{editMode ? <input value={item.name} onChange={e => updateItem(globalIndex,'name',e.target.value)} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'3px',color:'var(--text)',width:'100%',fontFamily:"'DM Sans',sans-serif",fontSize:'13px',padding:'3px 7px',outline:'none'}} /> : item.name}</td>
                     <td style={{padding:'9px 16px',textAlign:'right',color:'var(--muted)'}}>{item.unit}</td>
                     <td style={{padding:'9px 16px',textAlign:'right',color:'var(--muted)'}}>{item.qty}</td>
-                    <td style={{padding:'9px 16px',textAlign:'right',color:'var(--muted)',whiteSpace:'nowrap'}}>{item.price.toLocaleString('ru-RU')} ₽</td>
-                    <td style={{padding:'9px 16px',textAlign:'right',color:'var(--text)',fontWeight:500,whiteSpace:'nowrap'}}>{(item.qty*item.price).toLocaleString('ru-RU')} ₽</td>
+                    <td style={{padding:'9px 16px',textAlign:'right',color:'var(--muted)',whiteSpace:'nowrap'}}>{item.price.toLocaleString('ru-RU')}₽</td>
+                    <td style={{padding:'9px 16px',textAlign:'right',color:'var(--text)',fontWeight:500,whiteSpace:'nowrap'}}>{(item.qty*item.price).toLocaleString('ru-RU')}₽</td>
                   </tr>
                 )
               })}
