@@ -139,8 +139,16 @@ export default function EstimatePage() {
         headers: session?.access_token ? { 'Authorization': `Bearer ${session.access_token}` } : {},
         body: formData,
       })
-      const data = await res.json()
-      if (data.error) throw new Error(data.error)
+      const rawData = await res.json()
+      if (rawData.error) throw new Error(rawData.error)
+
+      const fixCurrency = (obj: any): any => {
+        if (typeof obj === 'string') return obj.replace(/¥/g, '').replace(/$/g, '')
+        if (Array.isArray(obj)) return obj.map(fixCurrency)
+        if (typeof obj === 'object' && obj !== null) return Object.fromEntries(Object.entries(obj).map(([k, v]) => [k, fixCurrency(v)]))
+        return obj
+      }
+      const data = fixCurrency(rawData)
       setEstimate(data)
       if (data.sections) {
         setEditableSections(data.sections)
