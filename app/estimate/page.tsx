@@ -149,7 +149,7 @@ export default function EstimatePage() {
         setEditableItems(data.items || [])
       }
       if (session?.user) {
-        await supabase.from('estimates').insert({
+        const { error: insertError } = await supabase.from('estimates').insert({
           user_id: session.user.id,
           summary: data.summary,
           total_rub: data.total_rub,
@@ -158,6 +158,10 @@ export default function EstimatePage() {
           notes: data.notes,
           with_materials: withMaterials,
         })
+        if (insertError) {
+          console.error('Save error:', insertError)
+          setError('Смета создана, но не сохранена в историю: ' + insertError.message)
+        }
       }
     } catch (e: any) {
       setError(e.message)
