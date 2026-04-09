@@ -258,7 +258,7 @@ export default function DashboardPage() {
             ) : (
               <div style={{border:'1px solid var(--border)',borderRadius:'8px',overflow:'hidden'}}>
                 {documents.map(doc => (
-                  <RowItem key={doc.id}>
+                  <RowItem key={doc.id} onClick={() => router.push(`/dashboard/documents/${doc.id}`)}>
                     <div style={{flex:1,minWidth:0}}>
                       <div style={{fontFamily:"'Syne',sans-serif",fontSize:'14px',fontWeight:700,marginBottom:'4px'}}>{doc.doc_label}</div>
                       <span style={{color:'var(--muted)',fontSize:'12px'}}>{new Date(doc.created_at).toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'})}</span>

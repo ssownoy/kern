@@ -7,6 +7,7 @@ import { useRouter, useParams } from 'next/navigation'
 export default function EstimateDetailPage() {
   const [estimate, setEstimate] = useState<any>(null)
   const [editableItems, setEditableItems] = useState<any[]>([])
+  const [editableSections, setEditableSections] = useState<any[]>([])
   const [editMode, setEditMode] = useState(false)
   const [loading, setLoading] = useState(true)
   const [isPublic, setIsPublic] = useState(false)
@@ -38,7 +39,14 @@ export default function EstimateDetailPage() {
     if (data) {
       setEstimate(data)
       const items = typeof data.items === 'string' ? JSON.parse(data.items) : data.items
-      setEditableItems(items || [])
+      const sections = typeof data.sections === 'string' ? JSON.parse(data.sections) : data.sections
+      
+      if (sections && sections.length > 0) {
+        setEditableSections(sections)
+        setEditableItems(sections.flatMap((s: any) => s.items))
+      } else {
+        setEditableItems(items || [])
+      }
       setIsPublic(data.is_public || false)
       if (data.public_token) setShareUrl(`https://kern-eight.vercel.app/share/${data.public_token}`)
     }
@@ -86,7 +94,9 @@ export default function EstimateDetailPage() {
     setTimeout(() => setCopying(false), 2000)
   }
   
-  const totalRub = editableItems.reduce((sum, item) => sum + item.qty * item.price, 0)
+  const totalRub = editableSections.length > 0
+    ? editableSections.reduce((sum: number, s: any) => sum + s.items.reduce((ss: number, i: any) => ss + i.qty * i.price, 0), 0)
+    : editableItems.reduce((sum, item) => sum + item.qty * item.price, 0)
 
   const downloadPDF = () => {
     if (!estimate) return
@@ -157,40 +167,73 @@ export default function EstimateDetailPage() {
           <h1 className="detail-title" style={{fontFamily:"'Syne',sans-serif",fontSize:'clamp(24px,3vw,36px)',fontWeight:800,letterSpacing:'-0.02em',marginBottom:'8px'}}>{estimate.summary}</h1>
           <p style={{color:'var(--muted)',fontSize:'14px',marginBottom:'48px'}}>{new Date(estimate.created_at).toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'})}</p>
 
-          <div className="detail-table-wrap" style={{border:'1px solid var(--border)',borderRadius:'8px',overflow:'auto',marginBottom:'24px'}}>
-            <table className="detail-table" style={{width:'100%',borderCollapse:'collapse',fontSize:'14px',minWidth:'520px'}}>
-              <thead>
-                <tr style={{background:'var(--bg2)',borderBottom:'1px solid var(--border)'}}>
-                  <th style={{padding:'14px 20px',textAlign:'left',color:'var(--muted)',fontWeight:500,fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase'}}>Наименование</th>
-                  <th style={{padding:'14px 20px',textAlign:'center',color:'var(--muted)',fontWeight:500,fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase'}}>Ед.</th>
-                  <th style={{padding:'14px 20px',textAlign:'right',color:'var(--muted)',fontWeight:500,fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase'}}>Кол-во</th>
-                  <th style={{padding:'14px 20px',textAlign:'right',color:'var(--muted)',fontWeight:500,fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase'}}>Цена</th>
-                  <th style={{padding:'14px 20px',textAlign:'right',color:'var(--muted)',fontWeight:500,fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase'}}>Сумма</th>
-                </tr>
-              </thead>
-              <tbody>
-                {editableItems.map((item: any, i: number) => (
-                  <tr key={i} style={{borderBottom:'1px solid var(--border)',background:i%2===0?'var(--bg)':'var(--bg2)'}}>
-                    <td style={{padding:'14px 20px',color:'var(--text)'}}>{editMode ? <input value={item.name} onChange={e => updateItem(i, 'name', e.target.value)} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--text)',width:'100%',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',padding:'4px 8px',outline:'none'}} /> : <span>{item.name}</span>}</td>
-                    <td style={{padding:'14px 20px',textAlign:'center',color:'var(--muted)'}}>{editMode ? <input value={item.unit} onChange={e => updateItem(i, 'unit', e.target.value)} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--text)',width:'100%',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',padding:'4px 8px',outline:'none'}} /> : <span>{item.unit}</span>}</td>
-                    <td style={{padding:'14px 20px',textAlign:'right',color:'var(--muted)'}}>{editMode ? <input type="number" value={item.qty} onChange={e => updateItem(i, 'qty', Number(e.target.value))} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',width:'70px',textAlign:'right',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',padding:'4px 8px',outline:'none'}} /> : <span>{item.qty}</span>}</td>
-                    <td style={{padding:'14px 20px',textAlign:'right',color:'var(--muted)'}}>{editMode ? <input type="number" value={item.price} onChange={e => updateItem(i, 'price', Number(e.target.value))} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',width:'100px',textAlign:'right',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',padding:'4px 8px',outline:'none'}} /> : <span>{item.price?.toLocaleString('ru-RU')} ₽</span>}</td>
-                    <td style={{padding:'14px 20px',textAlign:'right',color:'var(--text)',fontWeight:500}}>
-                      <div style={{display:'flex',alignItems:'center',justifyContent:'flex-end',gap:'10px'}}>
-                        <span style={{color:'var(--text)',fontWeight:500,whiteSpace:'nowrap'}}>{(item.qty*item.price).toLocaleString('ru-RU')} ₽</span>
-                        {editMode && (
-                          <button onClick={() => removeItem(i)} style={{background:'none',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',cursor:'pointer',fontSize:'12px',padding:'3px 8px',fontFamily:"'Syne',sans-serif",transition:'all 0.2s',whiteSpace:'nowrap'}}
-                            onMouseOver={e => { e.currentTarget.style.borderColor='#ff8080'; e.currentTarget.style.color='#ff8080' }}
-                            onMouseOut={e => { e.currentTarget.style.borderColor='var(--border2)'; e.currentTarget.style.color='var(--muted)' }}
-                          >Удалить</button>
-                        )}
-                      </div>
-                    </td>
+          {editableSections.length > 0 ? (
+            <div style={{border:'1px solid var(--border)',borderRadius:'8px',overflow:'auto',marginBottom:'24px'}}>
+              {editableSections.map((section: any, si: number) => {
+                const sectionTotal = section.items.reduce((s: number, i: any) => s + i.qty * i.price, 0)
+                return (
+                  <div key={si}>
+                    <div style={{background:'var(--bg2)',padding:'10px 16px',borderBottom:'1px solid var(--border)',borderTop:si>0?'2px solid var(--border)':'none',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                      <span style={{fontFamily:"'Syne',sans-serif",fontSize:'12px',fontWeight:700,letterSpacing:'0.05em',textTransform:'uppercase'}}>{section.title}</span>
+                      <span style={{fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:700,color:'var(--accent)'}}>{sectionTotal.toLocaleString('ru-RU')} ¥</span>
+                    </div>
+                    <table style={{width:'100%',borderCollapse:'collapse',fontSize:'13px',minWidth:'520px'}}>
+                      <tbody>
+                        {section.items.map((item: any, i: number) => (
+                          <tr key={i} style={{borderBottom:'1px solid var(--border)',background:i%2===0?'var(--bg)':'var(--bg2)'}}>
+                            <td style={{padding:'9px 16px',color:'var(--text)'}}>{item.name}</td>
+                            <td style={{padding:'9px 16px',textAlign:'right',color:'var(--muted)'}}>{item.unit}</td>
+                            <td style={{padding:'9px 16px',textAlign:'right',color:'var(--muted)'}}>{item.qty}</td>
+                            <td style={{padding:'9px 16px',textAlign:'right',color:'var(--muted)',whiteSpace:'nowrap'}}>{item.price.toLocaleString('ru-RU')} ¥</td>
+                            <td style={{padding:'9px 16px',textAlign:'right',color:'var(--text)',fontWeight:500,whiteSpace:'nowrap'}}>{(item.qty*item.price).toLocaleString('ru-RU')} ¥</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )
+              })}
+              <div style={{background:'var(--bg2)',borderTop:'2px solid var(--border)',padding:'12px 16px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                <span style={{color:'var(--muted)',fontSize:'12px'}}>Ïîçèöèé: {editableItems.length}</span>
+                <span style={{fontFamily:"'Syne',sans-serif",fontSize:'14px',fontWeight:700}}>Èòîãî: {totalRub.toLocaleString('ru-RU')} ¥</span>
+              </div>
+            </div>
+          ) : (
+            <div className="detail-table-wrap" style={{border:'1px solid var(--border)',borderRadius:'8px',overflow:'auto',marginBottom:'24px'}}>
+              <table className="detail-table" style={{width:'100%',borderCollapse:'collapse',fontSize:'14px',minWidth:'520px'}}>
+                <thead>
+                  <tr style={{background:'var(--bg2)',borderBottom:'1px solid var(--border)'}}>
+                    <th style={{padding:'14px 20px',textAlign:'left',color:'var(--muted)',fontWeight:500,fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase'}}>Íàèìåíîâàíèå</th>
+                    <th style={{padding:'14px 20px',textAlign:'center',color:'var(--muted)',fontWeight:500,fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase'}}>Åä.</th>
+                    <th style={{padding:'14px 20px',textAlign:'right',color:'var(--muted)',fontWeight:500,fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase'}}>Êîë-âî</th>
+                    <th style={{padding:'14px 20px',textAlign:'right',color:'var(--muted)',fontWeight:500,fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase'}}>Öåíà</th>
+                    <th style={{padding:'14px 20px',textAlign:'right',color:'var(--muted)',fontWeight:500,fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase'}}>Ñóììà</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {editableItems.map((item: any, i: number) => (
+                    <tr key={i} style={{borderBottom:'1px solid var(--border)',background:i%2===0?'var(--bg)':'var(--bg2)'}}>
+                      <td style={{padding:'14px 20px',color:'var(--text)'}}>{editMode ? <input value={item.name} onChange={e => updateItem(i, 'name', e.target.value)} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--text)',width:'100%',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',padding:'4px 8px',outline:'none'}} /> : <span>{item.name}</span>}</td>
+                      <td style={{padding:'14px 20px',textAlign:'center',color:'var(--muted)'}}>{editMode ? <input value={item.unit} onChange={e => updateItem(i, 'unit', e.target.value)} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--text)',width:'100%',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',padding:'4px 8px',outline:'none'}} /> : <span>{item.unit}</span>}</td>
+                      <td style={{padding:'14px 20px',textAlign:'right',color:'var(--muted)'}}>{editMode ? <input type="number" value={item.qty} onChange={e => updateItem(i, 'qty', Number(e.target.value))} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',width:'70px',textAlign:'right',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',padding:'4px 8px',outline:'none'}} /> : <span>{item.qty}</span>}</td>
+                      <td style={{padding:'14px 20px',textAlign:'right',color:'var(--muted)'}}>{editMode ? <input type="number" value={item.price} onChange={e => updateItem(i, 'price', Number(e.target.value))} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',width:'100px',textAlign:'right',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',padding:'4px 8px',outline:'none'}} /> : <span>{item.price?.toLocaleString('ru-RU')} ¥</span>}</td>
+                      <td style={{padding:'14px 20px',textAlign:'right',color:'var(--text)',fontWeight:500}}>
+                        <div style={{display:'flex',alignItems:'center',justifyContent:'flex-end',gap:'10px'}}>
+                          <span style={{color:'var(--text)',fontWeight:500,whiteSpace:'nowrap'}}>{(item.qty*item.price).toLocaleString('ru-RU')} ¥</span>
+                          {editMode && (
+                            <button onClick={() => removeItem(i)} style={{background:'none',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',cursor:'pointer',fontSize:'12px',padding:'3px 8px',fontFamily:"'Syne',sans-serif",transition:'all 0.2s',whiteSpace:'nowrap'}}
+                              onMouseOver={e => { e.currentTarget.style.borderColor='#ff8080'; e.currentTarget.style.color='#ff8080' }}
+                              onMouseOut={e => { e.currentTarget.style.borderColor='var(--border2)'; e.currentTarget.style.color='var(--muted)' }}
+                            >Óäàëèòü</button>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
 
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'24px 32px',marginBottom:'24px'}}>
             <span style={{fontFamily:"'Syne',sans-serif",fontSize:'16px',fontWeight:700}}>Итого</span>
