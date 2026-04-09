@@ -36,20 +36,30 @@ export default function EstimateDetailPage() {
       .select('*')
       .eq('id', id)
       .single()
-    if (data) {
-      setEstimate(data)
-      const items = typeof data.items === 'string' ? JSON.parse(data.items) : data.items
-      const sections = typeof data.sections === 'string' ? JSON.parse(data.sections) : data.sections
-      
-      if (sections && sections.length > 0) {
-        setEditableSections(sections)
-        setEditableItems(sections.flatMap((s: any) => s.items))
-      } else {
-        setEditableItems(items || [])
-      }
-      setIsPublic(data.is_public || false)
-      if (data.public_token) setShareUrl(`https://kern-eight.vercel.app/share/${data.public_token}`)
+    if (!data) return
+    setEstimate(data)
+
+    const rawSections = data.sections
+    const rawItems = data.items
+
+    const parsedSections = rawSections
+      ? (typeof rawSections === 'string' ? JSON.parse(rawSections) : rawSections)
+      : []
+
+    const parsedItems = rawItems
+      ? (typeof rawItems === 'string' ? JSON.parse(rawItems) : rawItems)
+      : []
+
+    if (parsedSections && parsedSections.length > 0) {
+      setEditableSections(parsedSections)
+      setEditableItems(parsedSections.flatMap((s: any) => s.items || []))
+    } else if (parsedItems && parsedItems.length > 0) {
+      setEditableSections([])
+      setEditableItems(parsedItems)
     }
+
+    setIsPublic(data.is_public || false)
+    if (data.public_token) setShareUrl(`https://kern-eight.vercel.app/share/${data.public_token}`)
     setLoading(false)
   }
 
@@ -203,11 +213,11 @@ export default function EstimateDetailPage() {
               <table className="detail-table" style={{width:'100%',borderCollapse:'collapse',fontSize:'14px',minWidth:'520px'}}>
                 <thead>
                   <tr style={{background:'var(--bg2)',borderBottom:'1px solid var(--border)'}}>
-                    <th style={{padding:'14px 20px',textAlign:'left',color:'var(--muted)',fontWeight:500,fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase'}}>Íàèìåíîâàíèå</th>
-                    <th style={{padding:'14px 20px',textAlign:'center',color:'var(--muted)',fontWeight:500,fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase'}}>Åä.</th>
-                    <th style={{padding:'14px 20px',textAlign:'right',color:'var(--muted)',fontWeight:500,fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase'}}>Êîë-âî</th>
-                    <th style={{padding:'14px 20px',textAlign:'right',color:'var(--muted)',fontWeight:500,fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase'}}>Öåíà</th>
-                    <th style={{padding:'14px 20px',textAlign:'right',color:'var(--muted)',fontWeight:500,fontSize:'11px',letterSpacing:'0.08em',textTransform:'uppercase'}}>Ñóììà</th>
+                    <th style={{padding:'11px 16px',textAlign:'left',color:'var(--muted)',fontWeight:500,fontSize:'10px',letterSpacing:'0.08em',textTransform:'uppercase'}}>Наименование</th>
+                    <th style={{padding:'11px 16px',textAlign:'right',color:'var(--muted)',fontWeight:500,fontSize:'10px',letterSpacing:'0.08em',textTransform:'uppercase'}}>Ед.</th>
+                    <th style={{padding:'11px 16px',textAlign:'right',color:'var(--muted)',fontWeight:500,fontSize:'10px',letterSpacing:'0.08em',textTransform:'uppercase'}}>Кол-во</th>
+                    <th style={{padding:'11px 16px',textAlign:'right',color:'var(--muted)',fontWeight:500,fontSize:'10px',letterSpacing:'0.08em',textTransform:'uppercase'}}>Цена</th>
+                    <th style={{padding:'11px 16px',textAlign:'right',color:'var(--muted)',fontWeight:500,fontSize:'10px',letterSpacing:'0.08em',textTransform:'uppercase'}}>Сумма</th>
                   </tr>
                 </thead>
                 <tbody>
