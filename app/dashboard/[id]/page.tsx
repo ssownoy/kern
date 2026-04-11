@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter, useParams } from 'next/navigation'
 
+const RUB = () => <span style={{fontFamily:"'DM Sans',Arial,sans-serif",fontSize:'0.9em'}}> руб.</span>
+
 export default function EstimateDetailPage() {
   const [estimate, setEstimate] = useState<any>(null)
   const [editableItems, setEditableItems] = useState<any[]>([])
@@ -117,9 +119,9 @@ export default function EstimateDetailPage() {
     <body>
     <div class="header"><div class="logo">Kern<span>.</span></div><div class="date"><div>AI-платформа для строительства</div><div>${new Date(estimate.created_at).toLocaleDateString('ru-RU')}</div></div></div>
     <div class="summary"><div class="summary-label">Объект</div><div class="summary-text">${estimate.summary}</div></div>
-    <table><thead><tr><th>Наименование</th><th>Ед.</th><th>Кол-во</th><th>Цена (₽)</th><th>Сумма (₽)</th></tr></thead>
+    <table><thead><tr><th>Наименование</th><th>Ед.</th><th>Кол-во</th><th>Цена (<RUB />)</th><th>Сумма (<RUB />)</th></tr></thead>
     <tbody>${editableItems.map((item: any) => `<tr><td>${item.name}</td><td>${item.unit}</td><td>${item.qty}</td><td>${item.price?.toLocaleString('ru-RU')}</td><td>${item.total?.toLocaleString('ru-RU')}</td></tr>`).join('')}</tbody></table>
-    <div class="total"><div class="total-label">Итого</div><div class="total-amount">${totalRub.toLocaleString('ru-RU')} ₽</div></div>
+    <div class="total"><div class="total-label">Итого</div><div class="total-amount">${totalRub.toLocaleString('ru-RU')}<RUB /></div></div>
     ${estimate.notes ? `<div class="notes"><div class="notes-label">Замечания</div>${estimate.notes}</div>` : ''}
     </body></html>`
     printWindow.document.write(html)
@@ -185,7 +187,7 @@ export default function EstimateDetailPage() {
                   <div key={si}>
                     <div style={{background:'var(--bg2)',padding:'10px 16px',borderBottom:'1px solid var(--border)',borderTop:si>0?'2px solid var(--border)':'none',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
                       <span style={{fontFamily:"'Syne',sans-serif",fontSize:'12px',fontWeight:700,letterSpacing:'0.05em',textTransform:'uppercase'}}>{section.title}</span>
-                      <span style={{fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:700,color:'var(--accent)'}}>{sectionTotal.toLocaleString('ru-RU')} ¥</span>
+                      <span style={{fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:700,color:'var(--accent)'}}>{sectionTotal.toLocaleString('ru-RU')}<RUB /></span>
                     </div>
                     <table style={{width:'100%',borderCollapse:'collapse',fontSize:'13px',minWidth:'520px'}}>
                       <tbody>
@@ -194,8 +196,8 @@ export default function EstimateDetailPage() {
                             <td style={{padding:'9px 16px',color:'var(--text)'}}>{item.name}</td>
                             <td style={{padding:'9px 16px',textAlign:'right',color:'var(--muted)'}}>{item.unit}</td>
                             <td style={{padding:'9px 16px',textAlign:'right',color:'var(--muted)'}}>{item.qty}</td>
-                            <td style={{padding:'9px 16px',textAlign:'right',color:'var(--muted)',whiteSpace:'nowrap'}}>{item.price.toLocaleString('ru-RU')} ¥</td>
-                            <td style={{padding:'9px 16px',textAlign:'right',color:'var(--text)',fontWeight:500,whiteSpace:'nowrap'}}>{(item.qty*item.price).toLocaleString('ru-RU')} ¥</td>
+                            <td style={{padding:'9px 16px',textAlign:'right',color:'var(--muted)',whiteSpace:'nowrap',fontFamily:'Arial,sans-serif'}}>{item.price.toLocaleString('ru-RU')}<RUB /></td>
+                            <td style={{padding:'9px 16px',textAlign:'right',color:'var(--text)',fontWeight:500,whiteSpace:'nowrap',fontFamily:'Arial,sans-serif'}}>{(item.qty*item.price).toLocaleString('ru-RU')}<RUB /></td>
                           </tr>
                         ))}
                       </tbody>
@@ -205,7 +207,7 @@ export default function EstimateDetailPage() {
               })}
               <div style={{background:'var(--bg2)',borderTop:'2px solid var(--border)',padding:'12px 16px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
                 <span style={{color:'var(--muted)',fontSize:'12px'}}>Ïîçèöèé: {editableItems.length}</span>
-                <span style={{fontFamily:"'Syne',sans-serif",fontSize:'14px',fontWeight:700}}>Èòîãî: {totalRub.toLocaleString('ru-RU')} ¥</span>
+                <span style={{fontFamily:"'Syne',sans-serif",fontSize:'14px',fontWeight:700}}>Èòîãî: {totalRub.toLocaleString('ru-RU')}<RUB /></span>
               </div>
             </div>
           ) : (
@@ -226,10 +228,10 @@ export default function EstimateDetailPage() {
                       <td style={{padding:'14px 20px',color:'var(--text)'}}>{editMode ? <input value={item.name} onChange={e => updateItem(i, 'name', e.target.value)} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--text)',width:'100%',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',padding:'4px 8px',outline:'none'}} /> : <span>{item.name}</span>}</td>
                       <td style={{padding:'14px 20px',textAlign:'center',color:'var(--muted)'}}>{editMode ? <input value={item.unit} onChange={e => updateItem(i, 'unit', e.target.value)} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--text)',width:'100%',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',padding:'4px 8px',outline:'none'}} /> : <span>{item.unit}</span>}</td>
                       <td style={{padding:'14px 20px',textAlign:'right',color:'var(--muted)'}}>{editMode ? <input type="number" value={item.qty} onChange={e => updateItem(i, 'qty', Number(e.target.value))} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',width:'70px',textAlign:'right',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',padding:'4px 8px',outline:'none'}} /> : <span>{item.qty}</span>}</td>
-                      <td style={{padding:'14px 20px',textAlign:'right',color:'var(--muted)'}}>{editMode ? <input type="number" value={item.price} onChange={e => updateItem(i, 'price', Number(e.target.value))} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',width:'100px',textAlign:'right',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',padding:'4px 8px',outline:'none'}} /> : <span>{item.price?.toLocaleString('ru-RU')} ¥</span>}</td>
+                      <td style={{padding:'14px 20px',textAlign:'right',color:'var(--muted)',fontFamily:'Arial,sans-serif'}}>{editMode ? <input type="number" value={item.price} onChange={e => updateItem(i, 'price', Number(e.target.value))} style={{background:'var(--bg3)',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',width:'100px',textAlign:'right',fontFamily:"'DM Sans',sans-serif",fontSize:'14px',padding:'4px 8px',outline:'none'}} /> : <span style={{fontFamily:"Arial,sans-serif"}}>{item.price?.toLocaleString('ru-RU')}<RUB /></span>}</td>
                       <td style={{padding:'14px 20px',textAlign:'right',color:'var(--text)',fontWeight:500}}>
                         <div style={{display:'flex',alignItems:'center',justifyContent:'flex-end',gap:'10px'}}>
-                          <span style={{color:'var(--text)',fontWeight:500,whiteSpace:'nowrap'}}>{(item.qty*item.price).toLocaleString('ru-RU')} ¥</span>
+                          <span style={{color:'var(--text)',fontWeight:500,whiteSpace:'nowrap',fontFamily:'Arial,sans-serif'}}>{(item.qty*item.price).toLocaleString('ru-RU')}<RUB /></span>
                           {editMode && (
                             <button onClick={() => removeItem(i)} style={{background:'none',border:'1px solid var(--border2)',borderRadius:'4px',color:'var(--muted)',cursor:'pointer',fontSize:'12px',padding:'3px 8px',fontFamily:"'Syne',sans-serif",transition:'all 0.2s',whiteSpace:'nowrap'}}
                               onMouseOver={e => { e.currentTarget.style.borderColor='#ff8080'; e.currentTarget.style.color='#ff8080' }}
@@ -247,7 +249,7 @@ export default function EstimateDetailPage() {
 
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'24px 32px',marginBottom:'24px'}}>
             <span style={{fontFamily:"'Syne',sans-serif",fontSize:'16px',fontWeight:700}}>Итого</span>
-            <span className="detail-total-amount" style={{fontFamily:"'Syne',sans-serif",fontSize:'28px',fontWeight:800,color:'var(--accent)'}}>{totalRub.toLocaleString('ru-RU')} ₽</span>
+            <span className="detail-total-amount" style={{fontFamily:"'Syne',sans-serif",fontSize:'28px',fontWeight:800,color:'var(--accent)'}}>{totalRub.toLocaleString('ru-RU')}<RUB /></span>
           </div>
 
           {estimate.notes && (
