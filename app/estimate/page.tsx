@@ -54,7 +54,7 @@ const cities = [
   { name: 'Барнаул', climate: 'I', soil: 'II' },
 ]
 
-const RUB = () => <span style={{fontFamily:'Arial,sans-serif'}}> &#8381;</span>
+const RUB = () => <span style={{fontFamily:"'DM Sans',Arial,sans-serif",fontSize:'0.9em'}}> руб.</span>
 
 export default function EstimatePage() {
   const [file, setFile] = useState<File | null>(null)
