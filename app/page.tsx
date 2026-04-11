@@ -14,6 +14,16 @@ export default function Home() {
   const [formComment, setFormComment] = useState('')
   const [formErrors, setFormErrors] = useState<Record<string, string>>({})
   const [formLoading, setFormLoading] = useState(false)
+  const [openFaq, setOpenFaq] = useState<number | null>(null)
+
+  const faqs = [
+    { q: 'Насколько точны сметы от AI?', a: 'AI анализирует видимые элементы чертежа и применяет актуальные рыночные цены региона. Точность зависит от качества чертежа — для детальных чертежей погрешность составляет 10-20%. Смету можно отредактировать вручную после генерации.' },
+    { q: 'Какие форматы файлов поддерживаются?', a: 'AI-сметчик принимает PNG, JPG и PDF. Контроль качества работает с PNG и JPG. Рекомендуем загружать чёткие изображения с хорошим разрешением для лучшего результата.' },
+    { q: 'Мои данные в безопасности?', a: 'Загружаемые файлы используются только для анализа и не хранятся на наших серверах дольше необходимого. История смет и документов хранится в зашифрованной базе данных и доступна только вам.' },
+    { q: 'Сколько смет можно создать бесплатно?', a: 'На бесплатном тарифе доступно 5 смет в месяц. Контроль качества и генератор документов пока без ограничений. Для снятия лимитов напишите на kern.platform@yandex.ru.' },
+    { q: 'Соответствуют ли документы российским стандартам?', a: 'Да — договор подряда составляется по ГК РФ главе 37, акт КС-2 по форме Госкомстата, техническое задание по ГОСТ. Документы готовы к подписанию, но рекомендуем проверить с юристом для крупных сделок.' },
+    { q: 'Можно ли поделиться сметой с клиентом?', a: 'Да — в личном кабинете в каждой смете есть кнопка «Публичная ссылка». Клиент откроет смету по ссылке без регистрации и сможет скачать PDF.' },
+  ]
 
   const handleSubmit = async () => {
     const errors: Record<string, string> = {}
@@ -278,6 +288,26 @@ export default function Home() {
       </section>
 
       <div className="divider"></div>
+
+      <section id="faq">
+        <div className="container">
+          <span className="sec-label">FAQ</span>
+          <h2>Частые вопросы</h2>
+          <div style={{maxWidth:'720px',marginTop:'40px',display:'flex',flexDirection:'column',gap:'1px',background:'var(--border)',border:'1px solid var(--border)',borderRadius:'8px',overflow:'hidden'}}>
+            {faqs.map((item, i) => (
+              <div key={i} style={{background:'var(--bg)'}}>
+                <div onClick={() => setOpenFaq(openFaq === i ? null : i)} style={{padding:'20px 24px',cursor:'pointer',display:'flex',justifyContent:'space-between',alignItems:'center',gap:'16px'}} onMouseOver={e=>e.currentTarget.style.background='var(--card-hover)'} onMouseOut={e=>e.currentTarget.style.background='transparent'}>
+                  <span style={{fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:600}}>{item.q}</span>
+                  <span style={{color:'var(--muted)',fontSize:'20px',flexShrink:0,transition:'transform 0.2s',display:'block',transform:openFaq===i?'rotate(45deg)':'rotate(0deg)'}}>+</span>
+                </div>
+                {openFaq === i && (
+                  <div style={{padding:'0 24px 20px',color:'var(--muted)',fontSize:'14px',lineHeight:1.7,borderTop:'1px solid var(--border)'}}>{item.a}</div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* CTA / CONTACT */}
       <section id="contact" className="cta-section">
