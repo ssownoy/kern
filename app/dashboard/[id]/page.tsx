@@ -206,8 +206,12 @@ export default function EstimateDetailPage() {
                 )
               })}
               <div style={{background:'var(--bg2)',borderTop:'2px solid var(--border)',padding:'12px 16px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-                <span style={{color:'var(--muted)',fontSize:'12px'}}>Ïîçèöèé: {editableItems.length}</span>
-                <span style={{fontFamily:"'Syne',sans-serif",fontSize:'14px',fontWeight:700}}>Èòîãî: {totalRub.toLocaleString('ru-RU')}<RUB /></span>
+                <span style={{color:'var(--muted)',fontSize:'12px',fontFamily:"'DM Sans',Arial,sans-serif"}}>
+                  {editableSections.length > 0 ? `${String.fromCharCode(1056,1072,1079,1076,1077,1083,1086,1074)}: ${editableSections.length} \u00B7 ${String.fromCharCode(1055,1086,1079,1080,1094,1080,1081)}: ${editableItems.length}` : `${String.fromCharCode(1055,1086,1079,1080,1094,1080,1081)}: ${editableItems.length}`}
+                </span>
+                <span style={{fontFamily:"'DM Sans',Arial,sans-serif",fontSize:'14px',fontWeight:700}}>
+                  {'\u0418\u0442\u043e\u0433\u043e'}: {totalRub.toLocaleString('ru-RU')} {'\u0440\u0443\u0431'.concat('.')}
+                </span>
               </div>
             </div>
           ) : (
