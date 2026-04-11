@@ -77,17 +77,19 @@ export default function DocumentsPage() {
     if (!selectedDoc) return
     setLoading(true)
     setError(null)
-    setResult(null)
     try {
+      const { data: { session } } = await supabase.auth.getSession()
       const res = await fetch('/api/documents', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(session?.access_token ? { 'Authorization': `Bearer ${session.access_token}` } : {}),
+        },
         body: JSON.stringify({ docType: selectedDoc, fields }),
       })
       const data = await res.json()
       if (data.error) throw new Error(data.error)
       setResult(data.text)
-      const { data: { session } } = await supabase.auth.getSession()
       if (session?.user) {
         await supabase.from('documents').insert({
           user_id: session.user.id,
