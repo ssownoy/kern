@@ -248,8 +248,8 @@ export default function EstimateDetailPage() {
           )}
 
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'24px 32px',marginBottom:'24px'}}>
-            <span style={{fontFamily:"'Syne',sans-serif",fontSize:'16px',fontWeight:700}}>Итого</span>
-            <span className="detail-total-amount" style={{fontFamily:"'Syne',sans-serif",fontSize:'28px',fontWeight:800,color:'var(--accent)'}}>{totalRub.toLocaleString('ru-RU')}<RUB /></span>
+            <span style={{fontFamily:"'DM Sans',sans-serif",fontSize:'16px',fontWeight:700}}>Итого</span>
+            <span className="detail-total-amount" style={{fontFamily:"'DM Sans',sans-serif",fontSize:'28px',fontWeight:800,color:'var(--accent)'}}>{totalRub.toLocaleString('ru-RU')}<RUB /></span>
           </div>
 
           {estimate.notes && (
