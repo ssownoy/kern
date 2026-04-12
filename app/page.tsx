@@ -252,6 +252,7 @@ export default function Home() {
                 <li>AI-сметчик</li>
                 <li>Контроль качества по фото</li>
                 <li>История смет и проверок</li>
+                <li>Generator documents</li>
                 <li>Скачать PDF и Excel</li>
               </ul>
               <button className="price-btn" onClick={() => goTo('contact')}>Начать бесплатно</button>
@@ -264,7 +265,7 @@ export default function Home() {
               <div className="price-divider"></div>
               <ul className="price-features">
                 <li>Безлимитные сметы</li>
-                <li>Генератор документов</li>
+                <li>Unlimited quality control</li>
                 <li>Тендерная платформа</li>
                 <li>До 5 пользователей</li>
                 <li>Приоритетная поддержка</li>
