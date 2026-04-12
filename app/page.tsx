@@ -92,8 +92,8 @@ export default function Home() {
         <div className="hero-grid"></div>
         <div className="hero-glow"></div>
         <div className="hero-inner">
-          <h1>Строительство.<br /><em>Точнее.</em><br />Быстрее.</h1>
-          <p className="hero-sub">Kern автоматизирует сметы, контроль качества и документооборот для строительных компаний России — с помощью искусственного интеллекта.</p>
+          <h1>AI-\u0438\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u044b<br />\u0434\u043b\u044f \u0441\u0442\u0440\u043e\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0445<br /><em>\u043a\u043e\u043c\u043f\u0430\u043d\u0438\u0439 \u0420\u043e\u0441\u0441\u0438\u0438.</em></h1>
+          <p className="hero-sub">\u0421\u043c\u0435\u0442\u044b \u043f\u043e \u0447\u0435\u0440\u0442\u0435\u0436\u0443 \u0437\u0430 30 \u0441\u0435\u043a\u0443\u043d\u0434. \u041a\u043e\u043d\u0442\u0440\u043e\u043b\u044c \u043a\u0430\u0447\u0435\u0441\u0442\u0432\u0430 \u043f\u043e \u0444\u043e\u0442\u043e. \u0414\u043e\u0433\u043e\u0432\u043e\u0440\u044b \u0438 \u0430\u043a\u0442\u044b \u043f\u043e \u0440\u043e\u0441\u0441\u0438\u0439\u0441\u043a\u0438\u043c \u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u0430\u043c. \u0412\u0441\u0451 \u0431\u0435\u0441\u043f\u043b\u0430\u0442\u043d\u043e.</p>
           <div className="hero-actions">
             <a onClick={() => goTo('contact')} className="btn-primary">Начать бесплатно</a>
             <a onClick={() => goTo('modules')} className="btn-ghost">Смотреть модули <span className="arr">→</span></a>
