@@ -214,7 +214,9 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="divider"></div>
+      <div style={{maxWidth:'800px',margin:'0 auto',padding:'0 52px'}}>
+        <div style={{borderTop:'1px solid var(--border)'}}></div>
+      </div>
 
       {/* ADVANTAGES */}
       <section id="advantages" className="adv-section">
@@ -300,14 +302,23 @@ export default function Home() {
                   <span style={{fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:600}}>{item.q}</span>
                   <span style={{color:'var(--muted)',fontSize:'20px',flexShrink:0,transition:'transform 0.2s',display:'block',transform:openFaq===i?'rotate(45deg)':'rotate(0deg)'}}>+</span>
                 </div>
-                {openFaq === i && (
-                  <div style={{padding:'16px 28px 24px',lineHeight:1.8,color:'var(--muted)',fontSize:'14px',borderTop:'1px solid var(--border)'}}>{item.a}</div>
-                )}
+                <div style={{
+  maxHeight: openFaq === i ? '300px' : '0',
+  overflow: 'hidden',
+  transition: 'max-height 0.35s ease, opacity 0.3s ease',
+  opacity: openFaq === i ? 1 : 0,
+}}>
+  <div style={{padding:'16px 28px 24px',lineHeight:1.8,color:'var(--muted)',fontSize:'14px',borderTop:'1px solid var(--border)'}}>{item.a}</div>
+</div>
               </div>
             ))}
           </div>
         </div>
       </section>
+
+      <div style={{maxWidth:'800px',margin:'0 auto',padding:'0 52px'}}>
+        <div style={{borderTop:'1px solid var(--border)'}}></div>
+      </div>
 
       {/* CTA / CONTACT */}
       <section id="contact" className="cta-section">
