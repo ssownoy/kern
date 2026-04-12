@@ -293,15 +293,15 @@ export default function Home() {
         <div className="container" style={{display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center"}}>
           <span className="sec-label">FAQ</span>
           <h2>Частые вопросы</h2>
-          <div style={{maxWidth:"720px",width:"100%",marginTop:'40px',display:'flex',flexDirection:'column',gap:'1px',background:'var(--border)',border:'1px solid var(--border)',borderRadius:'8px',overflow:'hidden'}}>
+          <div style={{maxWidth:"720px",width:"100%",marginTop:'40px',textAlign:'left',display:'flex',flexDirection:'column',gap:'1px',background:'var(--border)',border:'1px solid var(--border)',borderRadius:'8px',overflow:'hidden'}} className="reveal">
             {faqs.map((item, i) => (
               <div key={i} style={{background:'var(--bg)'}}>
-                <div onClick={() => setOpenFaq(openFaq === i ? null : i)} style={{padding:'20px 24px',cursor:'pointer',display:'flex',justifyContent:'space-between',alignItems:'center',gap:'16px'}} onMouseOver={e=>e.currentTarget.style.background='var(--card-hover)'} onMouseOut={e=>e.currentTarget.style.background='transparent'}>
+                <div onClick={() => setOpenFaq(openFaq === i ? null : i)} style={{padding:'22px 28px',cursor:'pointer',display:'flex',justifyContent:'space-between',alignItems:'center',gap:'16px'}} onMouseOver={e=>e.currentTarget.style.background='var(--card-hover)'} onMouseOut={e=>e.currentTarget.style.background='transparent'}>
                   <span style={{fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:600}}>{item.q}</span>
                   <span style={{color:'var(--muted)',fontSize:'20px',flexShrink:0,transition:'transform 0.2s',display:'block',transform:openFaq===i?'rotate(45deg)':'rotate(0deg)'}}>+</span>
                 </div>
                 {openFaq === i && (
-                  <div style={{padding:'0 24px 20px',color:'var(--muted)',fontSize:'14px',lineHeight:1.7,borderTop:'1px solid var(--border)'}}>{item.a}</div>
+                  <div style={{padding:'16px 28px 24px',lineHeight:1.8,color:'var(--muted)',fontSize:'14px',borderTop:'1px solid var(--border)'}}>{item.a}</div>
                 )}
               </div>
             ))}
