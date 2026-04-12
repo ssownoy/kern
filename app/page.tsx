@@ -245,7 +245,7 @@ export default function Home() {
           <div className="pricing-grid reveal">
             <div className="price-card">
               <div className="price-plan">Старт</div>
-              <div className="price-amount">Бесплатно</div>
+              <div className="price-amount" style={{fontSize:'26px',paddingTop:'8px'}}>Бесплатно</div>
               <p className="price-desc">Для малого бизнеса и частных специалистов.</p>
               <div className="price-divider"></div>
               <ul className="price-features">
