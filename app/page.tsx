@@ -92,7 +92,7 @@ export default function Home() {
         <div className="hero-grid"></div>
         <div className="hero-glow"></div>
         <div className="hero-inner">
-          <h1>Construction.<br /><em>More precisely.</em><br />Faster.</h1>
+          <h1>Строительство.<br /><em>Точнее.</em><br />Быстрее.</h1>
           <p className="hero-sub">Kern automates estimates, quality control and document management for construction companies of Russia using artificial intelligence.</p>
           <div className="hero-actions">
             <a onClick={() => goTo('contact')} className="btn-primary">Начать бесплатно</a>
