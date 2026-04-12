@@ -92,8 +92,8 @@ export default function Home() {
         <div className="hero-grid"></div>
         <div className="hero-glow"></div>
         <div className="hero-inner">
-          <h1>AI- instruments<br />for construction<br /><em>companies of Russia.</em></h1>
-          <p className="hero-sub">Estimates from drawings in 30 seconds. Quality control by photo. Contracts and acts according to Russian standards. Everything is free.</p>
+          <h1>Construction.<br /><em>More precisely.</em><br />Faster.</h1>
+          <p className="hero-sub">Kern automates estimates, quality control and document flow for construction companies of Russia - with the help of artificial intelligence.</p>
           <div className="hero-actions">
             <a onClick={() => goTo('contact')} className="btn-primary">Начать бесплатно</a>
             <a onClick={() => goTo('modules')} className="btn-ghost">Смотреть модули <span className="arr">→</span></a>
