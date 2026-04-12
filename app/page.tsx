@@ -265,7 +265,7 @@ export default function Home() {
               <div className="price-divider"></div>
               <ul className="price-features">
                 <li>Безлимитные сметы</li>
-                <li>Unlimited quality control</li>
+                <li>Безлимитный контроль качества</li>
                 <li>Тендерная платформа</li>
                 <li>До 5 пользователей</li>
                 <li>Приоритетная поддержка</li>
