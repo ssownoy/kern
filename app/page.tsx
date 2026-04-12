@@ -93,7 +93,7 @@ export default function Home() {
         <div className="hero-glow"></div>
         <div className="hero-inner">
           <h1>Construction.<br /><em>More precisely.</em><br />Faster.</h1>
-          <p className="hero-sub">Kern automates estimates, quality control and document flow for construction companies of Russia - with the help of artificial intelligence.</p>
+          <p className="hero-sub">Kern automates estimates, quality control and document management for construction companies of Russia using artificial intelligence.</p>
           <div className="hero-actions">
             <a onClick={() => goTo('contact')} className="btn-primary">Начать бесплатно</a>
             <a onClick={() => goTo('modules')} className="btn-ghost">Смотреть модули <span className="arr">→</span></a>
@@ -110,7 +110,7 @@ export default function Home() {
 
       {/* MODULES */}
       <section id="modules">
-        <div className="container">
+        <div className="container" style={{display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center"}}>
           <div className="modules-head">
             <span className="sec-label">Платформа</span>
             <h2>Инструменты для<br />строительной компании</h2>
@@ -169,7 +169,7 @@ export default function Home() {
 
       {/* PROFESSIONALS */}
       <section id="professionals" className="prof-section">
-        <div className="container">
+        <div className="container" style={{display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center"}}>
           <div className="prof-inner">
             <div className="prof-left">
               <span className="sec-label">Раздел специалистов</span>
@@ -218,7 +218,7 @@ export default function Home() {
 
       {/* ADVANTAGES */}
       <section id="advantages" className="adv-section">
-        <div className="container">
+        <div className="container" style={{display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center"}}>
           <span className="sec-label">Почему Kern</span>
           <h2>Создан для<br />российского рынка</h2>
           <div className="adv-grid">
@@ -236,7 +236,7 @@ export default function Home() {
 
       {/* PRICING */}
       <section id="pricing">
-        <div className="container">
+        <div className="container" style={{display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center"}}>
           <span className="sec-label">Тарифы</span>
           <h2>Доступ на период<br />раннего запуска</h2>
           <p style={{color:'var(--muted)',fontSize:'17px',marginTop:'12px',fontWeight:300}}>Сейчас платформа полностью бесплатна. Платные тарифы появятся позже.</p>
@@ -290,10 +290,10 @@ export default function Home() {
       <div className="divider"></div>
 
       <section id="faq">
-        <div className="container">
+        <div className="container" style={{display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center"}}>
           <span className="sec-label">FAQ</span>
           <h2>Частые вопросы</h2>
-          <div style={{maxWidth:'720px',marginTop:'40px',display:'flex',flexDirection:'column',gap:'1px',background:'var(--border)',border:'1px solid var(--border)',borderRadius:'8px',overflow:'hidden'}}>
+          <div style={{maxWidth:"720px",width:"100%",marginTop:'40px',display:'flex',flexDirection:'column',gap:'1px',background:'var(--border)',border:'1px solid var(--border)',borderRadius:'8px',overflow:'hidden'}}>
             {faqs.map((item, i) => (
               <div key={i} style={{background:'var(--bg)'}}>
                 <div onClick={() => setOpenFaq(openFaq === i ? null : i)} style={{padding:'20px 24px',cursor:'pointer',display:'flex',justifyContent:'space-between',alignItems:'center',gap:'16px'}} onMouseOver={e=>e.currentTarget.style.background='var(--card-hover)'} onMouseOut={e=>e.currentTarget.style.background='transparent'}>
@@ -312,7 +312,7 @@ export default function Home() {
       {/* CTA / CONTACT */}
       <section id="contact" className="cta-section">
         <div className="cta-glow"></div>
-        <div className="container">
+        <div className="container" style={{display:"flex",flexDirection:"column",alignItems:"center",textAlign:"center"}}>
           <span className="sec-label">Ранний доступ</span>
           <h2>Начните работать<br />с Kern сегодня</h2>
           <p className="cta-lead">Оставьте заявку — свяжемся в течение 24 часов и настроим платформу под ваши задачи.</p>
