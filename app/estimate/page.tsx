@@ -80,6 +80,7 @@ export default function EstimatePage() {
   const [includeWinter, setIncludeWinter] = useState(false)
   const [includeTempBuildings, setIncludeTempBuildings] = useState(false)
   const [hasLandscaping, setHasLandscaping] = useState(false)
+  const [projectName, setProjectName] = useState('')
   const router = useRouter()
 
   const filteredCities = cities.filter(c => c.name.toLowerCase().startsWith(cityQuery.toLowerCase()))
@@ -121,6 +122,7 @@ export default function EstimatePage() {
       const { data: { session } } = await supabase.auth.getSession()
       const formData = new FormData()
       formData.append('drawing', file)
+      formData.append('projectName', projectName)
       formData.append('withMaterials', withMaterials.toString())
       formData.append('region', region)
       formData.append('soilGroup', soilGroup)
@@ -149,7 +151,7 @@ export default function EstimatePage() {
       if (session?.user) {
         const { error: insertError } = await supabase.from('estimates').insert({
           user_id: session.user.id,
-          summary: data.summary,
+          summary: projectName ? `${projectName} - ${data.summary}` : data.summary,
           total_rub: data.total_rub,
           items: data.sections ? data.sections.flatMap((s: any) => s.items || []) : data.items,
           sections: data.sections || null,
@@ -291,6 +293,17 @@ export default function EstimatePage() {
               </div>
 
               <div>
+                <label style={labelStyle}>Project name</label>
+                <input
+                  type="text"
+                  value={projectName}
+                  onChange={e => setProjectName(e.target.value)}
+                  placeholder="For example: Ivanov Cottage, 5 Lesnaya Street"
+                  style={selectStyle}
+                />
+              </div>
+
+              <div>
                 <button onClick={() => setShowParams(!showParams)} style={{width:'100%',display:'flex',alignItems:'center',justifyContent:'space-between',background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:showParams?'6px 6px 0 0':'6px',padding:'12px 16px',cursor:'pointer',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:600,color:'var(--text)'}}>
                   <span>Параметры сметы</span>
                   <span style={{color:'var(--muted)',fontSize:'12px',fontWeight:400,display:'flex',alignItems:'center',gap:'6px'}}>необязательно <span>{showParams ? '▲' : '▼'}</span></span>
@@ -377,7 +390,9 @@ export default function EstimatePage() {
               {estimate && (
                 <div style={{display:'flex',flexDirection:'column',gap:'16px'}}>
                   <div style={{background:'var(--bg2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'20px 24px'}}>
-                    <div style={{fontSize:'10px',letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)',marginBottom:'6px'}}>Объект</div>
+                    <div style={{fontSize:'10px',letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--muted)',marginBottom:'6px'}}>
+                      {projectName ? projectName : '\u041e\u0431\u044a\u0435\u043a\u0442'}
+                    </div>
                     <div style={{fontFamily:"'Syne',sans-serif",fontSize:'15px',fontWeight:700}}>{estimate.summary}</div>
                   </div>
 
