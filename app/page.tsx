@@ -100,7 +100,7 @@ export default function Home() {
           </div>
           <div className="hero-stats">
             <div className="stat"><span className="stat-num">5×</span><div className="stat-label">Быстрее составление смет</div></div>
-            <div className="stat"><span className="stat-num">3</span><div className="stat-label">Модуля доступно</div></div>
+            <div className="stat"><span className="stat-num">4</span><div className="stat-label">Модуля доступно</div></div>
             <div className="stat"><span className="stat-num">0 ₽</span><div className="stat-label">Для старта</div></div>
           </div>
         </div>
@@ -151,9 +151,20 @@ export default function Home() {
               <div style={{marginTop:'auto',paddingTop:'20px',display:'flex',alignItems:'center',gap:'6px',color:'var(--accent)',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:600}}>Попробовать →</div>
             </div>
 
-            <div className="module-card" style={{display:'flex',flexDirection:'column'}}>
+            <div className="module-card" style={{cursor:'pointer',display:'flex',flexDirection:'column'}} onClick={() => window.location.href='/materials'}>
               <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'20px'}}>
                 <div className="module-num">04</div>
+                <span className="module-badge badge-live">Доступно</span>
+              </div>
+              <div className="module-icon">🏗️</div>
+              <h3>Цены на материалы</h3>
+              <p>Добавьте список материалов — AI покажет актуальные цены по вашему региону с рекомендациями по поставщикам.</p>
+              <div style={{marginTop:'auto',paddingTop:'20px',display:'flex',alignItems:'center',gap:'6px',color:'var(--accent)',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:600}}>Попробовать →</div>
+            </div>
+
+            <div className="module-card" style={{display:'flex',flexDirection:'column'}}>
+              <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'20px'}}>
+                <div className="module-num">05</div>
                 <span className="module-badge badge-soon">Скоро</span>
               </div>
               <div className="module-icon">🏗️</div>
