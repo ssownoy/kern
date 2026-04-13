@@ -102,7 +102,7 @@ export default function MaterialsPage() {
         item.tip || '',
       ]),
     ]
-    const csv = rows.map(row => row.map(cell => {
+    const csv = rows.map((row: any[]) => row.map((cell: any) => {
       const s = String(cell ?? '')
       return s.includes(';') ? `"${s}"` : s
     }).join(';')).join('\n')
