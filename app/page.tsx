@@ -156,13 +156,13 @@ export default function Home() {
                 <div className="module-num">04</div>
                 <span className="module-badge badge-live">Доступно</span>
               </div>
-              <div className="module-icon">🏗️</div>
+              <div className="module-icon">📦</div>
               <h3>Цены на материалы</h3>
               <p>Добавьте список материалов — AI покажет актуальные цены по вашему региону с рекомендациями по поставщикам.</p>
               <div style={{marginTop:'auto',paddingTop:'20px',display:'flex',alignItems:'center',gap:'6px',color:'var(--accent)',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:600}}>Попробовать →</div>
             </div>
 
-            <div className="module-card" style={{display:'flex',flexDirection:'column',gridColumn:'span 2'}}>
+            <div className="module-card" style={{display:'flex',flexDirection:'column',opacity:0.6,cursor:'default'}}>
               <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'20px'}}>
                 <div className="module-num">05</div>
                 <span className="module-badge badge-soon">Скоро</span>
