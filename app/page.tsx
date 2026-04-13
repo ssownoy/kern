@@ -118,7 +118,7 @@ export default function Home() {
           </div>
           <div className="modules-grid reveal">
 
-            <div className="module-card" style={{cursor:'pointer',display:'flex',flexDirection:'column'}} onClick={() => window.location.href='/estimate'}>
+            <div className="module-card" style={{cursor:'pointer',display:'flex',flexDirection:'column',minHeight:'280px'}} onClick={() => window.location.href='/estimate'}>
               <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'20px'}}>
                 <div className="module-num">01</div>
                 <span className="module-badge badge-live">Доступно</span>
@@ -129,7 +129,7 @@ export default function Home() {
               <div style={{marginTop:'auto',paddingTop:'20px',display:'flex',alignItems:'center',gap:'6px',color:'var(--accent)',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:600}}>Попробовать →</div>
             </div>
 
-            <div className="module-card" style={{cursor:'pointer',display:'flex',flexDirection:'column'}} onClick={() => window.location.href='/quality'}>
+            <div className="module-card" style={{cursor:'pointer',display:'flex',flexDirection:'column',minHeight:'280px'}} onClick={() => window.location.href='/quality'}>
               <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'20px'}}>
                 <div className="module-num">02</div>
                 <span className="module-badge badge-live">Доступно</span>
@@ -140,7 +140,7 @@ export default function Home() {
               <div style={{marginTop:'auto',paddingTop:'20px',display:'flex',alignItems:'center',gap:'6px',color:'var(--accent)',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:600}}>Попробовать →</div>
             </div>
 
-            <div className="module-card" style={{display:'flex',flexDirection:'column',cursor:'pointer'}} onClick={() => window.location.href='/documents'}>
+            <div className="module-card" style={{display:'flex',flexDirection:'column',cursor:'pointer',minHeight:'220px'}} onClick={() => window.location.href='/documents'}>
               <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'20px'}}>
                 <div className="module-num">03</div>
                 <span className="module-badge badge-live">Доступно</span>
@@ -151,7 +151,7 @@ export default function Home() {
               <div style={{marginTop:'auto',paddingTop:'20px',display:'flex',alignItems:'center',gap:'6px',color:'var(--accent)',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:600}}>Попробовать →</div>
             </div>
 
-            <div className="module-card" style={{cursor:'pointer',display:'flex',flexDirection:'column'}} onClick={() => window.location.href='/materials'}>
+            <div className="module-card" style={{cursor:'pointer',display:'flex',flexDirection:'column',minHeight:'220px'}} onClick={() => window.location.href='/materials'}>
               <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'20px'}}>
                 <div className="module-num">04</div>
                 <span className="module-badge badge-live">Доступно</span>
@@ -162,7 +162,7 @@ export default function Home() {
               <div style={{marginTop:'auto',paddingTop:'20px',display:'flex',alignItems:'center',gap:'6px',color:'var(--accent)',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:600}}>Попробовать →</div>
             </div>
 
-            <div className="module-card" style={{display:'flex',flexDirection:'column'}}>
+            <div className="module-card" style={{display:'flex',flexDirection:'column',gridColumn:'span 2'}}>
               <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'20px'}}>
                 <div className="module-num">05</div>
                 <span className="module-badge badge-soon">Скоро</span>
