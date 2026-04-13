@@ -293,12 +293,12 @@ export default function EstimatePage() {
               </div>
 
               <div>
-                <label style={labelStyle}>Project name</label>
+                <label style={labelStyle}>Название проекта</label>
                 <input
                   type="text"
                   value={projectName}
                   onChange={e => setProjectName(e.target.value)}
-                  placeholder="For example: Ivanov Cottage, 5 Lesnaya Street"
+                  placeholder="Пример: Коттедж, ул. Лесная, д. 55"
                   style={selectStyle}
                 />
               </div>
