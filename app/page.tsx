@@ -123,7 +123,14 @@ export default function Home() {
                 <div className="module-num">01</div>
                 <span className="module-badge badge-live">Доступно</span>
               </div>
-              <div className="module-icon">📐</div>
+              <div className="module-icon">
+                <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
+                  <rect x="5" y="5" width="22" height="28" rx="1.5" stroke="currentColor" strokeWidth="1.5"/>
+                  <path d="M5 14h22" stroke="currentColor" strokeWidth="1.5"/>
+                  <path d="M9 9h6M9 19h14M9 24h10M9 29h12" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+                  <path d="M30 20l6-6v12h-6" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
+                </svg>
+              </div>
               <h3>AI-сметчик</h3>
               <p>Загрузите чертёж или фото объекта — получите готовую смету в рублях по актуальным рыночным ценам. Поддержка PDF, DWG, PNG.</p>
               <div style={{marginTop:'auto',paddingTop:'20px',display:'flex',alignItems:'center',gap:'6px',color:'var(--accent)',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:600}}>Попробовать →</div>
@@ -134,7 +141,16 @@ export default function Home() {
                 <div className="module-num">02</div>
                 <span className="module-badge badge-live">Доступно</span>
               </div>
-              <div className="module-icon">🔍</div>
+              <div className="module-icon">
+                <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
+                  <path d="M7 19c0-7.2 5.4-13 13-13s13 5.8 13 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                  <path d="M4 19h32" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                  <path d="M10 19v4h20v-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <circle cx="28" cy="31" r="5" stroke="currentColor" strokeWidth="1.5"/>
+                  <path d="M31.5 34.5l4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                  <path d="M26 31h4M28 29v4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+                </svg>
+              </div>
               <h3>Контроль качества</h3>
               <p>Фото строительного объекта анализируется нейросетью. AI определяет дефекты, отклонения от норм и формирует акт осмотра.</p>
               <div style={{marginTop:'auto',paddingTop:'20px',display:'flex',alignItems:'center',gap:'6px',color:'var(--accent)',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:600}}>Попробовать →</div>
@@ -145,7 +161,15 @@ export default function Home() {
                 <div className="module-num">03</div>
                 <span className="module-badge badge-live">Доступно</span>
               </div>
-              <div className="module-icon">📋</div>
+              <div className="module-icon">
+                <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
+                  <path d="M7 5h17l8 8v24H7V5z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
+                  <path d="M24 5v8h8" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
+                  <path d="M12 18h16M12 23h16M12 28h10" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
+                  <circle cx="29" cy="31" r="5" stroke="currentColor" strokeWidth="1.5"/>
+                  <path d="M26.5 31l2 2 3.5-3.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
               <h3>Генератор документов</h3>
               <p>Контракты, разрешения и акты по российским стандартам (ГОСТ, СНиП). Генерация за 30 секунд, готово к подписанию.</p>
               <div style={{marginTop:'auto',paddingTop:'20px',display:'flex',alignItems:'center',gap:'6px',color:'var(--accent)',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:600}}>Попробовать →</div>
@@ -156,7 +180,15 @@ export default function Home() {
                 <div className="module-num">04</div>
                 <span className="module-badge badge-live">Доступно</span>
               </div>
-              <div className="module-icon">📦</div>
+              <div className="module-icon">
+                <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
+                  <rect x="4" y="20" width="14" height="8" rx="1" stroke="currentColor" strokeWidth="1.5"/>
+                  <rect x="20" y="20" width="14" height="8" rx="1" stroke="currentColor" strokeWidth="1.5"/>
+                  <rect x="11" y="12" width="14" height="8" rx="1" stroke="currentColor" strokeWidth="1.5"/>
+                  <path d="M4 30h32" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                  <path d="M25 7h9l-1.5 2.5 1.5 2.5h-9V7z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
+                </svg>
+              </div>
               <h3>Цены на материалы</h3>
               <p>Добавьте список материалов — AI покажет актуальные цены по вашему региону с рекомендациями по поставщикам.</p>
               <div style={{marginTop:'auto',paddingTop:'20px',display:'flex',alignItems:'center',gap:'6px',color:'var(--accent)',fontFamily:"'Syne',sans-serif",fontSize:'13px',fontWeight:600}}>Попробовать →</div>
@@ -167,7 +199,17 @@ export default function Home() {
                 <div className="module-num">05</div>
                 <span className="module-badge badge-soon">Скоро</span>
               </div>
-              <div className="module-icon">🏗️</div>
+              <div className="module-icon">
+                <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
+                  <path d="M9 36V12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                  <path d="M9 12h24" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                  <path d="M33 12V6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                  <path d="M9 6h24" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                  <path d="M21 12v10" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeDasharray="2 2"/>
+                  <rect x="15" y="22" width="12" height="10" rx="1" stroke="currentColor" strokeWidth="1.5"/>
+                  <path d="M5 36h30" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                </svg>
+              </div>
               <h3>Тендерная платформа</h3>
               <p>Размещайте тендеры и получайте заявки от верифицированных подрядчиков. AI оценивает каждую заявку и ранжирует исполнителей.</p>
             </div>
