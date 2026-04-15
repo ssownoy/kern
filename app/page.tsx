@@ -305,7 +305,7 @@ export default function Home() {
                 <li>AI-сметчик</li>
                 <li>Контроль качества по фото</li>
                 <li>История смет и проверок</li>
-                <li>Generator documents</li>
+                <li>{'\u0413\u0435\u043d\u0435\u0440\u0430\u0442\u043e\u0440 \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u043e\u0432'}</li>
                 <li>Скачать PDF и Excel</li>
               </ul>
               <button className="price-btn" onClick={() => goTo('contact')}>Начать бесплатно</button>
@@ -463,6 +463,8 @@ export default function Home() {
                 <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
                   <a href="/estimate" style={{color:'var(--text)',textDecoration:'none',fontSize:'14px'}}>AI-сметчик</a>
                   <a href="/quality" style={{color:'var(--text)',textDecoration:'none',fontSize:'14px'}}>Контроль качества</a>
+                  <a href="/documents" style={{color:'var(--text)',textDecoration:'none',fontSize:'14px'}}>Генератор документов</a>
+                  <a href="/materials" style={{color:'var(--text)',textDecoration:'none',fontSize:'14px'}}>{'Цены на материалы'}</a>
                   <a href="/dashboard" style={{color:'var(--text)',textDecoration:'none',fontSize:'14px'}}>Личный кабинет</a>
                 </div>
               </div>
